@@ -258,19 +258,19 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                 SizedBox(height: 30),
               if (_experienceLevel == 'Experienced' && companyList.length < 8)
                 SizedBox(
-                  height: 60,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xff508C9B),
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xff508C9B),
+                      ),
+                      onPressed: _addCompany,
+                      child: Text(
+                        'Add Company',
+                        style: TextStyle(fontSize: 30),
+                      ),
                     ),
-                    onPressed: _addCompany,
-                    child: Text(
-                      'Add Company',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                ),
+                    u),
               SizedBox(height: 80), // Add space for the FAB
             ],
           ),
