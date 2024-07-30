@@ -27,6 +27,7 @@ class _ExamInfoPageState extends State<ExamInfoPage>
 
   late AnimationController _controller;
   late Animation<Offset> _animation;
+  bool _allStepsRead = false;
 
   @override
   void initState() {
@@ -44,6 +45,40 @@ class _ExamInfoPageState extends State<ExamInfoPage>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _checkIfReadAllSteps() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text(
+              'Have you read all the instructions carefully before starting the test?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _allStepsRead = true;
+                });
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizScreen()),
+                );
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -103,10 +138,14 @@ class _ExamInfoPageState extends State<ExamInfoPage>
             width: 90,
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => QuizScreen()),
-                );
+                if (_allStepsRead) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => QuizScreen()),
+                  );
+                } else {
+                  _checkIfReadAllSteps();
+                }
               },
               child: Icon(Icons.arrow_forward, size: 50, color: Colors.white),
               shape: CircleBorder(),
