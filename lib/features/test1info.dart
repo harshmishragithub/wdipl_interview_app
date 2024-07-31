@@ -15,14 +15,32 @@ class ExamInfoPage extends StatefulWidget {
 
 class _ExamInfoPageState extends State<ExamInfoPage>
     with SingleTickerProviderStateMixin {
-  final List<String> steps = [
-    'Register for the exam through the official portal.',
-    'Download the admit card from your email or the portal.',
-    'Prepare your documents and materials needed for the exam.',
-    'Arrive at the exam center at least 30 minutes before the start time.',
-    'Follow the instructions given by the invigilators.',
-    'Complete the exam within the given time frame.',
-    'Collect your results online on the announced date.'
+  final List<Map<String, String>> tests = [
+    {
+      'title': 'Technology Test - Easy Level',
+      'description':
+          'This test includes 10 questions focusing on basic concepts and fundamentals. Ideal for beginners.'
+    },
+    {
+      'title': 'Technology Test - Medium Level',
+      'description':
+          'This test includes 10 questions focusing on intermediate concepts, suitable for those with some experience.'
+    },
+    {
+      'title': 'Technology Test - Hard Level',
+      'description':
+          'This test includes 10 questions focusing on advanced topics, designed for experts.'
+    },
+    {
+      'title': 'Mathematics & Logical Reasoning',
+      'description':
+          'This test includes 10 questions covering mathematics and logical reasoning to assess your analytical skills.'
+    },
+    {
+      'title': 'Aptitude Test',
+      'description':
+          'This test includes 10 questions to evaluate your aptitude and problem-solving abilities.'
+    },
   ];
 
   late AnimationController _controller;
@@ -54,7 +72,7 @@ class _ExamInfoPageState extends State<ExamInfoPage>
         return AlertDialog(
           title: Text('Confirmation'),
           content: Text(
-              'Have you read all the instructions carefully before starting the test?'),
+              'Have you read all the test details carefully before starting the test?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -87,14 +105,14 @@ class _ExamInfoPageState extends State<ExamInfoPage>
       backgroundColor: Color(0xffEEEEEE),
       appBar: AppBar(
         backgroundColor: Color(0xFF508C9B),
-        title: Text('Exam Information'),
+        title: Text('Test Information'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
             Text(
-              'How to Take Your Exam',
+              'Upcoming Tests Overview',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -104,15 +122,16 @@ class _ExamInfoPageState extends State<ExamInfoPage>
             ),
             SizedBox(height: 16.0),
             Text(
-              'Follow these steps carefully to ensure a smooth and successful exam experience:',
+              'Please review the details of the following tests:',
               style: TextStyle(fontSize: 16.0, color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.0),
-            ...steps.asMap().entries.map((entry) {
+            ...tests.asMap().entries.map((entry) {
               int index = entry.key;
-              String step = entry.value;
-              return _buildStepCard(index + 1, step);
+              Map<String, String> test = entry.value;
+              return _buildTestCard(
+                  index + 1, test['title']!, test['description']!);
             }).toList(),
             SizedBox(height: 80), // Add space for the FAB
           ],
@@ -160,7 +179,7 @@ class _ExamInfoPageState extends State<ExamInfoPage>
     );
   }
 
-  Widget _buildStepCard(int stepNumber, String step) {
+  Widget _buildTestCard(int stepNumber, String title, String description) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -169,37 +188,37 @@ class _ExamInfoPageState extends State<ExamInfoPage>
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: Color(0xFF508C9B),
-              child: Text(
-                stepNumber.toString(),
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(width: 16.0),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 8.0),
-                      Expanded(
-                        child: Text(
-                          step,
-                          style:
-                              TextStyle(fontSize: 16.0, color: Colors.black87),
-                        ),
-                      ),
-                    ],
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(0xFF508C9B),
+                  child: Text(
+                    stepNumber.toString(),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              description,
+              style: TextStyle(fontSize: 16.0, color: Colors.black87),
             ),
           ],
         ),
