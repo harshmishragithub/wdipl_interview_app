@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wdipl_interview_app/main.dart';
+import 'package:wdipl_interview_app/quizzpage22.dart';
+
+import 'package:wdipl_interview_app/screens/components/testovervi.dart';
 import 'package:wdipl_interview_app/screens/quiz/quiz_screen.dart';
 
 void main() {
@@ -88,7 +90,7 @@ class _ExamInfoPageState extends State<ExamInfoPage>
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuizScreen()),
+                  MaterialPageRoute(builder: (context) => QuizPage()),
                 );
               },
               child: Text('Yes'),
@@ -160,7 +162,7 @@ class _ExamInfoPageState extends State<ExamInfoPage>
                 if (_allStepsRead) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => QuizScreen()),
+                    MaterialPageRoute(builder: (context) => QuizPage()),
                   );
                 } else {
                   _checkIfReadAllSteps();

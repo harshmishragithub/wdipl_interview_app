@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:wdipl_interview_app/controllers/cont.dart';
+// import 'package:wdipl_interview_app/constants.dart';
 
-// import '../../constants.dart';
+// import 'package:wdipl_interview_app/controllers/cont.dart';
 
 // class ScoreScreen extends StatelessWidget {
 //   @override
@@ -12,7 +12,6 @@
 //       body: Stack(
 //         fit: StackFit.expand,
 //         children: [
-//           // SvgPicture.asset("assets/icons/bg.svg", fit: BoxFit.fill),
 //           Column(
 //             children: [
 //               Spacer(flex: 3),
