@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/models/quest22.dart';
 import 'dart:async';
-import 'package:wdipl_interview_app/score22.dart';
-import 'package:wdipl_interview_app/screens/components/testovervi.dart';
+
+import 'package:wdipl_interview_app/test1/quest22.dart';
+import 'package:wdipl_interview_app/test1/score22.dart';
+import 'package:wdipl_interview_app/test1/testover.dart';
 
 class QuizController extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -19,7 +20,6 @@ class QuizController extends GetxController {
     currentQuestionIndex.value = 0;
     score.value = 0;
     selectedAnswerIndex.value = -1;
-    testScores.clear();
     startTimer();
   }
 
@@ -43,21 +43,14 @@ class QuizController extends GetxController {
     }
     selectedAnswerIndex.value = -1; // Reset selection
 
-    // Proceed to the next question or test
+    // Proceed to the next question or navigate to the summary page
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
       startTimer();
     } else {
-      // Save the score for this test
+      countdownTimer?.cancel();
       testScores.add(score.value);
-      if (currentTestIndex.value < totalTests - 1) {
-        countdownTimer?.cancel(); // Cancel the timer when test ends
-        Get.to(TestOverviewPage());
-      } else {
-        submitResults();
-        countdownTimer?.cancel();
-        Get.to(ScorePage());
-      }
+      Get.to(() => TestSummaryPage());
     }
   }
 
@@ -67,14 +60,9 @@ class QuizController extends GetxController {
       currentQuestionIndex.value++;
       startTimer(); // Reset timer for the next question
     } else {
+      countdownTimer?.cancel();
       testScores.add(score.value);
-      if (currentTestIndex.value < totalTests - 1) {
-        Get.to(TestOverviewPage());
-      } else {
-        submitResults();
-        countdownTimer?.cancel();
-        Get.to(ScorePage());
-      }
+      Get.to(() => TestSummaryPage());
     }
   }
 
@@ -84,14 +72,15 @@ class QuizController extends GetxController {
       "totalScore": testScores.reduce((a, b) => a + b),
     };
 
-    // Example API call (using http package)
-    // final response = await http.post(
-    //   Uri.parse("https://yourapi.com/submit-results"),
-    //   body: jsonEncode(results),
-    //   headers: {"Content-Type": "application/json"},
-    // );
+    // Implement your API call here to submit the results
 
-    // Handle response from the backend
+    // Reset the test state
+    currentTestIndex.value = 0;
+    currentQuestionIndex.value = 0;
+    testScores.clear();
+
+    // Navigate to the Score Page
+    Get.to(() => ScorePage());
   }
 
   void selectAnswer(int index) {

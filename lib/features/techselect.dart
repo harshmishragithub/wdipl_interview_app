@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wdipl_interview_app/features/test1info.dart';
+import 'package:wdipl_interview_app/test1/quizzpage22.dart';
 
 void main() {
   runApp(MyApp());
@@ -171,7 +171,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ExamInfoPage()),
+                  MaterialPageRoute(builder: (context) => QuizPage()),
                 );
               },
               backgroundColor: Color(0xFF134B70),

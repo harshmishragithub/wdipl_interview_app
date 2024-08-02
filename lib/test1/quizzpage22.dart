@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/controllers/contt2.dart';
-
-import 'package:wdipl_interview_app/models/quest22.dart';
+import 'package:wdipl_interview_app/test1/contt2.dart';
+import 'package:wdipl_interview_app/test1/quest22.dart';
 
 class QuizPage extends StatelessWidget {
   final QuizController quizController = Get.put(QuizController());

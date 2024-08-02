@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/controllers/contt2.dart';
-import 'package:wdipl_interview_app/models/quest22.dart';
+import 'package:wdipl_interview_app/test1/contt2.dart';
 
-import 'package:wdipl_interview_app/screens/components/testovervi.dart';
+import 'package:wdipl_interview_app/test1/quest22.dart';
+import 'package:wdipl_interview_app/test1/testover.dart';
 
 class ScorePage extends StatelessWidget {
   final QuizController quizController = Get.find<QuizController>();
@@ -36,7 +36,7 @@ class ScorePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 quizController.startTest(0);
-                Get.offAll(() => TestOverviewPage());
+                // Get.offAll(() => Testov1());
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
