@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test3/quest4.dart';
-import 'package:wdipl_interview_app/test3/skip4.dart';
 import 'package:wdipl_interview_app/testoverview/testov4.dart';
+
+import 'contt4.dart';
+import 'quest4.dart';
 
 class ThankYouPage3 extends StatelessWidget {
   final QuizController3 quizController = Get.find<QuizController3>();

@@ -5,8 +5,6 @@ class QuizController3 extends GetxController {
   var selectedAnswerIndex = (-1).obs;
   var timer = 60.obs;
 
-  get testScores => null;
-
   void startTimer() {
     // Your timer logic
   }
