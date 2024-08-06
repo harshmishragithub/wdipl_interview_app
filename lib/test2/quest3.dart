@@ -12,7 +12,7 @@ class Question2 {
 
 final List<Question2> question2 = [
   Question2(
-    question2Text: "What is the capital of inidia?",
+    question2Text: "What is the capital of india?",
     answers: ["Berlin", "Paris", "Madrid", "Lisbon"],
     correctAnswerIndex: 1,
   ),

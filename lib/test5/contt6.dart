@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/quest22.dart';
-import 'package:wdipl_interview_app/test1/score22.dart';
-import 'package:wdipl_interview_app/test1/thanku.dart';
+import 'package:wdipl_interview_app/test5/quest6.dart';
+import 'package:wdipl_interview_app/test5/score6.dart';
+
 import 'dart:async';
+
+import 'package:wdipl_interview_app/test5/thanku6.dart';
 
 class QuizController5 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -36,46 +38,41 @@ class QuizController5 extends GetxController {
 
   void submitAnswerAndNext() {
     if (selectedAnswerIndex.value ==
-        questions[currentQuestionIndex.value].correctAnswerIndex) {
+        question5s[currentQuestionIndex.value].correctAnswerIndex) {
       score.value++;
     }
     selectedAnswerIndex.value = -1;
 
-    if (currentQuestionIndex.value < questions.length - 1) {
+    if (currentQuestionIndex.value < question5s.length - 1) {
       currentQuestionIndex.value++;
       startTimer();
     } else {
       countdownTimer?.cancel();
       testScores.add(score.value);
-      Get.to(() => ThankYouPage());
+      Get.to(() => ThankYouPage5());
     }
   }
 
   void skipQuestion() {
     selectedAnswerIndex.value = -1;
-    if (currentQuestionIndex.value < questions.length - 1) {
+    if (currentQuestionIndex.value < question5s.length - 1) {
       currentQuestionIndex.value++;
       startTimer();
     } else {
       countdownTimer?.cancel();
       testScores.add(score.value);
-      Get.to(() => ThankYouPage());
+      Get.to(() => ThankYouPage5());
     }
   }
 
   Future<void> submitResults() async {
-    final results = {
-      "testScores": testScores,
-      "totalScore": testScores.reduce((a, b) => a + b),
-    };
-
     // Implement your API call here to submit the results
 
     currentTestIndex.value = 0;
     currentQuestionIndex.value = 0;
     testScores.clear();
 
-    Get.to(() => ScorePage());
+    Get.to(() => ScorePage5());
   }
 
   void selectAnswer(int index) {
