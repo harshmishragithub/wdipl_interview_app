@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
-import 'dart:async';
-
 import 'package:wdipl_interview_app/test1/quest22.dart';
 import 'package:wdipl_interview_app/test1/score22.dart';
-import 'package:wdipl_interview_app/test1/testover.dart';
+import 'package:wdipl_interview_app/test1/thanku.dart';
+import 'dart:async';
 
 class QuizController extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -25,7 +24,7 @@ class QuizController extends GetxController {
 
   void startTimer() {
     timer.value = 60;
-    countdownTimer?.cancel(); // Cancel any previous timer
+    countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (this.timer.value > 0) {
         this.timer.value--;
@@ -36,33 +35,31 @@ class QuizController extends GetxController {
   }
 
   void submitAnswerAndNext() {
-    // Check if the selected answer is correct
     if (selectedAnswerIndex.value ==
         questions[currentQuestionIndex.value].correctAnswerIndex) {
       score.value++;
     }
-    selectedAnswerIndex.value = -1; // Reset selection
+    selectedAnswerIndex.value = -1;
 
-    // Proceed to the next question or navigate to the summary page
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
       startTimer();
     } else {
       countdownTimer?.cancel();
       testScores.add(score.value);
-      Get.to(() => TestSummaryPage());
+      Get.to(() => ThankYouPage());
     }
   }
 
   void skipQuestion() {
-    selectedAnswerIndex.value = -1; // Reset selection
+    selectedAnswerIndex.value = -1;
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
-      startTimer(); // Reset timer for the next question
+      startTimer();
     } else {
       countdownTimer?.cancel();
       testScores.add(score.value);
-      Get.to(() => TestSummaryPage());
+      Get.to(() => ThankYouPage());
     }
   }
 
@@ -74,12 +71,10 @@ class QuizController extends GetxController {
 
     // Implement your API call here to submit the results
 
-    // Reset the test state
     currentTestIndex.value = 0;
     currentQuestionIndex.value = 0;
     testScores.clear();
 
-    // Navigate to the Score Page
     Get.to(() => ScorePage());
   }
 
