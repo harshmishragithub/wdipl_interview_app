@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/contt2.dart';
+import 'package:wdipl_interview_app/test3/contt4.dart';
+import 'package:wdipl_interview_app/test3/quest4.dart';
 
-import 'package:wdipl_interview_app/test1/quest22.dart';
-
-class ScorePage extends StatelessWidget {
-  final QuizController quizController = Get.find<QuizController>();
+class ScorePage3 extends StatelessWidget {
+  final QuizController3 quizController = Get.find<QuizController3>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class ScorePage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "Your total score is: ${quizController.testScores.reduce((a, b) => a + b)} / ${quizController.totalTests * questions.length}",
+              "Your total score is: ${quizController.testScores.reduce((a, b) => a + b)} / ${quizController.totalTests * question3s.length}",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),

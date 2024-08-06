@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wdipl_interview_app/test1/contt2.dart';
 import 'package:wdipl_interview_app/test1/quest22.dart';
-import 'package:wdipl_interview_app/test1/testover.dart';
+import 'package:wdipl_interview_app/testoverview/testov2.dart';
 
 class ThankYouPage extends StatelessWidget {
   final QuizController quizController = Get.find<QuizController>();
@@ -29,7 +29,7 @@ class ThankYouPage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.offAll(() => TestOverviewPage());
+                Get.offAll(() => UpcomingTestPage2());
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
@@ -45,3 +45,5 @@ class ThankYouPage extends StatelessWidget {
     );
   }
 }
+
+class TestOverviewPage {}

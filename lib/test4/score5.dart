@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/contt2.dart';
 
 import 'package:wdipl_interview_app/test1/quest22.dart';
+import 'package:wdipl_interview_app/test4/contt5.dart';
 
-class ScorePage extends StatelessWidget {
-  final QuizController quizController = Get.find<QuizController>();
+class ScorePage4 extends StatelessWidget {
+  final QuizController4 quizController = Get.find<QuizController4>();
 
   @override
   Widget build(BuildContext context) {

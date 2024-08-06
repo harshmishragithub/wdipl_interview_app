@@ -1,41 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/contt2.dart';
+import 'package:wdipl_interview_app/test5/contt6.dart';
+import 'package:wdipl_interview_app/test5/quest6.dart';
 
-import 'package:wdipl_interview_app/test1/quest22.dart';
+import 'package:wdipl_interview_app/testoverview/testov5.dart';
 
-class ScorePage extends StatelessWidget {
-  final QuizController quizController = Get.find<QuizController>();
+class ThankYouPage5 extends StatelessWidget {
+  final QuizController5 quizController = Get.find<QuizController5>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Score"),
+        title: Text("Thank You"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Congratulations!",
+              "Thank you for your response!",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
             Text(
-              "You completed all tests!",
+              "Your Score: ${quizController.testScores.last} / ${question5s.length}",
               style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Your total score is: ${quizController.testScores.reduce((a, b) => a + b)} / ${quizController.totalTests * questions.length}",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                quizController.startTest(0);
-                // Get.offAll(() => Testov1());
+                Get.offAll(() => UpcomingTestPage5());
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
@@ -43,7 +38,7 @@ class ScorePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text("Retry All Tests", style: TextStyle(fontSize: 18)),
+              child: Text("Return to Overview", style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
