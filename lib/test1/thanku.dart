@@ -45,5 +45,3 @@ class ThankYouPage extends StatelessWidget {
     );
   }
 }
-
-class TestOverviewPage {}

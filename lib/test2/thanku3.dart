@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/contt2.dart';
-import 'package:wdipl_interview_app/test1/quest22.dart';
-import 'package:wdipl_interview_app/test1/quizzpage22.dart';
-import 'package:wdipl_interview_app/testoverview/testov2.dart';
+import 'package:wdipl_interview_app/test2/contt3.dart';
+import 'package:wdipl_interview_app/test2/quest3.dart';
+
+import 'package:wdipl_interview_app/testoverview/testov3.dart';
 
 class ThankYouPage2 extends StatelessWidget {
-  final QuizController quizController = Get.find<QuizController>();
+  final QuizController2 quizController = Get.find<QuizController2>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +24,13 @@ class ThankYouPage2 extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              "Your Score: ${quizController.testScores.last} / ${questions.length}",
+              "Your Score: ${quizController.testScores.last} / ${question2.length}",
               style: TextStyle(fontSize: 24),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.offAll(() => UpcomingTestPage2());
+                Get.offAll(() => UpcomingTestPage3());
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),

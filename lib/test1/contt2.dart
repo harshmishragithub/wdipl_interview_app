@@ -64,11 +64,6 @@ class QuizController extends GetxController {
   }
 
   Future<void> submitResults() async {
-    final results = {
-      "testScores": testScores,
-      "totalScore": testScores.reduce((a, b) => a + b),
-    };
-
     // Implement your API call here to submit the results
 
     currentTestIndex.value = 0;

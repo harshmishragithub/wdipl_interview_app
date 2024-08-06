@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/thanku.dart';
 
 import 'dart:async';
 
@@ -67,11 +66,6 @@ class QuizController4 extends GetxController {
   }
 
   Future<void> submitResults() async {
-    final results = {
-      "testScores": testScores,
-      "totalScore": testScores.reduce((a, b) => a + b),
-    };
-
     // Implement your API call here to submit the results
 
     currentTestIndex.value = 0;
