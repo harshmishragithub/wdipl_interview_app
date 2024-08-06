@@ -72,6 +72,22 @@ class _DropdownPageState extends State<DropdownPage> {
     super.dispose();
   }
 
+  void _validatePercentage(TextEditingController controller) {
+    final text = controller.text;
+    if (text.isNotEmpty) {
+      final percentage = double.tryParse(text);
+      if (percentage == null || percentage < 0 || percentage > 100) {
+        controller.text = percentage != null && percentage > 100 ? '100' : '0';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a valid percentage (0-100).'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
   Widget _buildDropdown({
     required String hint,
     required String? value,
@@ -161,6 +177,9 @@ class _DropdownPageState extends State<DropdownPage> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       ),
                       keyboardType: TextInputType.number,
+                      onChanged: (_) {
+                        _validatePercentage(tenthPercentageController);
+                      },
                     ),
                   ),
                 ],
@@ -228,6 +247,9 @@ class _DropdownPageState extends State<DropdownPage> {
                                   horizontal: 10, vertical: 15),
                             ),
                             keyboardType: TextInputType.number,
+                            onChanged: (_) {
+                              _validatePercentage(twelfthPercentageController);
+                            },
                           ),
                         ),
                       ],
@@ -242,6 +264,9 @@ class _DropdownPageState extends State<DropdownPage> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       ),
                       keyboardType: TextInputType.number,
+                      onChanged: (_) {
+                        _validatePercentage(diplomaPercentageController);
+                      },
                     ),
                     SizedBox(height: 16.0),
                     _buildDropdown(
@@ -314,6 +339,9 @@ class _DropdownPageState extends State<DropdownPage> {
                               horizontal: 10, vertical: 15),
                         ),
                         keyboardType: TextInputType.number,
+                        onChanged: (_) {
+                          _validatePercentage(graduationPercentageController);
+                        },
                       ),
                       SizedBox(height: 16.0),
                       Row(
@@ -346,6 +374,9 @@ class _DropdownPageState extends State<DropdownPage> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       ),
                       keyboardType: TextInputType.number,
+                      onChanged: (_) {
+                        _validatePercentage(diplomaPercentageController);
+                      },
                     ),
                     SizedBox(height: 16.0),
                     _buildDropdown(
