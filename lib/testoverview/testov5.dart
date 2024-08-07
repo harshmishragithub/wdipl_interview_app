@@ -92,7 +92,7 @@ class UpcomingTestPage5 extends StatelessWidget {
                             'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                       ),
                     ),
-                    child: Text('Go to Next Page'),
+                    child: Text('start'),
                   ),
                 ],
               ),
