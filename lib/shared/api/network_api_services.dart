@@ -1,5 +1,7 @@
 // common_api.dart
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -12,46 +14,9 @@ class NetworkApiService {
           status <= 500; // Allow any status code less than 500
     },
   ));
-
-  // final Dio _dio;
-
-  // NetworkApiService() : _dio = Dio(BaseOptions(
-  //   validateStatus: (status) {
-  //     return status != null && status <= 500; // Allow any status code less than 500
-  //   },
-  // )) {
-  //   _dio.interceptors.add(InterceptorsWrapper(
-  //     onRequest: (options, handler) async {
-  //       String token = await secureStorageService.read("accesstoken") ?? "";
-  //       if (token.isNotEmpty) {
-  //         options.headers["x-auth-token"] = token;
-  //       }
-  //       return handler.next(options);
-  //     },
-  //     onResponse: (response, handler) {
-  //       // If response is successful, just pass it along
-  //       return handler.next(response);
-  //     },
-  //     onError: (DioException e, handler) async {
-  //       // Handle token expiration
-  //       if (e.response?.statusCode == 401) {
-  //         // Handle token refresh logic here
-  //         bool refreshed = await _refreshToken();
-  //         if (refreshed) {
-  //           // Retry the failed request with the new token
-  //           final requestOptions = e.requestOptions;
-  //           String newToken = await secureStorageService.read("accesstoken") ?? "";
-  //           requestOptions.headers["x-auth-token"] = newToken;
-  //           final response = await _dio.fetch(requestOptions);
-  //           return handler.resolve(response);
-  //         }
-  //       }
-  //       return handler.reject(e);
-  //     },
-  //   ));
-  // }
-
-  // Common function for GET requests
+  String basicAuth = 'Basic ' +
+      base64.encode(utf8
+          .encode('InterviewTest:8fdf09a632a2ece4c0c3df503c0bc4e7a21043fc'));
   Future<ResponseData> get(String url,
       {Map<String, dynamic>? queryParameters}) async {
     if (kDebugMode) {
@@ -97,10 +62,13 @@ class NetworkApiService {
       print("api url is >>> $url");
     }
     try {
-      var response = await _dio.post(
-        url,
-        data: data,
-      );
+      var response = await _dio.post(url,
+          data: data,
+          options: Options(headers: {
+            "authorization": basicAuth,
+
+            // "device-id": deviceId
+          }));
       if (response.statusCode == 201 || response.statusCode == 200) {
         return ResponseData<dynamic>("success", ResponseStatus.SUCCESS,
             data: response.data);
