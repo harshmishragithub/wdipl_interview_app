@@ -46,14 +46,14 @@ class ThankYouPage5 extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
-                // Text(
-                //   "Your Score: ${quizController.testScores.last} / ${question5s.length}",
-                //   style: TextStyle(
-                //     fontSize: 24,
-                //     color: Colors.white70,
-                //   ),
-                //   textAlign: TextAlign.center,
-                // ),
+                Text(
+                  "Assessment completed successfully!",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white70,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 40),
               ],
             ),
