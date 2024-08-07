@@ -13,7 +13,7 @@ class UpcomingTestPage extends StatelessWidget {
                 'Raleway', // Custom font (make sure it's added in pubspec.yaml)
           ),
         ),
-        backgroundColor: Color(0xFF508C9B),
+        backgroundColor: Color(0xFF134B70),
         elevation: 0,
       ),
       body: Stack(
@@ -30,7 +30,7 @@ class UpcomingTestPage extends StatelessWidget {
           ),
           // Content with transparency
           Container(
-            color: Colors.black.withOpacity(0.6),
+            color: Color(0xffEEEEEE),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -42,7 +42,7 @@ class UpcomingTestPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Color(0xff508C9B),
                       fontFamily:
                           'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                     ),
@@ -53,7 +53,7 @@ class UpcomingTestPage extends StatelessWidget {
                     'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white70,
+                      color: Color(0xff508C9B),
                       fontFamily:
                           'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                     ),
@@ -64,7 +64,7 @@ class UpcomingTestPage extends StatelessWidget {
                     'Prepare well and give your best! Remember to revise key topics and manage your time effectively during the test.',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white70,
+                      color: Color(0xff508C9B),
                       fontFamily:
                           'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                     ),
@@ -77,7 +77,7 @@ class UpcomingTestPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Color(0xffEEEEEE),
-                      backgroundColor: Color(0xFF508C9B),
+                      backgroundColor: Color(0xFF134B70),
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
