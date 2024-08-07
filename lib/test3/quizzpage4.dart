@@ -157,29 +157,10 @@ class QuizPage3 extends StatelessWidget {
                   ),
                 ),
               SizedBox(height: 20),
-              _buildSkipButton(),
             ],
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildSkipButton() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        quizController.skipQuestion();
-      },
-      icon: Icon(Icons.arrow_forward_ios, color: Colors.white),
-      label: Text(
-        "Skip",
-        style: TextStyle(color: Colors.white),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF134B70),
-        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
     );
   }
 }

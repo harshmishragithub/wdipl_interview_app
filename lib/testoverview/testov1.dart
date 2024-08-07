@@ -6,58 +6,126 @@ class UpcomingTestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upcoming Test'),
+        title: Text(
+          'Test part 1',
+          style: TextStyle(
+            fontFamily:
+                'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+          ),
+        ),
+        backgroundColor: Color(0xFF508C9B),
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Your Upcoming Test',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/background.jpg'), // Add your background image here
+                fit: BoxFit.cover,
               ),
-              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
-            Text(
-              'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black87,
+          ),
+          // Content with transparency
+          Container(
+            color: Colors.black.withOpacity(0.6),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    ' Easy level test',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily:
+                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white70,
+                      fontFamily:
+                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Prepare well and give your best! Remember to revise key topics and manage your time effectively during the test.',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white70,
+                      fontFamily:
+                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: () {
+                      _showConfirmationDialog(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Color(0xffEEEEEE),
+                      backgroundColor: Color(0xFF508C9B),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontFamily:
+                            'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                      ),
+                    ),
+                    child: Text('Go to Next Page'),
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
-            Text(
-              'Prepare well and give your best! Remember to revise key topics and manage your time effectively during the test.',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black54,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 40),
-            ElevatedButton(
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm'),
+          content: Text('Are you sure you want to start the test?'),
+          actions: [
+            TextButton(
               onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => QuizPage()),
                 );
               },
-              child: Text('Go to Next Page'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                textStyle: TextStyle(fontSize: 18),
-              ),
+              child: Text('Yes'),
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
