@@ -69,6 +69,46 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     super.dispose();
   }
 
+  void _showConfirmationDialog(BuildContext context) {
+    if (selectedTechnology == null || selectedExperience == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select both technology and experience')),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Selection'),
+          content: Text(
+            'You have selected:\n\nTechnology: $selectedTechnology\nExperience: $selectedExperience',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Proceed'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UpcomingTestPage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,10 +210,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
             child: FloatingActionButton(
               shape: CircleBorder(),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UpcomingTestPage()),
-                );
+                _showConfirmationDialog(context);
               },
               backgroundColor: Color(0xFF134B70),
               child: Icon(

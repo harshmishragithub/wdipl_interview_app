@@ -9,6 +9,7 @@ class UpcomingTestPage extends StatelessWidget {
         title: Text(
           'Test part 1',
           style: TextStyle(
+            color: Colors.white,
             fontFamily:
                 'Raleway', // Custom font (make sure it's added in pubspec.yaml)
           ),
@@ -49,19 +50,19 @@ class UpcomingTestPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20),
-                  Text(
-                    'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xff508C9B),
-                      fontFamily:
-                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  // Text(
+                  //   'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     color: Color(0xff508C9B),
+                  //     fontFamily:
+                  //         'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                  //   ),
+                  //   textAlign: TextAlign.center,
+                  // ),
                   SizedBox(height: 20),
                   Text(
-                    'Prepare well and give your best! Remember to revise key topics and manage your time effectively during the test.',
+                    'Easy level test as per experience',
                     style: TextStyle(
                       fontSize: 18,
                       color: Color(0xff508C9B),

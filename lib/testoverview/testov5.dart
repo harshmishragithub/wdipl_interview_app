@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:wdipl_interview_app/test5/quizzpage6.dart';
 
 class UpcomingTestPage5 extends StatelessWidget {
@@ -10,6 +9,7 @@ class UpcomingTestPage5 extends StatelessWidget {
         title: Text(
           'Test part 5',
           style: TextStyle(
+            color: Colors.white,
             fontFamily:
                 'Raleway', // Custom font (make sure it's added in pubspec.yaml)
           ),
@@ -51,18 +51,7 @@ class UpcomingTestPage5 extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xff508C9B),
-                      fontFamily:
-                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Prepare well and give your best! Remember to revise key topics and manage your time effectively during the test.',
+                    'Aptitude level test as per experience.',
                     style: TextStyle(
                       fontSize: 18,
                       color: Color(0xff508C9B),
@@ -74,25 +63,22 @@ class UpcomingTestPage5 extends StatelessWidget {
                   SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => QuizPage5()),
-                      );
+                      _showReadyDialog(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Color(0xffEEEEEE),
+                      foregroundColor: Color(0xffEEEEEE), // Text color
                       backgroundColor: Color(0xFF134B70),
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                      ), // Text color
+                      ),
                       textStyle: TextStyle(
                         fontSize: 18,
                         fontFamily:
                             'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                       ),
                     ),
-                    child: Text('start'),
+                    child: Text('Start'),
                   ),
                 ],
               ),
@@ -100,6 +86,36 @@ class UpcomingTestPage5 extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showReadyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ready to Start?'),
+          content: Text('Are you ready to take the test?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizPage5()),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
