@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wdipl_interview_app/features/edu.dart';
 
+import '../shared/api/base_manager.dart';
+import '../shared/api/repos/userdet_api.dart';
+
 void main() {
   runApp(Form1Page());
 }
@@ -13,13 +16,43 @@ class Form1Page extends StatefulWidget {
 
 class _Form1PageState extends State<Form1Page> {
   final _formKey = GlobalKey<FormState>();
+
+  // Controllers for each input field
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _sourceController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _presentAddressController =
+      TextEditingController();
+  final TextEditingController _permanentAddressController =
+      TextEditingController();
+  final TextEditingController _fatherNameController = TextEditingController();
+  final TextEditingController _fatherOccupationController =
+      TextEditingController();
+  final TextEditingController _motherNameController = TextEditingController();
+  final TextEditingController _motherOccupationController =
+      TextEditingController();
+  final TextEditingController _siblingsController = TextEditingController();
+
   String? _selectedGender;
   bool _isCompulsory = true; // State variable for the switch
 
   @override
   void dispose() {
+    // Dispose of all controllers
+    _nameController.dispose();
+    _sourceController.dispose();
     _dateController.dispose();
+    _contactController.dispose();
+    _emailController.dispose();
+    _presentAddressController.dispose();
+    _permanentAddressController.dispose();
+    _fatherNameController.dispose();
+    _fatherOccupationController.dispose();
+    _motherNameController.dispose();
+    _motherOccupationController.dispose();
+    _siblingsController.dispose();
     super.dispose();
   }
 
@@ -60,10 +93,40 @@ class _Form1PageState extends State<Form1Page> {
       return 'This field is required';
     }
     final phoneRegex = RegExp(r'^[0-9]+$');
-    if (!phoneRegex.hasMatch(value!) || value?.length != 10) {
+    if (!phoneRegex.hasMatch(value!) || value.length != 10) {
       return 'Enter a valid phone number';
     }
     return null;
+  }
+
+  void _submitForm() async {
+    try {
+      Map<String, dynamic> biometricLoginData = {
+        "name": _nameController.text,
+        "source": _sourceController.text,
+        "date_of_birth": _dateController.text,
+        "gender": _selectedGender,
+        "contact_no": _contactController.text,
+        "email_address": _emailController.text,
+        "present_address": _presentAddressController.text,
+        "permenent_address": _permanentAddressController.text,
+        "father_name": _fatherNameController.text,
+        "father_occupation": _fatherOccupationController.text,
+        "mother_name": _motherNameController.text,
+        "mother_occupation": _motherOccupationController.text,
+        "no_of_siblings": _siblingsController.text,
+      };
+
+      ResponseData response = await PersonalInfoAPIServices()
+          .sendPersonalDetails(biometricLoginData);
+      if (response.status == ResponseStatus.SUCCESS) {
+        print("SUCCESS");
+      } else {
+        print("FAILED");
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -117,6 +180,7 @@ class _Form1PageState extends State<Form1Page> {
                   _buildTextField(
                     label: 'Name *',
                     icon: Icons.person,
+                    controller: _nameController,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
                           RegExp(r'^[a-zA-Z\s]+$'))
@@ -126,6 +190,7 @@ class _Form1PageState extends State<Form1Page> {
                   _buildTextField(
                     label: 'Source *',
                     icon: Icons.source,
+                    controller: _sourceController,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
@@ -152,6 +217,7 @@ class _Form1PageState extends State<Form1Page> {
                   _buildTextField(
                     label: 'Contact No. *',
                     icon: Icons.phone,
+                    controller: _contactController,
                     keyboardType: TextInputType.phone,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     validator: _validatePhoneNumber,
@@ -159,18 +225,21 @@ class _Form1PageState extends State<Form1Page> {
                   _buildTextField(
                     label: 'Email ID *',
                     icon: Icons.email,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: _validateEmail,
                   ),
                   _buildTextField(
                     label: 'Present Address *',
                     icon: Icons.home,
+                    controller: _presentAddressController,
                     maxLines: 2,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
                     label: 'Permanent Address *',
                     icon: Icons.home,
+                    controller: _permanentAddressController,
                     maxLines: 2,
                     validator: _validateRequiredField,
                   ),
@@ -178,26 +247,31 @@ class _Form1PageState extends State<Form1Page> {
                   _buildTextField(
                     label: 'Father\'s Name *',
                     icon: Icons.person,
+                    controller: _fatherNameController,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
                     label: 'Father\'s Occupation *',
                     icon: Icons.work,
+                    controller: _fatherOccupationController,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
                     label: 'Mother\'s Name *',
                     icon: Icons.person,
+                    controller: _motherNameController,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
                     label: 'Mother\'s Occupation *',
                     icon: Icons.work,
+                    controller: _motherOccupationController,
                     validator: _validateRequiredField,
                   ),
                   _buildTextField(
                     label: 'Number of Siblings *',
                     icon: Icons.people,
+                    controller: _siblingsController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     validator: _validateRequiredField,
@@ -298,12 +372,13 @@ class _Form1PageState extends State<Form1Page> {
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate() || !_isCompulsory) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DropdownPage()), // replace with your destination page
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) =>
+            //           DropdownPage()), // replace with your destination page
+            // );
+            _submitForm();
           }
         },
         style: ElevatedButton.styleFrom(
