@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wdipl_interview_app/features/edu.dart';
+import 'package:intl/intl.dart';
 
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
@@ -10,6 +10,8 @@ void main() {
 }
 
 class Form1Page extends StatefulWidget {
+  const Form1Page({super.key});
+
   @override
   State<Form1Page> createState() => _Form1PageState();
 }
@@ -65,7 +67,7 @@ class _Form1PageState extends State<Form1Page> {
     );
     if (picked != null) {
       setState(() {
-        _dateController.text = "${picked.toLocal()}".split(' ')[0];
+        _dateController.text = DateFormat('yyyy/MM/dd').format(picked);
       });
     }
   }
@@ -146,7 +148,7 @@ class _Form1PageState extends State<Form1Page> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFE3F2FD), Colors.white],
+              colors: const [Color(0xFFE3F2FD), Colors.white],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
