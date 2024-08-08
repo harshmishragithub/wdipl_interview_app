@@ -56,6 +56,8 @@ class _DropdownPageState extends State<DropdownPage> {
       TextEditingController();
   final TextEditingController graduationPercentageController =
       TextEditingController();
+  final TextEditingController mastersPercentageController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -63,6 +65,7 @@ class _DropdownPageState extends State<DropdownPage> {
     twelfthPercentageController.dispose();
     diplomaPercentageController.dispose();
     graduationPercentageController.dispose();
+    mastersPercentageController.dispose();
     super.dispose();
   }
 
@@ -129,6 +132,47 @@ class _DropdownPageState extends State<DropdownPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _handleSubmit() {
+    // Prepare data for API call
+    final Map<String, dynamic> educationalDetails = {
+      'tenthYear': selectedValues['tenthYear'],
+      'tenthPercentage': tenthPercentageController.text,
+      if (selected12thOrDiploma == '12th')
+        'twelfthYear': selectedValues['twelfthYear'],
+      if (selected12thOrDiploma == '12th')
+        'twelfthPercentage': twelfthPercentageController.text,
+      if (selected12thOrDiploma == 'Diploma')
+        'diplomaYear': selectedValues['diplomaYear'],
+      if (selected12thOrDiploma == 'Diploma')
+        'diplomaPercentage': diplomaPercentageController.text,
+      'qualification': selectedQualification,
+      if (selectedQualification == 'Graduation')
+        'graduationCourse': selectedGraduation,
+      if (selectedQualification == 'Graduation')
+        'graduationYear': selectedValues['graduationYear'],
+      if (selectedQualification == 'Graduation')
+        'graduationPercentage': graduationPercentageController.text,
+      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+        'mastersCourse': selectedMasters,
+      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+        'mastersYear': selectedValues['mastersYear'],
+      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+        'mastersPercentage': mastersPercentageController.text,
+      'isPursuingGraduation': isPursuingGraduation,
+      'isPursuingDiploma': isPursuingDiploma,
+      'isPursuingMasters': isPursuingMasters,
+    };
+
+    // Debugging
+    print(educationalDetails);
+
+    // Navigate to the next screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorkExp()),
     );
   }
 
@@ -292,6 +336,7 @@ class _DropdownPageState extends State<DropdownPage> {
                         selectedMasters = null;
                         diplomaPercentageController.clear();
                         graduationPercentageController.clear();
+                        mastersPercentageController.clear();
                         isPursuingDiploma = false;
                         isPursuingGraduation = false;
                         isPursuingMasters = false;
@@ -426,6 +471,20 @@ class _DropdownPageState extends State<DropdownPage> {
                         },
                       ),
                       SizedBox(height: 16.0),
+                      TextField(
+                        controller: mastersPercentageController,
+                        decoration: InputDecoration(
+                          labelText: 'Percentage',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (_) {
+                          _validatePercentage(mastersPercentageController);
+                        },
+                      ),
+                      SizedBox(height: 16.0),
                       Row(
                         children: [
                           Checkbox(
@@ -457,134 +516,19 @@ class _DropdownPageState extends State<DropdownPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
-                        height: 90,
-                        width: 90,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            // Check if the required fields are filled based on the qualification selected
-                            bool canProceed = false;
-                            if (selectedQualification == 'Graduation' &&
-                                selectedGraduation != null) {
-                              canProceed =
-                                  selectedValues['graduationYear'] != null &&
-                                      graduationPercentageController
-                                          .text.isNotEmpty &&
-                                      (selectedMasters == null ||
-                                          (selectedMasters != null &&
-                                              selectedValues['mastersYear'] !=
-                                                  null));
-                            } else if (selectedQualification == 'Diploma') {
-                              canProceed = selectedValues['diplomaYear'] !=
-                                      null &&
-                                  diplomaPercentageController.text.isNotEmpty;
-                            } else {
-                              canProceed = selectedValues['tenthYear'] !=
-                                      null &&
-                                  tenthPercentageController.text.isNotEmpty &&
-                                  ((selected12thOrDiploma == '12th' &&
-                                          selectedValues['twelfthYear'] !=
-                                              null &&
-                                          twelfthPercentageController
-                                              .text.isNotEmpty) ||
-                                      (selected12thOrDiploma == 'Diploma' &&
-                                          selectedValues['diplomaYear'] !=
-                                              null &&
-                                          diplomaPercentageController
-                                              .text.isNotEmpty));
-                            }
-
-                            if (!canProceed) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Please fill all the required fields before proceeding.'),
-                                  duration: Duration(seconds: 3),
-                                ),
-                              );
-                              return;
-                            }
-
-                            // Show the confirmation dialog if all required fields are filled
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Confirm Details"),
-                                  content: SingleChildScrollView(
-                                    child: ListBody(
-                                      children: <Widget>[
-                                        Text(
-                                            "10th Passing Year: ${selectedValues['tenthYear']}"),
-                                        Text(
-                                            "10th Percentage: ${tenthPercentageController.text}"),
-                                        if (selected12thOrDiploma ==
-                                            '12th') ...[
-                                          Text(
-                                              "12th Passing Year: ${selectedValues['twelfthYear']}"),
-                                          Text(
-                                              "12th Percentage: ${twelfthPercentageController.text}"),
-                                        ] else if (selected12thOrDiploma ==
-                                            'Diploma') ...[
-                                          Text(
-                                              "Diploma Passing Year: ${selectedValues['diplomaYear']}"),
-                                          Text(
-                                              "Diploma Percentage: ${diplomaPercentageController.text}"),
-                                        ],
-                                        Text(
-                                            "Qualification: $selectedQualification"),
-                                        if (selectedQualification ==
-                                            'Graduation') ...[
-                                          Text(
-                                              "Graduation Course: $selectedGraduation"),
-                                          Text(
-                                              "Graduation Year: ${selectedValues['graduationYear']}"),
-                                          Text(
-                                              "Graduation Percentage: ${graduationPercentageController.text}"),
-                                        ],
-                                        if (selectedQualification ==
-                                            'Diploma') ...[
-                                          Text(
-                                              "Diploma Year: ${selectedValues['diplomaYear']}"),
-                                          Text(
-                                              "Diploma Percentage: ${diplomaPercentageController.text}"),
-                                        ],
-                                        if (selectedMasters != null) ...[
-                                          Text(
-                                              "Masters Course: $selectedMasters"),
-                                          Text(
-                                              "Masters Year: ${selectedValues['mastersYear']}"),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text('Confirm'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => WorkExp()),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: Icon(Icons.arrow_forward,
-                              size: 50, color: Colors.white),
-                          shape: CircleBorder(),
-                          backgroundColor: Color(0xFF134B70),
-                        )),
+                      height: 90,
+                      width: 90,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          // Validate and proceed
+                          _handleSubmit();
+                        },
+                        child: Icon(Icons.arrow_forward,
+                            size: 50, color: Colors.white),
+                        shape: CircleBorder(),
+                        backgroundColor: Color(0xFF134B70),
+                      ),
+                    ),
                   ),
                 ),
               ],
