@@ -14,9 +14,8 @@ class NetworkApiService {
           status <= 500; // Allow any status code less than 500
     },
   ));
-  String basicAuth = 'Basic ' +
-      base64.encode(utf8
-          .encode('InterviewTest:8fdf09a632a2ece4c0c3df503c0bc4e7a21043fc'));
+  String basicAuth =
+      'Basic SW50ZXJ2aWV3VGVzdDo4ZmRmMDlhNjMyYTJlY2U0YzBjM2RmNTAzYzBiYzRlN2EyMTA0M2Zj';
   Future<ResponseData> get(String url,
       {Map<String, dynamic>? queryParameters}) async {
     if (kDebugMode) {
@@ -65,7 +64,7 @@ class NetworkApiService {
       var response = await _dio.post(url,
           data: data,
           options: Options(headers: {
-            "authorization": basicAuth,
+            "Authorization": basicAuth,
 
             // "device-id": deviceId
           }));

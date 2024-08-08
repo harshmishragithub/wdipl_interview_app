@@ -21,7 +21,6 @@ class _Form1PageState extends State<Form1Page> {
 
   // Controllers for each input field
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _sourceController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -38,13 +37,12 @@ class _Form1PageState extends State<Form1Page> {
   final TextEditingController _siblingsController = TextEditingController();
 
   String? _selectedGender;
-  bool _isCompulsory = true; // State variable for the switch
+  String? _selectedSource;
 
   @override
   void dispose() {
     // Dispose of all controllers
     _nameController.dispose();
-    _sourceController.dispose();
     _dateController.dispose();
     _contactController.dispose();
     _emailController.dispose();
@@ -73,29 +71,29 @@ class _Form1PageState extends State<Form1Page> {
   }
 
   String? _validateRequiredField(String? value) {
-    if (_isCompulsory && (value == null || value.isEmpty)) {
+    if (value == null || value.isEmpty) {
       return 'This field is required';
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
-    if (_isCompulsory && (value == null || value.isEmpty)) {
+    if (value == null || value.isEmpty) {
       return 'This field is required';
     }
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value!)) {
+    if (!emailRegex.hasMatch(value)) {
       return 'Enter a valid email address';
     }
     return null;
   }
 
   String? _validatePhoneNumber(String? value) {
-    if (_isCompulsory && (value == null || value.isEmpty)) {
+    if (value == null || value.isEmpty) {
       return 'This field is required';
     }
     final phoneRegex = RegExp(r'^[0-9]+$');
-    if (!phoneRegex.hasMatch(value!) || value.length != 10) {
+    if (!phoneRegex.hasMatch(value) || value.length != 10) {
       return 'Enter a valid phone number';
     }
     return null;
@@ -105,7 +103,7 @@ class _Form1PageState extends State<Form1Page> {
     try {
       Map<String, dynamic> biometricLoginData = {
         "name": _nameController.text,
-        "source": _sourceController.text,
+        "source": _selectedSource,
         "date_of_birth": _dateController.text,
         "gender": _selectedGender,
         "contact_no": _contactController.text,
@@ -160,24 +158,6 @@ class _Form1PageState extends State<Form1Page> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Switch Button for Compulsory Fields
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Compulsory Fields',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Switch(
-                        value: _isCompulsory,
-                        onChanged: (value) {
-                          setState(() {
-                            _isCompulsory = value;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
                   _sectionTitle('Personal Info'),
                   _buildTextField(
                     label: 'Name *',
@@ -189,11 +169,24 @@ class _Form1PageState extends State<Form1Page> {
                     ],
                     validator: _validateRequiredField,
                   ),
-                  _buildTextField(
+                  _buildDropdownField(
                     label: 'Source *',
-                    icon: Icons.source,
-                    controller: _sourceController,
-                    validator: _validateRequiredField,
+                    value: _selectedSource,
+                    items: [
+                      'LinkedIn',
+                      'Indeed',
+                      'Apna',
+                      'Naukri',
+                      'Friend',
+                      'Reference'
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSource = value;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'This field is required' : null,
                   ),
                   _buildTextField(
                     label: 'Date of Birth *',
@@ -212,9 +205,8 @@ class _Form1PageState extends State<Form1Page> {
                         _selectedGender = value;
                       });
                     },
-                    validator: (value) => _isCompulsory && value == null
-                        ? 'This field is required'
-                        : null,
+                    validator: (value) =>
+                        value == null ? 'This field is required' : null,
                   ),
                   _buildTextField(
                     label: 'Contact No. *',
@@ -373,13 +365,7 @@ class _Form1PageState extends State<Form1Page> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          if (_formKey.currentState!.validate() || !_isCompulsory) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) =>
-            //           DropdownPage()), // replace with your destination page
-            // );
+          if (_formKey.currentState!.validate()) {
             _submitForm();
           }
         },
