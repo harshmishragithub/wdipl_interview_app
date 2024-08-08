@@ -9,6 +9,6 @@ class ApiEndpoints {
   static const sendpersonaldetailsapi = "${baseurl}add_user_details";
 
   //Register
-  static const requestotpapi = "${baseurl}auth/user/register-mobileNumber";
-  static const registerrequestapi = "${baseurl}auth/user/registration";
+  static const getsourceapi =
+      "http://192.168.50.120/interview_test/public/api/get_source";
 }

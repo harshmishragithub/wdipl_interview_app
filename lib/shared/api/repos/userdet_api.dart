@@ -10,4 +10,10 @@ class PersonalInfoAPIServices {
     final response = await NetworkApiService().post(url, data);
     return response;
   }
+
+  Future<ResponseData> getSourceapi() async {
+    String url = ApiEndpoints.getsourceapi;
+    final response = await NetworkApiService().get(url);
+    return response;
+  }
 }

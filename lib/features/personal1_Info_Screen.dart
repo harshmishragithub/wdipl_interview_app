@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
@@ -121,6 +122,10 @@ class _Form1PageState extends State<Form1Page> {
       ResponseData response = await PersonalInfoAPIServices()
           .sendPersonalDetails(biometricLoginData);
       if (response.status == ResponseStatus.SUCCESS) {
+        String token = response.data['data']['token'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', token);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => DropdownPage(),
         ));
@@ -130,6 +135,25 @@ class _Form1PageState extends State<Form1Page> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void _getSource() async {
+    try {
+      ResponseData response = await PersonalInfoAPIServices().getSourceapi();
+      if (response.status == ResponseStatus.SUCCESS) {
+      } else {
+        print("FAILED");
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    _getSource();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
