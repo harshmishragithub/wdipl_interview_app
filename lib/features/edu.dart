@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/features/workexp.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: DropdownPage(),
-  ));
-}
-
 class DropdownPage extends StatefulWidget {
   @override
   _DropdownPageState createState() => _DropdownPageState();

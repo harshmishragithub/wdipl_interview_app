@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
+import 'edu.dart';
 
 void main() {
   runApp(Form1Page());
@@ -103,7 +104,7 @@ class _Form1PageState extends State<Form1Page> {
     try {
       Map<String, dynamic> biometricLoginData = {
         "name": _nameController.text,
-        "source": _selectedSource,
+        "source": "2",
         "date_of_birth": _dateController.text,
         "gender": _selectedGender,
         "contact_no": _contactController.text,
@@ -120,7 +121,9 @@ class _Form1PageState extends State<Form1Page> {
       ResponseData response = await PersonalInfoAPIServices()
           .sendPersonalDetails(biometricLoginData);
       if (response.status == ResponseStatus.SUCCESS) {
-        print("SUCCESS");
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => DropdownPage(),
+        ));
       } else {
         print("FAILED");
       }
