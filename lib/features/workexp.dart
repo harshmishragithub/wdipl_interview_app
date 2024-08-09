@@ -302,12 +302,12 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
             child: FloatingActionButton(
               onPressed: _submitForm,
               shape: CircleBorder(),
+              backgroundColor: Color(0xFF134B70),
               child: Icon(
                 Icons.arrow_forward,
                 size: 50,
                 color: Colors.white,
               ),
-              backgroundColor: Color(0xFF134B70),
             ),
           ),
           SizedBox(height: 100),
