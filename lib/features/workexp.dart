@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:wdipl_interview_app/features/techselect.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Work Experience Form',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: WorkExp(),
-    );
-  }
-}
 
 class WorkExp extends StatefulWidget {
   @override
@@ -25,10 +9,7 @@ class WorkExp extends StatefulWidget {
 
 class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  final List<Map<String, String>> companyList = [
-    {'companyName': '', 'role': '', 'duration': '', 'reason': '', 'salary': ''}
-  ];
-  bool _isBlinking = true;
+  final List<Map<String, TextEditingController>> _controllersList = [];
   late AnimationController _controller;
   String _experienceLevel = 'Experienced';
 
@@ -39,23 +20,38 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
       duration: const Duration(seconds: 1),
       vsync: this,
     )..repeat(reverse: true);
+
+    _initializeController();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    for (var controllers in _controllersList) {
+      controllers.values.forEach((controller) => controller.dispose());
+    }
     super.dispose();
   }
 
+  void _initializeController() {
+    _controllersList.add({
+      'companyName': TextEditingController(),
+      'role': TextEditingController(),
+      'duration': TextEditingController(),
+      'reason': TextEditingController(),
+      'salary': TextEditingController(),
+    });
+  }
+
   void _addCompany() {
-    if (_experienceLevel == 'Experienced' && companyList.length < 8) {
+    if (_experienceLevel == 'Experienced' && _controllersList.length < 8) {
       setState(() {
-        companyList.add({
-          'companyName': '',
-          'role': '',
-          'duration': '',
-          'reason': '',
-          'salary': ''
+        _controllersList.add({
+          'companyName': TextEditingController(),
+          'role': TextEditingController(),
+          'duration': TextEditingController(),
+          'reason': TextEditingController(),
+          'salary': TextEditingController(),
         });
       });
     }
@@ -63,12 +59,48 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
 
   void _removeCompany(int index) {
     setState(() {
-      companyList.removeAt(index);
+      _controllersList[index]
+          .values
+          .forEach((controller) => controller.dispose());
+      _controllersList.removeAt(index);
     });
   }
 
-  void _submitForm() {
-    _formKey.currentState!.save();
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      List<Map<String, String>> companyData =
+          _controllersList.map((controllerMap) {
+        return {
+          'companyName': controllerMap['companyName']!.text,
+          'role': controllerMap['role']!.text,
+          'duration': controllerMap['duration']!.text,
+          'reason': controllerMap['reason']!.text,
+          'salary': controllerMap['salary']!.text,
+        };
+      }).toList();
+
+      try {
+        final response = await http.post(
+          Uri.parse('https://example.com/api/submit'),
+          body: {
+            'experienceLevel': _experienceLevel,
+            'companies':
+                companyData.toString(), // Adjust for your API structure
+          },
+        );
+
+        if (response.statusCode == 200) {
+          _showConfirmationDialog(companyData);
+        } else {
+          _showSnackBar('Failed to submit data');
+        }
+      } catch (e) {
+        _showSnackBar('An error occurred. Please try again.');
+      }
+    }
+  }
+
+  void _showConfirmationDialog(List<Map<String, String>> companyData) {
     showDialog(
       context: context,
       builder: (context) {
@@ -76,9 +108,13 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           title: Text('Work Experience'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: companyList.map((company) {
+              children: companyData.map((company) {
                 return Text(
-                  'Company Name: ${company['companyName']}\nRole: ${company['role']}\nDuration: ${company['duration']}\nReason: ${company['reason']}\nSalary: ${company['salary']}\n\n',
+                  'Company Name: ${company['companyName']}\n'
+                  'Role: ${company['role']}\n'
+                  'Duration: ${company['duration']}\n'
+                  'Reason: ${company['reason']}\n'
+                  'Salary: ${company['salary']}\n\n',
                 );
               }).toList(),
             ),
@@ -98,6 +134,12 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           ],
         );
       },
+    );
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 
@@ -135,14 +177,8 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                       onChanged: (value) {
                         setState(() {
                           _experienceLevel = value!;
-                          companyList.clear();
-                          companyList.add({
-                            'companyName': '',
-                            'role': '',
-                            'duration': '',
-                            'reason': '',
-                            'salary': ''
-                          });
+                          _controllersList.clear();
+                          _initializeController();
                         });
                       },
                     ),
@@ -160,14 +196,8 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                       onChanged: (value) {
                         setState(() {
                           _experienceLevel = value!;
-                          companyList.clear();
-                          companyList.add({
-                            'companyName': '',
-                            'role': '',
-                            'duration': '',
-                            'reason': '',
-                            'salary': ''
-                          });
+                          _controllersList.clear();
+                          _initializeController();
                         });
                       },
                     ),
@@ -175,9 +205,9 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                 ],
               ),
               if (_experienceLevel == 'Experienced')
-                ...companyList.asMap().entries.map((entry) {
+                ..._controllersList.asMap().entries.map((entry) {
                   int index = entry.key;
-                  Map<String, String> company = entry.value;
+                  Map<String, TextEditingController> controllers = entry.value;
 
                   return Card(
                     elevation: 4,
@@ -204,59 +234,34 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                                 ),
                             ],
                           ),
-                          TextFormField(
-                            decoration:
-                                InputDecoration(labelText: 'Company Name'),
-                            onSaved: (value) {
-                              company['companyName'] = value ?? '';
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a name';
-                              }
-                              return null;
-                            },
+                          _buildTextFormField(
+                            label: 'Company Name',
+                            controller: controllers['companyName']!,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Role'),
-                            onSaved: (value) {
-                              company['role'] = value ?? '';
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a role';
-                              }
-                              return null;
-                            },
+                          _buildTextFormField(
+                            label: 'Role',
+                            controller: controllers['role']!,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Duration'),
-                            onSaved: (value) {
-                              company['duration'] = value ?? '';
-                            },
+                          _buildTextFormField(
+                            label: 'Duration',
+                            controller: controllers['duration']!,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                labelText: 'Reason for Leaving'),
-                            onSaved: (value) {
-                              company['reason'] = value ?? '';
-                            },
+                          _buildTextFormField(
+                            label: 'Reason for Leaving',
+                            controller: controllers['reason']!,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Salary'),
+                          _buildTextFormField(
+                            label: 'Salary',
+                            controller: controllers['salary']!,
                             keyboardType: TextInputType.number,
-                            onSaved: (value) {
-                              company['salary'] = value ?? '';
-                            },
                           ),
                         ],
                       ),
                     ),
                   );
                 }).toList(),
-              if (_experienceLevel == 'Experienced' && companyList.length < 7)
-                SizedBox(height: 30),
-              if (_experienceLevel == 'Experienced' && companyList.length < 8)
+              if (_experienceLevel == 'Experienced' &&
+                  _controllersList.length < 8)
                 SizedBox(
                   height: 60,
                   child: ElevatedButton(
@@ -276,38 +281,57 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           ),
         ),
       ),
-      floatingActionButton:
-          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FadeTransition(
-          opacity: _controller,
-          child: Text(
-            'Submit and Continue',
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FadeTransition(
+            opacity: _controller,
+            child: Text(
+              'Submit and Continue',
+              style: TextStyle(
+                fontSize: 26,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 8),
-        SizedBox(
-          height: 90,
-          width: 90,
-          child: FloatingActionButton(
-            onPressed: _submitForm,
-            shape: CircleBorder(),
-            child: Icon(
-              Icons.arrow_forward,
-              size: 50,
-              color: Colors.white,
+          SizedBox(height: 8),
+          SizedBox(
+            height: 90,
+            width: 90,
+            child: FloatingActionButton(
+              onPressed: _submitForm,
+              shape: CircleBorder(),
+              child: Icon(
+                Icons.arrow_forward,
+                size: 50,
+                color: Colors.white,
+              ),
+              backgroundColor: Color(0xFF134B70),
             ),
-            backgroundColor: Color(0xFF134B70),
           ),
-        ),
-        SizedBox(
-          height: 100,
-        )
-      ]),
+          SizedBox(height: 100),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to create a TextFormField with common settings
+  Widget _buildTextFormField({
+    required String label,
+    required TextEditingController controller,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextFormField(
+      decoration: InputDecoration(labelText: label),
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $label';
+        }
+        return null;
+      },
     );
   }
 }
