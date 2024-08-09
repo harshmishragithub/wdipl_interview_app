@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/getsourcemodel.dart';
+import '../model/source_drop.dart';
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
 import 'edu.dart';
@@ -40,6 +42,8 @@ class _Form1PageState extends State<Form1Page> {
 
   String? _selectedGender;
   String? _selectedSource;
+  List<Source> _sources = [];
+  int? _selectedSourceId;
 
   @override
   void dispose() {
@@ -141,6 +145,11 @@ class _Form1PageState extends State<Form1Page> {
     try {
       ResponseData response = await PersonalInfoAPIServices().getSourceapi();
       if (response.status == ResponseStatus.SUCCESS) {
+        GetSourceModel depositMethodModel =
+            GetSourceModel.fromJson(response.data);
+        for (var a in depositMethodModel.data!) {
+          _sources.add(Source(id: a.id!, title: a.principalSourceTitle!));
+        }
       } else {
         print("FAILED");
       }
