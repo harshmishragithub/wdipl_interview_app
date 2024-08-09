@@ -1,3 +1,4 @@
+//json to dart file conversion
 class GetSourceModel {
   String? status;
   int? statusCode;
