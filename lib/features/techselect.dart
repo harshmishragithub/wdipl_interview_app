@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:wdipl_interview_app/test1/quizzpage22.dart';
 import 'package:wdipl_interview_app/testoverview/testov1.dart';
 
@@ -32,7 +33,7 @@ class TechnologySelectionPage extends StatefulWidget {
 
 class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     with SingleTickerProviderStateMixin {
-  final List<String> technologies = [
+  final List<String> _technologies = [
     'Laravel',
     'Python',
     'Java',
@@ -43,15 +44,15 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     'SEO',
     'UI/UX'
   ];
-  final List<String> experienceYears = [
+  final List<String> _experienceYears = [
     '0-1 years',
     '1-3 years',
     '3-5 years',
     '5+ years'
   ];
 
-  String? selectedTechnology;
-  String? selectedExperience;
+  String? _selectedTechnology;
+  String? _selectedExperience;
   late AnimationController _controller;
 
   @override
@@ -69,11 +70,41 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     super.dispose();
   }
 
-  void _showConfirmationDialog(BuildContext context) {
-    if (selectedTechnology == null || selectedExperience == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select both technology and experience')),
+  // Method to handle the form submission
+  Future<void> _submitData() async {
+    if (_selectedTechnology == null || _selectedExperience == null) {
+      _showSnackBar('Please select both technology and experience');
+      return;
+    }
+
+    try {
+      // Example API call using the selected data
+      final response = await http.post(
+        Uri.parse('https://example.com/api/submit'),
+        body: {
+          'technology': _selectedTechnology!,
+          'experience': _selectedExperience!,
+        },
       );
+
+      if (response.statusCode == 200) {
+        // Navigate to the next page on success
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UpcomingTestPage()),
+        );
+      } else {
+        _showSnackBar('Failed to submit data');
+      }
+    } catch (e) {
+      _showSnackBar('An error occurred. Please try again.');
+    }
+  }
+
+  // Method to show a confirmation dialog
+  void _showConfirmationDialog(BuildContext context) {
+    if (_selectedTechnology == null || _selectedExperience == null) {
+      _showSnackBar('Please select both technology and experience');
       return;
     }
 
@@ -83,7 +114,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
         return AlertDialog(
           title: Text('Confirm Selection'),
           content: Text(
-            'You have selected:\n\nTechnology: $selectedTechnology\nExperience: $selectedExperience',
+            'You have selected:\n\nTechnology: $_selectedTechnology\nExperience: $_selectedExperience',
             style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
@@ -97,15 +128,19 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
               child: Text('Proceed'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UpcomingTestPage()),
-                );
+                _submitData();
               },
             ),
           ],
         );
       },
+    );
+  }
+
+  // Method to show a snackbar
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 
@@ -129,102 +164,99 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
               ),
             ),
             SizedBox(height: 30),
-            Text(
-              'Select Technology',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Technology',
-              ),
-              value: selectedTechnology,
-              items: technologies.map((tech) {
-                return DropdownMenuItem<String>(
-                  value: tech,
-                  child: Text(tech),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedTechnology = value;
-                });
-              },
+            _buildDropdown(
+              label: 'Select Technology',
+              value: _selectedTechnology,
+              items: _technologies,
+              onChanged: (value) => setState(() => _selectedTechnology = value),
             ),
             SizedBox(height: 20),
-            Text(
-              'Select Years of Experience',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Experience',
-              ),
-              value: selectedExperience,
-              items: experienceYears.map((exp) {
-                return DropdownMenuItem<String>(
-                  value: exp,
-                  child: Text(exp),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedExperience = value;
-                });
-              },
+            _buildDropdown(
+              label: 'Select Years of Experience',
+              value: _selectedExperience,
+              items: _experienceYears,
+              onChanged: (value) => setState(() => _selectedExperience = value),
             ),
             Spacer(),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FadeTransition(
-            opacity: _controller,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                'Submit and Start Test',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  // Method to build a dropdown form field
+  Widget _buildDropdown({
+    required String label,
+    required String? value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10),
+        DropdownButtonFormField<String>(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: label,
+          ),
+          value: value,
+          items: items.map((item) {
+            return DropdownMenuItem<String>(
+              value: item,
+              child: Text(item),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+
+  // Method to build the floating action button with the fade effect
+  Widget _buildFloatingActionButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        FadeTransition(
+          opacity: _controller,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              'Submit and Start Test',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
           ),
-          SizedBox(
-            height: 90,
-            width: 90,
-            child: FloatingActionButton(
-              shape: CircleBorder(),
-              onPressed: () {
-                _showConfirmationDialog(context);
-              },
-              backgroundColor: Color(0xFF134B70),
-              child: Icon(
-                Icons.arrow_forward,
-                size: 50,
-                color: Colors.white,
-              ),
+        ),
+        SizedBox(
+          height: 90,
+          width: 90,
+          child: FloatingActionButton(
+            shape: CircleBorder(),
+            onPressed: () => _showConfirmationDialog(context),
+            backgroundColor: Color(0xFF134B70),
+            child: Icon(
+              Icons.arrow_forward,
+              size: 50,
+              color: Colors.white,
             ),
           ),
-          SizedBox(
-            height: 100,
-          )
-        ],
-      ),
+        ),
+        SizedBox(height: 100),
+      ],
     );
   }
 }
