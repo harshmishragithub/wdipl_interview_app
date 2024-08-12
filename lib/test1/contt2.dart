@@ -14,6 +14,9 @@ class QuizController extends GetxController {
   List<int> testScores = [];
   final int totalTests = 5;
 
+  // Option index for "I don't remember"
+  final int dontRememberIndex = -2;
+
   void startTest(int testIndex) {
     currentTestIndex.value = testIndex;
     currentQuestionIndex.value = 0;
@@ -35,10 +38,13 @@ class QuizController extends GetxController {
   }
 
   void submitAnswerAndNext() {
-    if (selectedAnswerIndex.value ==
-        questions[currentQuestionIndex.value].correctAnswerIndex) {
+    // Only add to score if a valid answer was selected (not "I don't remember")
+    if (selectedAnswerIndex.value != dontRememberIndex &&
+        selectedAnswerIndex.value ==
+            questions[currentQuestionIndex.value].correctAnswerIndex) {
       score.value++;
     }
+
     selectedAnswerIndex.value = -1;
 
     if (currentQuestionIndex.value < questions.length - 1) {
