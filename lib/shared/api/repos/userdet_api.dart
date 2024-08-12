@@ -16,4 +16,22 @@ class PersonalInfoAPIServices {
     final response = await NetworkApiService().get(url);
     return response;
   }
+
+  Future<ResponseData> sendEducation(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendeduapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
+  Future<ResponseData> sendWorkExperience(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendweapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
+  Future<ResponseData> getTechnology() async {
+    String url = ApiEndpoints.gettechapi;
+    final response = await NetworkApiService().get(url);
+    return response;
+  }
 }

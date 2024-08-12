@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:wdipl_interview_app/features/techselect.dart';
 
 class WorkExp extends StatefulWidget {
+  const WorkExp({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _WorkExpState createState() => _WorkExpState();
 }
 

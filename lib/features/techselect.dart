@@ -26,7 +26,10 @@ class MyApp extends StatelessWidget {
 }
 
 class TechnologySelectionPage extends StatefulWidget {
+  const TechnologySelectionPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _TechnologySelectionPageState createState() =>
       _TechnologySelectionPageState();
 }
@@ -35,14 +38,11 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     with SingleTickerProviderStateMixin {
   final List<String> _technologies = [
     'Laravel',
-    'Python',
-    'Java',
-    'C#',
     'Flutter',
-    'Website',
-    'Fullstack',
-    'SEO',
-    'UI/UX'
+    'React Js',
+    'Node Js',
+    'Mern Stack',
+    'hasbdj'
   ];
   final List<String> _experienceYears = [
     '0-1 years',
