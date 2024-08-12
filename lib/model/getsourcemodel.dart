@@ -28,8 +28,8 @@ class Data {
   String? principalSourceTitle;
   String? isActive;
   String? createdBy;
-  Null? modifiedBy;
-  Null? deletedAt;
+  String? modifiedBy;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
 
