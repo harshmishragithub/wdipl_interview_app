@@ -1,16 +1,10 @@
 //json to dart file conversion
 class GetSourceModel {
-  String? status;
-  int? statusCode;
-  String? message;
   List<Data>? data;
 
-  GetSourceModel({this.status, this.statusCode, this.message, this.data});
+  GetSourceModel({this.data});
 
   GetSourceModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    statusCode = json['status_code'];
-    message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -21,9 +15,7 @@ class GetSourceModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['status_code'] = this.statusCode;
-    data['message'] = this.message;
+
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -35,7 +27,7 @@ class Data {
   int? id;
   String? principalSourceTitle;
   String? isActive;
-  Null? createdBy;
+  String? createdBy;
   Null? modifiedBy;
   Null? deletedAt;
   String? createdAt;

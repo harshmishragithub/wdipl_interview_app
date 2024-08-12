@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Globalcontant/localconstant.dart';
 import '../model/getsourcemodel.dart';
 import '../model/source_drop.dart';
 import '../shared/api/base_manager.dart';
@@ -129,7 +130,7 @@ class _Form1PageState extends State<Form1Page> {
         String token = response.data['data']['token'];
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('auth_token', token);
+        await prefs.setString(localconst().token, token);
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => DropdownPage(),
         ));
