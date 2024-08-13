@@ -28,9 +28,8 @@ class _DropdownPageState extends State<DropdownPage> {
     'B.Sc IT',
     'B.Sc CS',
     'BCA',
-    'B.Tech',
+    'B.Tech'
   ];
-
   final List<String> mastersOptions = [
     'MCA',
     'M.Sc IT',
@@ -75,13 +74,74 @@ class _DropdownPageState extends State<DropdownPage> {
       final percentage = double.tryParse(text);
       if (percentage == null || percentage < 0 || percentage > 100) {
         controller.text = percentage != null && percentage > 100 ? '100' : '0';
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Please enter a valid percentage (0-100).'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        _showSnackBar('Please enter a valid percentage (0-100).', Colors.red);
       }
+    }
+  }
+
+  void _showSnackBar(String message, Color backgroundColor) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: backgroundColor,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _handleSubmit() async {
+    try {
+      // Assuming you have a form key and validation logic
+      if (_formKey.currentState!.validate()) {
+        final Map<String, dynamic> educationalDetails = {
+          'tenthYear': selectedValues['tenthYear'],
+          'tenthPercentage': tenthPercentageController.text,
+          if (selected12thOrDiploma == '12th')
+            'twelfthYear': selectedValues['twelfthYear'],
+          if (selected12thOrDiploma == '12th')
+            'twelfthPercentage': twelfthPercentageController.text,
+          if (selected12thOrDiploma == 'Diploma')
+            'diplomaYear': selectedValues['diplomaYear'],
+          if (selected12thOrDiploma == 'Diploma')
+            'diplomaPercentage': diplomaPercentageController.text,
+          'qualification': selectedQualification,
+          if (selectedQualification == 'Graduation')
+            'graduationCourse': selectedGraduation,
+          if (selectedQualification == 'Graduation')
+            'graduationYear': selectedValues['graduationYear'],
+          if (selectedQualification == 'Graduation')
+            'graduationPercentage': graduationPercentageController.text,
+          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+            'mastersCourse': selectedMasters,
+          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+            'mastersYear': selectedValues['mastersYear'],
+          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
+            'mastersPercentage': mastersPercentageController.text,
+          'isPursuingGraduation': isPursuingGraduation,
+          'isPursuingDiploma': isPursuingDiploma,
+          'isPursuingMasters': isPursuingMasters,
+        };
+
+        // Debugging
+        print(educationalDetails);
+
+        // API call (replace with your actual API service)
+        ResponseData response = await EducationalDetailsAPIServices()
+            .sendEducationalDetails(educationalDetails);
+
+        if (response.status == ResponseStatus.SUCCESS) {
+          _showSnackBar(
+              'Educational details submitted successfully!', Colors.green);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => WorkExp()),
+          );
+        } else {
+          _showSnackBar(
+              'Failed to submit educational details. Please try again.',
+              Colors.red);
+        }
+      }
+    } catch (e) {
+      _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
     }
   }
 
@@ -132,47 +192,6 @@ class _DropdownPageState extends State<DropdownPage> {
           ],
         ),
       ),
-    );
-  }
-
-  void _handleSubmit() {
-    // Prepare data for API call
-    final Map<String, dynamic> educationalDetails = {
-      'tenthYear': selectedValues['tenthYear'],
-      'tenthPercentage': tenthPercentageController.text,
-      if (selected12thOrDiploma == '12th')
-        'twelfthYear': selectedValues['twelfthYear'],
-      if (selected12thOrDiploma == '12th')
-        'twelfthPercentage': twelfthPercentageController.text,
-      if (selected12thOrDiploma == 'Diploma')
-        'diplomaYear': selectedValues['diplomaYear'],
-      if (selected12thOrDiploma == 'Diploma')
-        'diplomaPercentage': diplomaPercentageController.text,
-      'qualification': selectedQualification,
-      if (selectedQualification == 'Graduation')
-        'graduationCourse': selectedGraduation,
-      if (selectedQualification == 'Graduation')
-        'graduationYear': selectedValues['graduationYear'],
-      if (selectedQualification == 'Graduation')
-        'graduationPercentage': graduationPercentageController.text,
-      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-        'mastersCourse': selectedMasters,
-      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-        'mastersYear': selectedValues['mastersYear'],
-      if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-        'mastersPercentage': mastersPercentageController.text,
-      'isPursuingGraduation': isPursuingGraduation,
-      'isPursuingDiploma': isPursuingDiploma,
-      'isPursuingMasters': isPursuingMasters,
-    };
-
-    // Debugging
-    print(educationalDetails);
-
-    // Navigate to the next screen
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WorkExp()),
     );
   }
 
@@ -539,3 +558,26 @@ class _DropdownPageState extends State<DropdownPage> {
     );
   }
 }
+
+class ResponseData {
+  final ResponseStatus status;
+  final dynamic data;
+
+  ResponseData({required this.status, this.data});
+}
+
+enum ResponseStatus { SUCCESS, FAILURE }
+
+class EducationalDetailsAPIServices {
+  Future<ResponseData> sendEducationalDetails(
+      Map<String, dynamic> details) async {
+    // Simulating an API call
+    await Future.delayed(Duration(seconds: 2));
+
+    // Simulate a successful response
+    return ResponseData(
+        status: ResponseStatus.SUCCESS, data: {"message": "Success"});
+  }
+}
+
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
