@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wdipl_interview_app/features/edu.dart' as edu;
@@ -15,6 +18,8 @@ void main() {
 
 // Main form page with state management
 class Form1Page extends StatefulWidget {
+  const Form1Page({super.key});
+
   @override
   State<Form1Page> createState() => _Form1PageState();
 }
@@ -45,10 +50,14 @@ class _Form1PageState extends State<Form1Page> {
   List<Source> _sources = [];
   int? _selectedSourceId;
 
+  RxBool isLoading = true.obs;
+
   @override
   void initState() {
     super.initState();
-    _getSource(); // Fetch source data when initializing the form
+    _getSource().then(
+      (value) {},
+    ); // Fetch source data when initializing the form
   }
 
   @override
@@ -84,15 +93,19 @@ class _Form1PageState extends State<Form1Page> {
           }
         }
 
+        log(sources.length.toString());
+
         setState(() {
           _sources = sources;
         });
-
+        isLoading.value = false;
         _showSnackBar('Sources fetched successfully!', Colors.green);
       } else {
+        isLoading.value = false;
         _handleError("Failed to fetch sources: ${response.message}");
       }
     } catch (e) {
+      isLoading.value = false;
       _handleError("An error occurred: ${e.toString()}");
     }
   }
@@ -216,132 +229,143 @@ class _Form1PageState extends State<Form1Page> {
             },
           ),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: const [Color(0xFFE3F2FD), Colors.white],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _sectionTitle('Personal Info'),
-                  _buildTextField(
-                    label: 'Name *',
-                    icon: Icons.person,
-                    controller: _nameController,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^[a-zA-Z\s]+$'))
-                    ],
-                    validator: _validateRequiredField,
+        body: Obx(
+          () => isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: const [Color(0xFFE3F2FD), Colors.white],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
-                  _buildDropdownField(
-                    label: 'Source *',
-                    value: _selectedSource,
-                    items: _sources.map((source) => source.title).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedSource = value;
-                      });
-                    },
-                    validator: (value) =>
-                        value == null ? 'This field is required' : null,
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _sectionTitle('Personal Info'),
+                          _buildTextField(
+                            label: 'Name *',
+                            icon: Icons.person,
+                            controller: _nameController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^[a-zA-Z\s]+$'))
+                            ],
+                            validator: _validateRequiredField,
+                          ),
+                          _buildDropdownField(
+                            label: 'Source *',
+                            value: _selectedSource,
+                            items:
+                                _sources.map((source) => source.title).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedSource = value;
+                              });
+                            },
+                            validator: (value) =>
+                                value == null ? 'This field is required' : null,
+                          ),
+                          _buildTextField(
+                            label: 'Date of Birth *',
+                            icon: Icons.calendar_today,
+                            controller: _dateController,
+                            readOnly: true,
+                            onTap: () => _selectDate(context),
+                            validator: _validateRequiredField,
+                          ),
+                          _buildDropdownField(
+                            label: 'Gender *',
+                            value: _selectedGender,
+                            items: ['Male', 'Female', 'Other'],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            },
+                            validator: (value) =>
+                                value == null ? 'This field is required' : null,
+                          ),
+                          _buildTextField(
+                            label: 'Contact No. *',
+                            icon: Icons.phone,
+                            controller: _contactController,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            validator: _validatePhoneNumber,
+                          ),
+                          _buildTextField(
+                            label: 'Email ID *',
+                            icon: Icons.email,
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: _validateEmail,
+                          ),
+                          _buildTextField(
+                            label: 'Present Address *',
+                            icon: Icons.home,
+                            controller: _presentAddressController,
+                            maxLines: 2,
+                            validator: _validateRequiredField,
+                          ),
+                          _buildTextField(
+                            label: 'Permanent Address *',
+                            icon: Icons.home,
+                            controller: _permanentAddressController,
+                            maxLines: 2,
+                            validator: _validateRequiredField,
+                          ),
+                          _sectionTitle('Family Background'),
+                          _buildTextField(
+                            label: 'Father\'s Name *',
+                            icon: Icons.person,
+                            controller: _fatherNameController,
+                            validator: _validateRequiredField,
+                          ),
+                          _buildTextField(
+                            label: 'Father\'s Occupation *',
+                            icon: Icons.work,
+                            controller: _fatherOccupationController,
+                            validator: _validateRequiredField,
+                          ),
+                          _buildTextField(
+                            label: 'Mother\'s Name *',
+                            icon: Icons.person,
+                            controller: _motherNameController,
+                            validator: _validateRequiredField,
+                          ),
+                          _buildTextField(
+                            label: 'Mother\'s Occupation *',
+                            icon: Icons.work,
+                            controller: _motherOccupationController,
+                            validator: _validateRequiredField,
+                          ),
+                          _buildTextField(
+                            label: 'Number of Siblings *',
+                            icon: Icons.people,
+                            controller: _siblingsController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            validator: _validateRequiredField,
+                          ),
+                          SizedBox(height: 30),
+                          _buildSubmitButton(context),
+                        ],
+                      ),
+                    ),
                   ),
-                  _buildTextField(
-                    label: 'Date of Birth *',
-                    icon: Icons.calendar_today,
-                    controller: _dateController,
-                    readOnly: true,
-                    onTap: () => _selectDate(context),
-                    validator: _validateRequiredField,
-                  ),
-                  _buildDropdownField(
-                    label: 'Gender *',
-                    value: _selectedGender,
-                    items: ['Male', 'Female', 'Other'],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
-                    validator: (value) =>
-                        value == null ? 'This field is required' : null,
-                  ),
-                  _buildTextField(
-                    label: 'Contact No. *',
-                    icon: Icons.phone,
-                    controller: _contactController,
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator: _validatePhoneNumber,
-                  ),
-                  _buildTextField(
-                    label: 'Email ID *',
-                    icon: Icons.email,
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: _validateEmail,
-                  ),
-                  _buildTextField(
-                    label: 'Present Address *',
-                    icon: Icons.home,
-                    controller: _presentAddressController,
-                    maxLines: 2,
-                    validator: _validateRequiredField,
-                  ),
-                  _buildTextField(
-                    label: 'Permanent Address *',
-                    icon: Icons.home,
-                    controller: _permanentAddressController,
-                    maxLines: 2,
-                    validator: _validateRequiredField,
-                  ),
-                  _sectionTitle('Family Background'),
-                  _buildTextField(
-                    label: 'Father\'s Name *',
-                    icon: Icons.person,
-                    controller: _fatherNameController,
-                    validator: _validateRequiredField,
-                  ),
-                  _buildTextField(
-                    label: 'Father\'s Occupation *',
-                    icon: Icons.work,
-                    controller: _fatherOccupationController,
-                    validator: _validateRequiredField,
-                  ),
-                  _buildTextField(
-                    label: 'Mother\'s Name *',
-                    icon: Icons.person,
-                    controller: _motherNameController,
-                    validator: _validateRequiredField,
-                  ),
-                  _buildTextField(
-                    label: 'Mother\'s Occupation *',
-                    icon: Icons.work,
-                    controller: _motherOccupationController,
-                    validator: _validateRequiredField,
-                  ),
-                  _buildTextField(
-                    label: 'Number of Siblings *',
-                    icon: Icons.people,
-                    controller: _siblingsController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator: _validateRequiredField,
-                  ),
-                  SizedBox(height: 30),
-                  _buildSubmitButton(context),
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );
