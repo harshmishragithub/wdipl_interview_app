@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wdipl_interview_app/features/edu.dart' as edu;
 
 import '../model/getsourcemodel.dart';
 import '../model/source_drop.dart';
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
-import 'edu.dart';
 
 void main() {
   runApp(Form1Page());
@@ -129,7 +129,7 @@ class _Form1PageState extends State<Form1Page> {
           _showSnackBar('Form submitted successfully!', Colors.green);
 
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DropdownPage(),
+            builder: (context) => edu.DropdownPage(),
           ));
         } else {
           _showSnackBar('Failed to submit form. Please try again.', Colors.red);

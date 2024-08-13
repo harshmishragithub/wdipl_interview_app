@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/features/workexp.dart';
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 
 class DropdownPage extends StatefulWidget {
   @override
@@ -57,7 +59,7 @@ class _DropdownPageState extends State<DropdownPage> {
       TextEditingController();
   final TextEditingController mastersPercentageController =
       TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
     tenthPercentageController.dispose();
@@ -91,41 +93,78 @@ class _DropdownPageState extends State<DropdownPage> {
     try {
       // Assuming you have a form key and validation logic
       if (_formKey.currentState!.validate()) {
+        // Create the list of education details
+        final List<Map<String, dynamic>> education = [];
+
+        // SSC (10th) details
+        education.add({
+          "level": "ssc",
+          "course_name": "10th",
+          "year_of_passing": selectedValues['tenthYear'],
+          "percentage": double.tryParse(tenthPercentageController.text) ?? 0,
+        });
+
+        // HSC (12th) or Diploma details
+        if (selected12thOrDiploma == '12th') {
+          education.add({
+            "level": "hsc",
+            "course_name": "12th",
+            "year_of_passing": selectedValues['twelfthYear'],
+            "percentage":
+                double.tryParse(twelfthPercentageController.text) ?? 0,
+          });
+        } else if (selected12thOrDiploma == 'Diploma') {
+          education.add({
+            "level": "diploma",
+            "course_name": "Diploma",
+            "year_of_passing": selectedValues['diplomaYear'],
+            "percentage":
+                double.tryParse(diplomaPercentageController.text) ?? 0,
+          });
+        }
+
+        // Graduation details
+        if (selectedQualification == 'Graduation') {
+          final graduationDetails = {
+            "level": "graduate",
+            "course_name": selectedGraduation,
+            "year_of_passing": selectedValues['graduationYear'],
+            "percentage":
+                double.tryParse(graduationPercentageController.text) ?? 0,
+          };
+
+          // Add stream if available
+          if (selectedGraduation != null &&
+              selectedGraduation!.toLowerCase().contains('btech')) {
+            graduationDetails["stream"] =
+                "electronics"; // Example stream, replace as necessary
+          }
+
+          education.add(graduationDetails);
+
+          // Masters details if applicable
+          if (!isPursuingGraduation) {
+            education.add({
+              "level": "masters",
+              "course_name": selectedMasters,
+              "year_of_passing": selectedValues['mastersYear'],
+              "percentage":
+                  double.tryParse(mastersPercentageController.text) ?? 0,
+            });
+          }
+        }
+
+        // Prepare the complete data structure
         final Map<String, dynamic> educationalDetails = {
-          'tenthYear': selectedValues['tenthYear'],
-          'tenthPercentage': tenthPercentageController.text,
-          if (selected12thOrDiploma == '12th')
-            'twelfthYear': selectedValues['twelfthYear'],
-          if (selected12thOrDiploma == '12th')
-            'twelfthPercentage': twelfthPercentageController.text,
-          if (selected12thOrDiploma == 'Diploma')
-            'diplomaYear': selectedValues['diplomaYear'],
-          if (selected12thOrDiploma == 'Diploma')
-            'diplomaPercentage': diplomaPercentageController.text,
-          'qualification': selectedQualification,
-          if (selectedQualification == 'Graduation')
-            'graduationCourse': selectedGraduation,
-          if (selectedQualification == 'Graduation')
-            'graduationYear': selectedValues['graduationYear'],
-          if (selectedQualification == 'Graduation')
-            'graduationPercentage': graduationPercentageController.text,
-          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-            'mastersCourse': selectedMasters,
-          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-            'mastersYear': selectedValues['mastersYear'],
-          if (selectedQualification == 'Graduation' && !isPursuingGraduation)
-            'mastersPercentage': mastersPercentageController.text,
-          'isPursuingGraduation': isPursuingGraduation,
-          'isPursuingDiploma': isPursuingDiploma,
-          'isPursuingMasters': isPursuingMasters,
+          "education": education,
         };
 
         // Debugging
         print(educationalDetails);
 
         // API call (replace with your actual API service)
-        ResponseData response = await EducationalDetailsAPIServices()
-            .sendEducationalDetails(educationalDetails);
+        ResponseData response =
+            await PersonalInfoAPIServices().sendEducation(educationalDetails);
 
         if (response.status == ResponseStatus.SUCCESS) {
           _showSnackBar(
@@ -558,26 +597,3 @@ class _DropdownPageState extends State<DropdownPage> {
     );
   }
 }
-
-class ResponseData {
-  final ResponseStatus status;
-  final dynamic data;
-
-  ResponseData({required this.status, this.data});
-}
-
-enum ResponseStatus { SUCCESS, FAILURE }
-
-class EducationalDetailsAPIServices {
-  Future<ResponseData> sendEducationalDetails(
-      Map<String, dynamic> details) async {
-    // Simulating an API call
-    await Future.delayed(Duration(seconds: 2));
-
-    // Simulate a successful response
-    return ResponseData(
-        status: ResponseStatus.SUCCESS, data: {"message": "Success"});
-  }
-}
-
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
