@@ -221,7 +221,8 @@ class _Form1PageState extends State<Form1Page> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF134B70),
-          title: Text('Questions', style: TextStyle(color: Colors.white)),
+          title:
+              Text('Personal Questions', style: TextStyle(color: Colors.white)),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -459,9 +460,9 @@ class _Form1PageState extends State<Form1Page> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _submitForm();
-          }
+          // if (_formKey.currentState!.validate()) {
+          //   _submitForm();
+          // }
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),

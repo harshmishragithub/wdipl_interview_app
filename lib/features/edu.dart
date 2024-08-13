@@ -579,7 +579,7 @@ class _DropdownPageState extends State<DropdownPage> {
                       child: FloatingActionButton(
                         onPressed: () {
                           // Validate and proceed
-                          _handleSubmit();
+                          // _handleSubmit();
                         },
                         child: Icon(Icons.arrow_forward,
                             size: 50, color: Colors.white),

@@ -3,28 +3,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:wdipl_interview_app/testoverview/testov1.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Technology Selection',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(
-          displayLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
-          bodyLarge: TextStyle(fontSize: 18.0),
-        ),
-      ),
-      home: TechnologySelectionPage(),
-    );
-  }
-}
-
 class TechnologySelectionPage extends StatefulWidget {
   const TechnologySelectionPage({super.key});
 

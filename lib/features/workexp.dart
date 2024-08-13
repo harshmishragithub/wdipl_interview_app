@@ -265,21 +265,21 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                 }).toList(),
               if (_experienceLevel == 'Experienced' &&
                   _controllersList.length < 8)
-                SizedBox(
-                  height: 60,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xff508C9B),
-                    ),
-                    onPressed: _addCompany,
-                    child: Text(
-                      'Add Company',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                ),
-              SizedBox(height: 80), // Add space for the FAB
+                // SizedBox(
+                //   height: 60,
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       foregroundColor: Colors.white,
+                //       backgroundColor: Color(0xff508C9B),
+                //     ),
+                //     onPressed: _addCompany,
+                //     child: Text(
+                //       'Add Company',
+                //       style: TextStyle(fontSize: 30),
+                //     ),
+                //   ),
+                // ),
+                SizedBox(height: 80), // Add space for the FAB
             ],
           ),
         ),
