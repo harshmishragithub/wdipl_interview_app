@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base_manager.dart';
 
@@ -16,14 +17,23 @@ class NetworkApiService {
       'Basic SW50ZXJ2aWV3VGVzdDo4ZmRmMDlhNjMyYTJlY2U0YzBjM2RmNTAzYzBiYzRlN2EyMTA0M2Zj';
   Future<ResponseData> get(String url,
       {Map<String, dynamic>? queryParameters}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("auth_token") ?? "";
     if (kDebugMode) {
       print("api url is >>> $url");
     }
     Response response;
     try {
-      response = await _dio.get(
-        url,
-      );
+      response = await _dio.get(url,
+          options: (token == "")
+              ? Options(headers: {
+                  "Authorization": basicAuth,
+                })
+              : Options(headers: {
+                  "Authorization": basicAuth,
+                  "access-token": token,
+                  // "device-id": deviceId
+                }));
       if (response.statusCode == 201 || response.statusCode == 200) {
         return ResponseData<dynamic>("success", ResponseStatus.SUCCESS,
             data: response.data);
@@ -54,6 +64,8 @@ class NetworkApiService {
 
   // Common function for POST requests
   Future<ResponseData> post(String url, dynamic data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("auth_token") ?? "";
     if (kDebugMode) {
       print("data >>> $data");
       print("api url is >>> $url");
@@ -61,11 +73,15 @@ class NetworkApiService {
     try {
       var response = await _dio.post(url,
           data: data,
-          options: Options(headers: {
-            "Authorization": basicAuth,
+          options: (token == "")
+              ? Options(headers: {
+                  "Authorization": basicAuth,
+                })
+              : Options(headers: {
+                  "Authorization": basicAuth, "access-token": token,
 
-            // "device-id": deviceId
-          }));
+                  // "device-id": deviceId
+                }));
       if (response.statusCode == 201 || response.statusCode == 200) {
         return ResponseData<dynamic>("success", ResponseStatus.SUCCESS,
             data: response.data);
