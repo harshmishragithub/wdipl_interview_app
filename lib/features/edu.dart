@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/features/workexp.dart';
 import 'package:http/http.dart' as http; // Add the http package for API calls
-import 'dart:convert'; // Add this for JSON encoding
+import 'package:wdipl_interview_app/shared/api/api_endpoints.dart';
+import 'dart:convert';
+
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/network_api_services.dart'; // Add this for JSON encoding
 
 class DropdownPage extends StatefulWidget {
   @override
@@ -102,106 +106,96 @@ class _DropdownPageState extends State<DropdownPage> {
   }
 
   Future<void> _submitData() async {
-    // Build the education list
-    final List<Map<String, dynamic>> education = [];
-
-    // Add 10th (SSC) education details
-    education.add({
-      "level": "ssc",
-      "course_name": "10th",
-      "year_of_passing": selectedValues['tenthYear'],
-      "percentage": double.tryParse(tenthPercentageController.text) ?? 0.0,
-    });
-
-    // Add 12th or Diploma (HSC) education details based on the selection
-    if (selected12thOrDiploma == '12th') {
-      education.add({
-        "level": "hsc",
-        "course_name": "12th",
-        "year_of_passing": selectedValues['twelfthYear'],
-        "percentage": double.tryParse(twelfthPercentageController.text) ?? 0.0,
-      });
-    } else if (selected12thOrDiploma == 'Diploma') {
-      education.add({
-        "level": "diploma",
-        "course_name": "Diploma",
-        "stream": selectedDiplomaStream,
-        "year_of_passing": selectedValues['diplomaYear'],
-        "percentage": double.tryParse(diplomaPercentageController.text) ?? 0.0,
-      });
-    }
-
-    // Add Graduation education details if selected
-    if (selectedQualification == 'Graduation') {
-      education.add({
-        "level": "graduate",
-        "course_name": selectedGraduation,
-        "stream": selectedGraduationStream,
-        "year_of_passing": selectedValues['graduationYear'],
-        "percentage":
-            double.tryParse(graduationPercentageController.text) ?? 0.0,
-      });
-    }
-
-    // Add Masters education details if selected
-    if (selectedMasters != null) {
-      education.add({
-        "level": "postgraduate",
-        "course_name": selectedMasters,
-        "stream": selectedMastersStream,
-        "year_of_passing": selectedValues['mastersYear'],
-        "percentage": 0.0, // Add master's percentage if applicable
-      });
-    }
-
-    // Final data structure
-    final Map<String, dynamic> data = {
-      "education": education,
-    };
-
-    // Convert the data to JSON
-    final String jsonData = jsonEncode(data);
-
-    // Print the JSON for debugging
-    print('Submitting the following data to API: $jsonData');
-
-    // Send the data to the API
     try {
-      final response = await http.post(
-        Uri.parse(
-            'https://example.com/api/submit'), // Replace with your API URL
-        headers: {"Content-Type": "application/json"},
-        body: jsonData,
-      );
+      // Build the education list
+      final List<Map<String, dynamic>> education = [];
 
-      if (response.statusCode == 200) {
-        // Successfully submitted
-        print('Data submitted successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Data submitted successfully!'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+      // Add 10th (SSC) education details
+      education.add({
+        "level": "ssc",
+        "course_name": "10th",
+        "year_of_passing": selectedValues['tenthYear'],
+        "percentage": double.tryParse(tenthPercentageController.text) ?? 0.0,
+      });
+
+      // Add 12th or Diploma (HSC) education details based on the selection
+      if (selected12thOrDiploma == '12th') {
+        education.add({
+          "level": "hsc",
+          "course_name": "12th",
+          "year_of_passing": selectedValues['twelfthYear'],
+          "percentage":
+              double.tryParse(twelfthPercentageController.text) ?? 0.0,
+        });
+      } else if (selected12thOrDiploma == 'Diploma') {
+        education.add({
+          "level": "diploma",
+          "course_name": "Diploma",
+          "stream": selectedDiplomaStream,
+          "year_of_passing": selectedValues['diplomaYear'],
+          "percentage":
+              double.tryParse(diplomaPercentageController.text) ?? 0.0,
+        });
+      }
+
+      // Add Graduation education details if selected
+      if (selectedQualification == 'Graduation') {
+        education.add({
+          "level": "graduate",
+          "course_name": selectedGraduation,
+          "stream": selectedGraduationStream,
+          "year_of_passing": selectedValues['graduationYear'],
+          "percentage":
+              double.tryParse(graduationPercentageController.text) ?? 0.0,
+        });
+      }
+
+      // Add Masters education details if selected
+      if (selectedMasters != null) {
+        education.add({
+          "level": "postgraduate",
+          "course_name": selectedMasters,
+          "stream": selectedMastersStream,
+          "year_of_passing": selectedValues['mastersYear'],
+          "percentage": 0.0, // Add master's percentage if applicable
+        });
+      }
+
+      // Final data structure
+      final Map<String, dynamic> data = {
+        "education": education,
+      };
+
+      // Send the data using the sendEducation function
+      ResponseData response = await sendEducation(data);
+
+      if (response.status == ResponseStatus.SUCCESS) {
+        _showSnackBar('Education data submitted successfully!', Colors.green);
       } else {
-        // Failed to submit
-        print('Failed to submit data: ${response.body}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to submit data. Please try again.'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        _showSnackBar(
+            'Failed to submit education data. Please try again.', Colors.red);
       }
     } catch (e) {
-      print('Error submitting data: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occurred. Please try again later.'),
-          duration: Duration(seconds: 3),
-        ),
-      );
+      _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
     }
+  }
+
+// This method sends the education data to the server
+  Future<ResponseData> sendEducation(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendeduapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
+// Helper method to show SnackBar messages
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 
   Widget _buildDropdown({

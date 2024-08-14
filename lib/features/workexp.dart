@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:wdipl_interview_app/features/techselect.dart';
+import 'package:wdipl_interview_app/shared/api/api_endpoints.dart';
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/network_api_services.dart';
 
 class WorkExp extends StatefulWidget {
   const WorkExp({super.key});
@@ -71,37 +74,56 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      // Collect the work experience data
       List<Map<String, String>> companyData =
           _controllersList.map((controllerMap) {
         return {
-          'companyName': controllerMap['companyName']!.text,
+          'company_name': controllerMap['companyName']!.text,
           'role': controllerMap['role']!.text,
           'duration': controllerMap['duration']!.text,
-          'reason': controllerMap['reason']!.text,
+          'reason_of_living': controllerMap['reason']!.text,
           'salary': controllerMap['salary']!.text,
         };
       }).toList();
 
-      try {
-        final response = await http.post(
-          Uri.parse('https://example.com/api/submit'),
-          body: {
-            'experienceLevel': _experienceLevel,
-            'companies':
-                companyData.toString(), // Adjust for your API structure
-          },
-        );
+      // Prepare the data to be sent to the API
+      Map<String, dynamic> formData = {
+        'work_experience': companyData,
+      };
 
-        if (response.statusCode == 200) {
+      try {
+        // Send the data using the sendWorkExperience function
+        ResponseData response = await sendWorkExperience(formData);
+
+        if (response.status == ResponseStatus.SUCCESS) {
+          _showSnackBar('Form submitted successfully!', Colors.green);
           _showConfirmationDialog(companyData);
         } else {
-          _showSnackBar('Failed to submit data');
+          _showSnackBar('Failed to submit form. Please try again.', Colors.red);
         }
       } catch (e) {
-        _showSnackBar('An error occurred. Please try again.');
+        _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
       }
     }
   }
+
+  Future<ResponseData> sendWorkExperience(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendweapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
+// Helper method to show SnackBar messages
+  void _showSnackBar(String message, MaterialColor red) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+// Method to show a confirmation dialog with the work experience data
 
   void _showConfirmationDialog(List<Map<String, String>> companyData) {
     showDialog(
@@ -137,12 +159,6 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           ],
         );
       },
-    );
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
     );
   }
 
