@@ -29,6 +29,12 @@ class PersonalInfoAPIServices {
     return response;
   }
 
+  Future<ResponseData> sendTechselection(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendtechapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
   Future<ResponseData> getTechnology() async {
     String url = ApiEndpoints.gettechapi;
     final response = await NetworkApiService().get(url);

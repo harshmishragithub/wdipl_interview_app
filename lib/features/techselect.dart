@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:wdipl_interview_app/model/gettech.dart';
+import 'package:wdipl_interview_app/model/techdrop.dart';
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 
 import 'package:wdipl_interview_app/testoverview/testov1.dart';
 
@@ -14,7 +19,7 @@ class TechnologySelectionPage extends StatefulWidget {
 
 class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     with SingleTickerProviderStateMixin {
-  final List<String> _technologies = [
+  List<String> _technologies = [
     'Laravel',
     'Flutter',
     'React Js',
@@ -48,41 +53,84 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     super.dispose();
   }
 
-  // Method to handle the form submission
-  Future<void> _submitData() async {
-    if (_selectedTechnology == null || _selectedExperience == null) {
-      _showSnackBar('Please select both technology and experience');
-      return;
-    }
-
+  Future<void> _getTechnology(dynamic isLoading) async {
     try {
-      // Example API call using the selected data
-      final response = await http.post(
-        Uri.parse('https://example.com/api/submit'),
-        body: {
-          'technology': _selectedTechnology!,
-          'experience': _selectedExperience!,
-        },
-      );
+      final response = await PersonalInfoAPIServices().getTechnology();
 
-      if (response.statusCode == 200) {
-        // Navigate to the next page on success
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UpcomingTestPage()),
-        );
+      if (response.status == ResponseStatus.SUCCESS && response.data != null) {
+        final getTechModel = GetTechModel.fromJson(response.data);
+        final List<Technology> technologies = [];
+
+        if (getTechModel.data != null) {
+          for (var item in getTechModel.data!) {
+            technologies.add(
+              Technology(
+                id: item.id!,
+                techName: item.techName!, // Ensure this is a valid String
+              ),
+            );
+          }
+        }
+
+        log(technologies.length.toString() as num);
+
+        setState(() {
+          _technologies = technologies.cast<
+              String>(); // Ensure _technologies is not final or handle it differently
+        });
+        isLoading.value = false;
+        _showSnackBar('Technologies fetched successfully!', Colors.green);
       } else {
-        _showSnackBar('Failed to submit data');
+        isLoading.value = false;
+        // _handleError("Failed to fetch technologies: ${response.message}");
       }
     } catch (e) {
-      _showSnackBar('An error occurred. Please try again.');
+      isLoading.value = false;
+      // _handleError("An error occurred: ${e.toString()}");
+    }
+  }
+
+  // Method to handle the form submission
+  Future<void> _submitData() async {
+    try {
+      // Ensure both technology and experience are selected
+      if (_selectedTechnology == null || _selectedExperience == null) {
+        _showSnackBar(
+            'Please select both technology and experience', Colors.red);
+        return;
+      }
+
+      // Prepare the data to be sent
+      Map<String, dynamic> data = {
+        "technology": _selectedTechnology!,
+        "experience": _selectedExperience!,
+      };
+
+      // Make the API call
+      ResponseData response =
+          await PersonalInfoAPIServices().sendTechselection(data);
+
+      if (response.status == ResponseStatus.SUCCESS) {
+        String token = response.data['data']['token'];
+
+        _showSnackBar('Data submitted successfully!', Colors.green);
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => UpcomingTestPage(),
+        ));
+      } else {
+        _showSnackBar('Failed to submit data. Please try again.', Colors.red);
+      }
+    } catch (e) {
+      // Handle errors
+      _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
     }
   }
 
   // Method to show a confirmation dialog
   void _showConfirmationDialog(BuildContext context) {
     if (_selectedTechnology == null || _selectedExperience == null) {
-      _showSnackBar('Please select both technology and experience');
+      _showSnackBar('Please select both technology and experience', Colors.red);
       return;
     }
 
@@ -116,7 +164,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
   }
 
   // Method to show a snackbar
-  void _showSnackBar(String message) {
+  void _showSnackBar(String message, MaterialColor green) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
