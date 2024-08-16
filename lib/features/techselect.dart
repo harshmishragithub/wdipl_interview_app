@@ -53,6 +53,10 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     super.dispose();
   }
 
+  void _handleError(String errorMessage) {
+    _showSnackBar(errorMessage, Colors.red);
+  }
+
   Future<void> _getTechnology(dynamic isLoading) async {
     try {
       final response = await PersonalInfoAPIServices().getTechnology();
@@ -82,11 +86,11 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
         _showSnackBar('Technologies fetched successfully!', Colors.green);
       } else {
         isLoading.value = false;
-        // _handleError("Failed to fetch technologies: ${response.message}");
+        _handleError("Failed to fetch technologies: ${response.message}");
       }
     } catch (e) {
       isLoading.value = false;
-      // _handleError("An error occurred: ${e.toString()}");
+      _handleError("An error occurred: ${e.toString()}");
     }
   }
 
