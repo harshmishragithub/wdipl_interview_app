@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:wdipl_interview_app/features/techselect.dart';
 import 'package:wdipl_interview_app/shared/api/api_endpoints.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';

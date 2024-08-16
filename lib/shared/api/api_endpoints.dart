@@ -14,5 +14,5 @@ class ApiEndpoints {
   static const sendweapi = "${baseurl}add_user_work_experience_details";
   static const gettechapi = "${baseurl}get_technology";
   static const sendtechapi =
-      "${baseurl}get_technology"; //"${baseurl}get_source";
+      "${baseurl}store_technology"; //"${baseurl}get_source";
 }
