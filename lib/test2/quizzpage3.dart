@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:wdipl_interview_app/test2/contt3.dart';
 import 'package:wdipl_interview_app/test2/quest3.dart';
 
@@ -86,55 +87,94 @@ class QuizPage2 extends StatelessWidget {
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: question.answers.length,
+                  itemCount:
+                      question.answers.length + 1, // +1 for "I don't remember"
                   itemBuilder: (context, index) {
-                    final answer = question.answers[index];
-                    return GestureDetector(
-                      onTap: () {
-                        quizController.selectAnswer(index);
-                      },
-                      child: Obx(() {
-                        bool isSelected =
-                            quizController.selectedAnswerIndex.value == index;
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color.fromARGB(255, 119, 186, 232)
-                                : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            border: isSelected
-                                ? Border.all(
-                                    color: Color.fromARGB(255, 119, 186, 232),
-                                  )
-                                : null,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                String.fromCharCode(65 +
-                                    index), // Converts 0 -> A, 1 -> B, etc.
+                    if (index == question.answers.length) {
+                      // The "I don't remember" option
+                      return GestureDetector(
+                        onTap: () {
+                          quizController
+                              .selectAnswer(quizController.dontRememberIndex);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value ==
+                                  quizController.dontRememberIndex;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "I don't remember",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Text(
-                                  answer,
-                                  style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      final answer = question.answers[index];
+                      return GestureDetector(
+                        onTap: () {
+                          quizController.selectAnswer(index);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value == index;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  String.fromCharCode(65 +
+                                      index), // Converts 0 -> A, 1 -> B, etc.
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              if (isSelected)
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Color.fromARGB(255, 119, 186, 232),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Text(
+                                    answer,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                                 ),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
+                                if (isSelected)
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Color.fromARGB(255, 119, 186, 232),
+                                  ),
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+                    }
                   },
                 ),
               ),

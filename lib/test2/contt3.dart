@@ -1,10 +1,10 @@
-import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test2/score3.dart';
-import 'package:wdipl_interview_app/test2/thanku3.dart';
-
 import 'dart:async';
 
-import 'quest3.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:wdipl_interview_app/test2/quest3.dart';
+import 'package:wdipl_interview_app/test2/score3.dart';
+import 'package:wdipl_interview_app/test2/thanku3.dart';
 
 class QuizController2 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -15,6 +15,9 @@ class QuizController2 extends GetxController {
   var currentTestIndex = 0.obs;
   List<int> testScores = [];
   final int totalTests = 5;
+
+  // Option index for "I don't remember"
+  final int dontRememberIndex = -2;
 
   void startTest(int testIndex) {
     currentTestIndex.value = testIndex;
@@ -37,10 +40,13 @@ class QuizController2 extends GetxController {
   }
 
   void submitAnswerAndNext() {
-    if (selectedAnswerIndex.value ==
-        question2[currentQuestionIndex.value].correctAnswerIndex) {
+    // Only add to score if a valid answer was selected (not "I don't remember")
+    if (selectedAnswerIndex.value != dontRememberIndex &&
+        selectedAnswerIndex.value ==
+            question2[currentQuestionIndex.value].correctAnswerIndex) {
       score.value++;
     }
+
     selectedAnswerIndex.value = -1;
 
     if (currentQuestionIndex.value < question2.length - 1) {
@@ -66,11 +72,6 @@ class QuizController2 extends GetxController {
   }
 
   Future<void> submitResults() async {
-    final results = {
-      "testScores": testScores,
-      "totalScore": testScores.reduce((a, b) => a + b),
-    };
-
     // Implement your API call here to submit the results
 
     currentTestIndex.value = 0;

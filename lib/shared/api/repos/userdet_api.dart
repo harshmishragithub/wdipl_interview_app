@@ -40,4 +40,22 @@ class PersonalInfoAPIServices {
     final response = await NetworkApiService().get(url);
     return response;
   }
+
+  Future<ResponseData> getTechnologyQuestion() async {
+    String url = ApiEndpoints.gettechqueapi;
+    final response = await NetworkApiService().get(url);
+    return response;
+  }
+
+  Future<ResponseData> getLogicalQuestion() async {
+    String url = ApiEndpoints.getlogicapi;
+    final response = await NetworkApiService().get(url);
+    return response;
+  }
+
+  Future<ResponseData> getPersonalityQuestion() async {
+    String url = ApiEndpoints.getpersonalityquestionapi;
+    final response = await NetworkApiService().get(url);
+    return response;
+  }
 }
