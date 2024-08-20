@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'contt5.dart';
+import 'quest5.dart';
 
 class QuizPage4 extends StatelessWidget {
   final QuizController4 quizController = Get.put(QuizController4());
 
   @override
   Widget build(BuildContext context) {
-    // Fetch quiz data
-    quizController.fetchQuizData();
-
     quizController.startTimer();
 
     return Scaffold(
@@ -26,19 +24,8 @@ class QuizPage4 extends StatelessWidget {
         ),
         centerTitle: true,
         title: Obx(() {
-          final quizData = quizController.quizData.value;
-          final data = quizData.data;
-          if (data == null || data.isEmpty) {
-            return Text(
-              "Loading...",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            );
-          }
           return Text(
-            "Question ${quizController.currentQuestionIndex.value + 1}/${data.length}",
+            "Question ${quizController.currentQuestionIndex.value + 1}/5",
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -53,14 +40,7 @@ class QuizPage4 extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        final quizData = quizController.quizData.value;
-        final data = quizData.data;
-
-        if (data == null || data.isEmpty) {
-          return Center(child: Text("No questions available"));
-        }
-
-        final question = data[quizController.currentQuestionIndex.value];
+        final question = question4s[quizController.currentQuestionIndex.value];
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -75,7 +55,7 @@ class QuizPage4 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question ?? "No question text available",
+                    question.question4Text,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -107,10 +87,11 @@ class QuizPage4 extends StatelessWidget {
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: (question.answer?.length ?? 0) +
-                      1, // +1 for "I don't remember"
+                  itemCount:
+                      question.answers.length + 1, // +1 for "I don't remember"
                   itemBuilder: (context, index) {
-                    if (index == question.answer?.length) {
+                    if (index == question.answers.length) {
+                      // The "I don't remember" option
                       return GestureDetector(
                         onTap: () {
                           quizController
@@ -130,7 +111,8 @@ class QuizPage4 extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               border: isSelected
                                   ? Border.all(
-                                      color: Color.fromARGB(255, 119, 186, 232))
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
                                   : null,
                             ),
                             child: Center(
@@ -144,10 +126,7 @@ class QuizPage4 extends StatelessWidget {
                         }),
                       );
                     } else {
-                      final answer = question.answer?[index];
-                      if (answer == null)
-                        return SizedBox.shrink(); // Guard against null answers
-
+                      final answer = question.answers[index];
                       return GestureDetector(
                         onTap: () {
                           quizController.selectAnswer(index);
@@ -165,7 +144,8 @@ class QuizPage4 extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               border: isSelected
                                   ? Border.all(
-                                      color: Color.fromARGB(255, 119, 186, 232))
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
                                   : null,
                             ),
                             child: Row(
@@ -180,7 +160,7 @@ class QuizPage4 extends StatelessWidget {
                                 SizedBox(width: 16),
                                 Expanded(
                                   child: Text(
-                                    answer.answere ?? "No answer available",
+                                    answer,
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),

@@ -21,13 +21,7 @@ class UpcomingTestPage2 extends StatelessWidget {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/background.jpg'), // Add your background image here
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: BoxDecoration(),
           ),
           // Content with transparency
           Container(

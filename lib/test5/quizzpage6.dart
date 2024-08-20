@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test5/contt6.dart';
-import 'package:wdipl_interview_app/test5/quest6.dart';
 
-class QuizPage5 extends StatelessWidget {
+import 'contt6.dart';
+
+class QuizzPage5 extends StatelessWidget {
   final QuizController5 quizController = Get.put(QuizController5());
 
   @override
   Widget build(BuildContext context) {
-    quizController.startTimer();
+    quizController.startTest(0); // Pass the correct testIndex
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -39,7 +39,12 @@ class QuizPage5 extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        final question = question5s[quizController.currentQuestionIndex.value];
+        if (quizController.questions.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final question =
+            quizController.questions[quizController.currentQuestionIndex.value];
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -54,7 +59,7 @@ class QuizPage5 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question5Text,
+                    question.question ?? '',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -86,55 +91,94 @@ class QuizPage5 extends StatelessWidget {
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: question.answers.length,
+                  itemCount:
+                      question.answer!.length + 1, // +1 for "I don't remember"
                   itemBuilder: (context, index) {
-                    final answer = question.answers[index];
-                    return GestureDetector(
-                      onTap: () {
-                        quizController.selectAnswer(index);
-                      },
-                      child: Obx(() {
-                        bool isSelected =
-                            quizController.selectedAnswerIndex.value == index;
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color.fromARGB(255, 119, 186, 232)
-                                : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            border: isSelected
-                                ? Border.all(
-                                    color: Color.fromARGB(255, 119, 186, 232),
-                                  )
-                                : null,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                String.fromCharCode(65 +
-                                    index), // Converts 0 -> A, 1 -> B, etc.
+                    if (index == question.answer!.length) {
+                      // The "I don't remember" option
+                      return GestureDetector(
+                        onTap: () {
+                          quizController
+                              .selectAnswer(quizController.dontRememberIndex);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value ==
+                                  quizController.dontRememberIndex;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "I don't remember",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Text(
-                                  answer,
-                                  style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      final answer = question.answer![index];
+                      return GestureDetector(
+                        onTap: () {
+                          quizController.selectAnswer(index);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value == index;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  String.fromCharCode(65 +
+                                      index), // Converts 0 -> A, 1 -> B, etc.
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              if (isSelected)
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Color.fromARGB(255, 119, 186, 232),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Text(
+                                    answer.answere ?? '',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                                 ),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
+                                if (isSelected)
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Color.fromARGB(255, 119, 186, 232),
+                                  ),
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+                    }
                   },
                 ),
               ),

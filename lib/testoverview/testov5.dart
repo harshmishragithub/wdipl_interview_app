@@ -21,13 +21,7 @@ class UpcomingTestPage5 extends StatelessWidget {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/background.jpg'), // Add your background image here
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: BoxDecoration(),
           ),
           // Content with transparency
           Container(
@@ -109,7 +103,7 @@ class UpcomingTestPage5 extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuizPage5()),
+                  MaterialPageRoute(builder: (context) => QuizzPage5()),
                 );
               },
             ),

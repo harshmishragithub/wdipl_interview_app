@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wdipl_interview_app/test1/contt2.dart';
-import 'package:wdipl_interview_app/test1/quest22.dart';
+
 import 'package:wdipl_interview_app/testoverview/testov2.dart';
 
 class ThankYouPage extends StatelessWidget {

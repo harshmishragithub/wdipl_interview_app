@@ -1,12 +1,12 @@
-class GetPersModel {
+class GetPersonalQModel {
   String? status;
   int? statusCode;
   String? message;
   List<Data>? data;
 
-  GetPersModel({this.status, this.statusCode, this.message, this.data});
+  GetPersonalQModel({this.status, this.statusCode, this.message, this.data});
 
-  GetPersModel.fromJson(Map<String, dynamic> json) {
+  GetPersonalQModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     statusCode = json['status_code'];
     message = json['message'];
