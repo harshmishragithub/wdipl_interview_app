@@ -103,7 +103,7 @@ class UpcomingTestPage4 extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuizPage4()),
+                  MaterialPageRoute(builder: (context) => QuizzPage4()),
                 );
               },
             ),

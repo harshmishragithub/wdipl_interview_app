@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wdipl_interview_app/test5/quizzpage6.dart';
+
+import '../test5/quizzpage6.dart';
 
 class UpcomingTestPage5 extends StatelessWidget {
   @override

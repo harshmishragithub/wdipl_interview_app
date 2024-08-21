@@ -33,7 +33,7 @@ class GetTechModel {
 class Data {
   int? id;
   String? techName;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
 

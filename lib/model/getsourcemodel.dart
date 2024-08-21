@@ -34,9 +34,9 @@ class Data {
   int? id;
   String? principalSourceTitle;
   String? isActive;
-  Null? createdBy;
-  Null? modifiedBy;
-  Null? deletedAt;
+  Null createdBy;
+  Null modifiedBy;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
 

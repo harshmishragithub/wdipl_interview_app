@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/features/edu.dart';
 
 import 'package:wdipl_interview_app/features/personal1_Info_Screen.dart';
 
@@ -29,7 +28,7 @@ Widget build(BuildContext context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/logo.png', height: 100), // Your logo here
+          // Image.asset('assets/logo.png', height: 100), // Your logo here
           SizedBox(height: 20),
           CircularProgressIndicator(),
         ],

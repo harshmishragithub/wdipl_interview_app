@@ -35,6 +35,19 @@ class PersonalInfoAPIServices {
     return response;
   }
 
+  Future<ResponseData> sendPersonalityQuestion(
+      Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendpersonalqapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
+  Future<ResponseData> sendLogicalQuestion(Map<String, dynamic> data) async {
+    String url = ApiEndpoints.sendlogoqapi;
+    final response = await NetworkApiService().post(url, data);
+    return response;
+  }
+
   Future<ResponseData> getTechnology() async {
     String url = ApiEndpoints.gettechapi;
     final response = await NetworkApiService().get(url);

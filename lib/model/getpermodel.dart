@@ -33,7 +33,7 @@ class GetPersonalQModel {
 class Data {
   int? id;
   String? question;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
   List<Answer>? answer;
@@ -79,7 +79,7 @@ class Answer {
   int? questionXid;
   String? answere;
   int? isRight;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
 

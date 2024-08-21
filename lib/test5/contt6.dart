@@ -1,14 +1,13 @@
 import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 import 'package:wdipl_interview_app/test5/thanku6.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import '../model/getpermodel.dart';
-
-// Assuming you will adapt this file for dynamic questions.
 
 class QuizController5 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -17,13 +16,19 @@ class QuizController5 extends GetxController {
   var timer = 60.obs;
   Timer? countdownTimer;
   var currentTestIndex = 0.obs;
+  var isLoading = false.obs; // Define isLoading
   List<int> testScores = [];
   final int totalTests = 5;
-  final List<Data> questions =
-      <Data>[].obs; // List of questions fetched from API
-
-  // Option index for "I don't remember"
   final int dontRememberIndex = -2;
+
+  // List to hold fetched questions
+  List<Data> questions = <Data>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchQuestions();
+  }
 
   void startTest(int testIndex) async {
     currentTestIndex.value = testIndex;
@@ -31,8 +36,99 @@ class QuizController5 extends GetxController {
     score.value = 0;
     selectedAnswerIndex.value = -1;
 
-    await fetchQuestions(); // Fetch questions before starting the timer
-    startTimer();
+    // Fetch questions from API
+    await fetchQuestions();
+
+    if (questions.isNotEmpty) {
+      startTimer();
+    } else {
+      log('No questions available' as num);
+      Get.snackbar(
+        'Error',
+        'No questions available',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> fetchQuestions() async {
+    isLoading.value = true; // Start loading
+
+    try {
+      // Fetch data from API
+      ResponseData response =
+          await PersonalInfoAPIServices().getPersonalityQuestion();
+
+      // Check if the response was successful and contains data
+      if (response.status == ResponseStatus.SUCCESS && response.data != null) {
+        // Parse the response data into the GetPersonalQModel
+        var questionModel = GetPersonalQModel.fromJson(response.data);
+
+        // Check if the model's data field is not null
+        if (questionModel.data != null && questionModel.data!.isNotEmpty) {
+          questions.clear();
+          questions.addAll(
+              questionModel.data!); // Add the fetched questions to your list
+
+          log('Questions fetched: ${questions.length}' as num);
+          Get.snackbar(
+            'Success',
+            'Questions fetched successfully!',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else {
+          log('No questions found in the response' as num);
+          Get.snackbar(
+            'Error',
+            'No questions found in the response',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      } else {
+        log((response.message ?? 'Failed to fetch questions') as num);
+        Get.snackbar(
+          'Error',
+          response.message ?? 'Failed to fetch questions',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      log('An error occurred: ${e.toString()}' as num);
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false; // Stop loading
+    }
+  }
+
+  void _handleError(String message) {
+    log(message as num);
+    Get.snackbar(
+      'Error',
+      message,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
+  void _showSnackBar(String message, Color color) {
+    // Show snackbar or toast here, depending on your framework
+    // For example, using Flutter's GetX package:
+    Get.snackbar('Info', message, backgroundColor: color);
   }
 
   void startTimer() {
@@ -47,119 +143,54 @@ class QuizController5 extends GetxController {
     });
   }
 
-  Future<void> fetchQuestions() async {
-    try {
-      var response = await http.get(Uri.parse(
-          'http://192.168.50.78/laravel_test/public/api/get_personality_que_ans'));
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
-
-        GetPersonalQModel questionModel =
-            GetPersonalQModel.fromJson(jsonResponse);
-
-        questions.assignAll(questionModel.data ?? []);
-
-        // Optional: Provide feedback for successful data fetching
-        print('Questions fetched successfully.');
-      } else {
-        _showSnackBar(
-            'Failed to fetch questions. Status code: ${response.statusCode}',
-            Colors.red);
-      }
-    } catch (e) {
-      _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
-      print('Error fetching questions: $e');
-    }
-  }
-
-  void _showSnackBar(String message, Color color) {
-    Get.snackbar('Error', message,
-        backgroundColor: color, colorText: Colors.white);
-  }
-
   void submitAnswerAndNext() async {
-    if (selectedAnswerIndex.value != dontRememberIndex) {
-      var correctAnswerIndex = questions[currentQuestionIndex.value]
-          .answer!
-          .indexWhere((answer) => answer.isRight == 1);
+    // Check if the selected answer is correct (except for "I don't remember")
+    if (selectedAnswerIndex.value != dontRememberIndex &&
+        questions[currentQuestionIndex.value]
+                .answer![selectedAnswerIndex.value]
+                .isRight ==
+            1) {
+      score.value++;
+    }
 
-      if (selectedAnswerIndex.value == correctAnswerIndex) {
-        score.value++;
-      }
+    // Send answer data to the server
+    await sendAnswerData();
 
-      // Send data to the server
-      await submitResultToServer(
-        principalXid: "73",
-        pesonalityQuestionXid:
-            questions[currentQuestionIndex.value].id.toString(),
-        pesonalityAnswerXid: questions[currentQuestionIndex.value]
+    // Reset the selected answer
+    selectedAnswerIndex.value = -1;
+
+    // Move to the next question or finish the quiz
+    if (currentQuestionIndex.value < questions.length - 1) {
+      currentQuestionIndex.value++;
+      startTimer();
+    } else {
+      countdownTimer?.cancel();
+      testScores.add(score.value);
+      Get.to(() => ThankYouPage5());
+    }
+  }
+
+  Future<void> sendAnswerData() async {
+    final questionId = questions[currentQuestionIndex.value].id;
+    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
+        ? questions[currentQuestionIndex.value]
             .answer![selectedAnswerIndex.value]
-            .id
-            .toString(),
-        isRight: selectedAnswerIndex.value == correctAnswerIndex ? "1" : "0",
-      );
-    }
+        : null;
 
-    selectedAnswerIndex.value = -1;
+    Map<String, dynamic> answerData = {
+      "question_id": questionId.toString(),
+      "answer_id": selectedAnswer?.id?.toString(),
+    };
 
-    if (currentQuestionIndex.value < questions.length - 1) {
-      currentQuestionIndex.value++;
-      startTimer();
+    ResponseData response =
+        await PersonalInfoAPIServices().sendPersonalityQuestion(answerData);
+
+    if (response.status == ResponseStatus.SUCCESS) {
+      print('Data Saved Successfully.');
+      // Optionally, handle the response data
+      // Example: String token = response.data['data']['token'];
     } else {
-      countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage5());
-    }
-  }
-
-  Future<void> submitResultToServer({
-    required String principalXid,
-    required String pesonalityQuestionXid,
-    required String pesonalityAnswerXid,
-    required String isRight,
-  }) async {
-    try {
-      Map<String, dynamic> submissionData = {
-        "principal_xid": principalXid,
-        "question_id": pesonalityQuestionXid,
-        "answer_id": pesonalityAnswerXid,
-        "is_right": isRight,
-        "updated_at": DateTime.now().toIso8601String(),
-        "created_at": DateTime.now().toIso8601String(),
-      };
-
-      var response = await http.post(
-        Uri.parse('your_api_submission_endpoint_here'),
-        body: json.encode(submissionData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      );
-
-      if (response.statusCode == 201) {
-        // Handle successful submission, for example:
-        _showSnackBar('Data submitted successfully!', Colors.green);
-      } else {
-        _showSnackBar(
-            'Failed to submit data. Status code: ${response.statusCode}',
-            Colors.red);
-      }
-    } catch (e) {
-      _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
-      print('Error submitting data: $e');
-    }
-  }
-
-  void skipQuestion() {
-    selectedAnswerIndex.value = -1;
-    if (currentQuestionIndex.value < questions.length - 1) {
-      currentQuestionIndex.value++;
-      startTimer();
-    } else {
-      countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage5());
+      print('Failed to save data');
     }
   }
 

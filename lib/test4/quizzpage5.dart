@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'contt5.dart';
-import 'quest5.dart';
 
-class QuizPage4 extends StatelessWidget {
+class QuizzPage4 extends StatelessWidget {
   final QuizController4 quizController = Get.put(QuizController4());
 
   @override
   Widget build(BuildContext context) {
-    quizController.startTimer();
+    quizController.startTest(quizController.currentTestIndex.value);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,7 +24,7 @@ class QuizPage4 extends StatelessWidget {
         centerTitle: true,
         title: Obx(() {
           return Text(
-            "Question ${quizController.currentQuestionIndex.value + 1}/5",
+            "Question ${quizController.currentQuestionIndex.value + 1}/${quizController.questions.length}",
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -40,7 +39,12 @@ class QuizPage4 extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        final question = question4s[quizController.currentQuestionIndex.value];
+        if (quizController.questions.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final question =
+            quizController.questions[quizController.currentQuestionIndex.value];
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -55,7 +59,7 @@ class QuizPage4 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question4Text,
+                    question.question!,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -88,10 +92,9 @@ class QuizPage4 extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   itemCount:
-                      question.answers.length + 1, // +1 for "I don't remember"
+                      question.answer!.length + 1, // +1 for "I don't remember"
                   itemBuilder: (context, index) {
-                    if (index == question.answers.length) {
-                      // The "I don't remember" option
+                    if (index == question.answer!.length) {
                       return GestureDetector(
                         onTap: () {
                           quizController
@@ -126,7 +129,7 @@ class QuizPage4 extends StatelessWidget {
                         }),
                       );
                     } else {
-                      final answer = question.answers[index];
+                      final answer = question.answer![index];
                       return GestureDetector(
                         onTap: () {
                           quizController.selectAnswer(index);
@@ -160,7 +163,7 @@ class QuizPage4 extends StatelessWidget {
                                 SizedBox(width: 16),
                                 Expanded(
                                   child: Text(
-                                    answer,
+                                    answer.answere!,
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),

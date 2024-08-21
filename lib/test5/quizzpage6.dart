@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'contt6.dart';
+import 'package:wdipl_interview_app/test5/contt6.dart';
 
 class QuizzPage5 extends StatelessWidget {
   final QuizController5 quizController = Get.put(QuizController5());
 
   @override
   Widget build(BuildContext context) {
-    quizController.startTest(0); // Pass the correct testIndex
+    quizController.startTest(quizController.currentTestIndex.value);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -24,7 +23,7 @@ class QuizzPage5 extends StatelessWidget {
         centerTitle: true,
         title: Obx(() {
           return Text(
-            "Question ${quizController.currentQuestionIndex.value + 1}/5",
+            "Question ${quizController.currentQuestionIndex.value + 1}/${quizController.questions.length}",
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -59,7 +58,7 @@ class QuizzPage5 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question ?? '',
+                    question.question!,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -95,7 +94,6 @@ class QuizzPage5 extends StatelessWidget {
                       question.answer!.length + 1, // +1 for "I don't remember"
                   itemBuilder: (context, index) {
                     if (index == question.answer!.length) {
-                      // The "I don't remember" option
                       return GestureDetector(
                         onTap: () {
                           quizController
@@ -164,7 +162,7 @@ class QuizzPage5 extends StatelessWidget {
                                 SizedBox(width: 16),
                                 Expanded(
                                   child: Text(
-                                    answer.answere ?? '',
+                                    answer.answere!,
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),

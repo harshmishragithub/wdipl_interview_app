@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/features/workexp.dart';
-import 'package:http/http.dart' as http; // Add the http package for API calls
+
 import 'package:wdipl_interview_app/shared/api/api_endpoints.dart';
-import 'dart:convert';
 
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/network_api_services.dart'; // Add this for JSON encoding
