@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 import 'package:wdipl_interview_app/test4/thanku5.dart';
-import 'package:wdipl_interview_app/test5/thanku6.dart';
 
 import '../model/getlogicmodel.dart';
 
