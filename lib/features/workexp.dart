@@ -9,7 +9,6 @@ class WorkExp extends StatefulWidget {
   const WorkExp({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _WorkExpState createState() => _WorkExpState();
 }
 
@@ -113,8 +112,8 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
     return response;
   }
 
-// Helper method to show SnackBar messages
-  void _showSnackBar(String message, MaterialColor red) {
+  // Helper method to show SnackBar messages
+  void _showSnackBar(String message, MaterialColor color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -123,8 +122,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
     );
   }
 
-// Method to show a confirmation dialog with the work experience data
-
+  // Method to show a confirmation dialog with the work experience data
   void _showConfirmationDialog(List<Map<String, String>> companyData) {
     showDialog(
       context: context,
@@ -164,173 +162,166 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xffEEEEEE),
-      appBar: AppBar(
-        backgroundColor: Color(0xff508C9B),
-        title: Text('Work Experience'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              Text(
-                'Are you experienced or a fresher?',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: Text(
-                        'Experienced',
-                        style: TextStyle(
-                          fontSize: 28,
-                        ),
-                      ),
-                      value: 'Experienced',
-                      groupValue: _experienceLevel,
-                      onChanged: (value) {
-                        setState(() {
-                          _experienceLevel = value!;
-                          _controllersList.clear();
-                          _initializeController();
-                        });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: RadioListTile<String>(
-                      title: Text(
-                        'Fresher',
-                        style: TextStyle(
-                          fontSize: 28,
-                        ),
-                      ),
-                      value: 'Fresher',
-                      groupValue: _experienceLevel,
-                      onChanged: (value) {
-                        setState(() {
-                          _experienceLevel = value!;
-                          _controllersList.clear();
-                          _initializeController();
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              if (_experienceLevel == 'Experienced')
-                ..._controllersList.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  Map<String, TextEditingController> controllers = entry.value;
-
-                  return Card(
-                    elevation: 4,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Company ${index + 1}',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              if (index > 0)
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () => _removeCompany(index),
-                                ),
-                            ],
-                          ),
-                          _buildTextFormField(
-                            label: 'Company Name',
-                            controller: controllers['companyName']!,
-                          ),
-                          _buildTextFormField(
-                            label: 'Role',
-                            controller: controllers['role']!,
-                          ),
-                          _buildTextFormField(
-                            label: 'Duration',
-                            controller: controllers['duration']!,
-                          ),
-                          _buildTextFormField(
-                            label: 'Reason for Leaving',
-                            controller: controllers['reason']!,
-                          ),
-                          _buildTextFormField(
-                            label: 'Salary',
-                            controller: controllers['salary']!,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              if (_experienceLevel == 'Experienced' &&
-                  _controllersList.length < 8)
-                // SizedBox(
-                //   height: 60,
-                //   child: ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       foregroundColor: Colors.white,
-                //       backgroundColor: Color(0xff508C9B),
-                //     ),
-                //     onPressed: _addCompany,
-                //     child: Text(
-                //       'Add Company',
-                //       style: TextStyle(fontSize: 30),
-                //     ),
-                //   ),
-                // ),
-                SizedBox(height: 80), // Add space for the FAB
-            ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Color(0xffEEEEEE),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xff508C9B),
+          title: Text(
+            'Work Experience',
+            style: TextStyle(color: Colors.white),
           ),
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FadeTransition(
-            opacity: _controller,
-            child: Text(
-              'Submit and Continue',
-              style: TextStyle(
-                fontSize: 26,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Text(
+                  'Are you experienced or a fresher?',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile<String>(
+                        title: Text(
+                          'Experienced',
+                          style: TextStyle(
+                            fontSize: 28,
+                          ),
+                        ),
+                        value: 'Experienced',
+                        groupValue: _experienceLevel,
+                        onChanged: (value) {
+                          setState(() {
+                            _experienceLevel = value!;
+                            _controllersList.clear();
+                            _initializeController();
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile<String>(
+                        title: Text(
+                          'Fresher',
+                          style: TextStyle(
+                            fontSize: 28,
+                          ),
+                        ),
+                        value: 'Fresher',
+                        groupValue: _experienceLevel,
+                        onChanged: (value) {
+                          setState(() {
+                            _experienceLevel = value!;
+                            _controllersList.clear();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                if (_experienceLevel == 'Experienced')
+                  ..._controllersList.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    Map<String, TextEditingController> controllers =
+                        entry.value;
+
+                    return Card(
+                      elevation: 4,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Company ${index + 1}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (index > 0)
+                                  IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () => _removeCompany(index),
+                                  ),
+                              ],
+                            ),
+                            _buildTextFormField(
+                              label: 'Company Name',
+                              controller: controllers['companyName']!,
+                            ),
+                            _buildTextFormField(
+                              label: 'Role',
+                              controller: controllers['role']!,
+                            ),
+                            _buildTextFormField(
+                              label: 'Duration',
+                              controller: controllers['duration']!,
+                            ),
+                            _buildTextFormField(
+                              label: 'Reason for Leaving',
+                              controller: controllers['reason']!,
+                            ),
+                            _buildTextFormField(
+                              label: 'Salary',
+                              controller: controllers['salary']!,
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                if (_experienceLevel == 'Experienced' &&
+                    _controllersList.length < 8)
+                  SizedBox(height: 80), // Add space for the FAB
+              ],
             ),
           ),
-          SizedBox(height: 8),
-          SizedBox(
-            height: 90,
-            width: 90,
-            child: FloatingActionButton(
-              onPressed: _submitForm,
-              shape: CircleBorder(),
-              backgroundColor: Color(0xFF134B70),
-              child: Icon(
-                Icons.arrow_forward,
-                size: 50,
-                color: Colors.white,
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FadeTransition(
+              opacity: _controller,
+              child: Text(
+                'Submit and Continue',
+                style: TextStyle(
+                  fontSize: 26,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 100),
-        ],
+            SizedBox(height: 8),
+            SizedBox(
+              height: 90,
+              width: 90,
+              child: FloatingActionButton(
+                onPressed: _submitForm,
+                shape: CircleBorder(),
+                backgroundColor: Color(0xFF134B70),
+                child: Icon(
+                  Icons.arrow_forward,
+                  size: 50,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 100),
+          ],
+        ),
       ),
     );
   }

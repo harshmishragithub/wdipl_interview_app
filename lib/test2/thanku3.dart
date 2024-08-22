@@ -11,6 +11,7 @@ class ThankYouPage2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Thank You",
           style: TextStyle(color: Colors.white),

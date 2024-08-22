@@ -220,15 +220,10 @@ class _Form1PageState extends State<Form1Page> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Color(0xFF134B70),
           title:
               Text('Personal Questions', style: TextStyle(color: Colors.white)),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
         ),
         body: Obx(
           () => isLoading.value

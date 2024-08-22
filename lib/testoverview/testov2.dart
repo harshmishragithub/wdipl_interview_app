@@ -1,84 +1,89 @@
 import 'package:flutter/material.dart';
+
 import '../test2/quizzpage3.dart';
 
 class UpcomingTestPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Test part 2',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily:
-                'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Test part 2',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily:
+                  'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+            ),
           ),
+          backgroundColor: Color(0xFF134B70),
+          elevation: 0,
         ),
-        backgroundColor: Color(0xFF134B70),
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          // Background image
-          Container(
-            decoration: BoxDecoration(),
-          ),
-          // Content with transparency
-          Container(
-            color: Color(0xffEEEEEE),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Medium level test',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff508C9B),
-                      fontFamily:
-                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Medium level test as per experience.',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xff508C9B),
-                      fontFamily:
-                          'Raleway', // Custom font (make sure it's added in pubspec.yaml)
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showReadyDialog(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Color(0xffEEEEEE), // Text color
-                      backgroundColor: Color(0xFF134B70),
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      textStyle: TextStyle(
-                        fontSize: 18,
+        body: Stack(
+          children: [
+            // Background image
+            Container(
+              decoration: BoxDecoration(),
+            ),
+            // Content with transparency
+            Container(
+              color: Color(0xffEEEEEE),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Medium level test',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff508C9B),
                         fontFamily:
                             'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: Text('Start'),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    Text(
+                      'Medium level test as per experience.',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff508C9B),
+                        fontFamily:
+                            'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () {
+                        _showReadyDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Color(0xffEEEEEE), // Text color
+                        backgroundColor: Color(0xFF134B70),
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontFamily:
+                              'Raleway', // Custom font (make sure it's added in pubspec.yaml)
+                        ),
+                      ),
+                      child: Text('Start'),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

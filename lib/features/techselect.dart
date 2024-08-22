@@ -171,51 +171,59 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xffEEEEEE),
-      appBar: AppBar(
-        title: Text('Technology Selection'),
-        backgroundColor: Color(0xff508C9B),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                'Choose Your Technology',
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-            ),
-            SizedBox(height: 30),
-            ValueListenableBuilder<bool>(
-              valueListenable: isLoading,
-              builder: (context, value, child) {
-                return value
-                    ? Center(child: CircularProgressIndicator())
-                    : _buildDropdown<Technology>(
-                        label: 'Select Technology',
-                        value: _selectedTechnology,
-                        items: _technologies,
-                        onChanged: (value) =>
-                            setState(() => _selectedTechnology = value),
-                      );
-              },
-            ),
-            SizedBox(height: 20),
-            _buildDropdown<ExperienceYear>(
-              label: 'Select Years of Experience',
-              value: _selectedExperience,
-              items: _experienceYears,
-              onChanged: (value) => setState(() => _selectedExperience = value),
-            ),
-            Spacer(),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Color(0xffEEEEEE),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Technology Selection',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Color(0xff508C9B),
         ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  'Choose Your Technology',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+              ),
+              SizedBox(height: 30),
+              ValueListenableBuilder<bool>(
+                valueListenable: isLoading,
+                builder: (context, value, child) {
+                  return value
+                      ? Center(child: CircularProgressIndicator())
+                      : _buildDropdown<Technology>(
+                          label: 'Select Technology',
+                          value: _selectedTechnology,
+                          items: _technologies,
+                          onChanged: (value) =>
+                              setState(() => _selectedTechnology = value),
+                        );
+                },
+              ),
+              SizedBox(height: 20),
+              _buildDropdown<ExperienceYear>(
+                label: 'Select Years of Experience',
+                value: _selectedExperience,
+                items: _experienceYears,
+                onChanged: (value) =>
+                    setState(() => _selectedExperience = value),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: _buildFloatingActionButton(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
