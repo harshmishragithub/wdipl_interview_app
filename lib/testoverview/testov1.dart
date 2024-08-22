@@ -47,16 +47,6 @@ class UpcomingTestPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20),
-                    // Text(
-                    //   'Date: 20th August 2024\nTime: 10:00 AM\nSubject: English, Numerical Abilities, Reasoning',
-                    //   style: TextStyle(
-                    //     fontSize: 18,
-                    //     color: Color(0xff508C9B),
-                    //     fontFamily:
-                    //         'Raleway', // Custom font (make sure it's added in pubspec.yaml)
-                    //   ),
-                    //   textAlign: TextAlign.center,
-                    // ),
                     SizedBox(height: 20),
                     Text(
                       'Easy level test as per experience',
