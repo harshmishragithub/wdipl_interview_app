@@ -174,14 +174,14 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xffEEEEEE),
+        backgroundColor: Color(0xFFe7f1ee),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
             'Technology Selection',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xFFf0413f)),
           ),
-          backgroundColor: Color(0xff508C9B),
+          backgroundColor: Color(0xFF3e474d),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -189,10 +189,8 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Text(
-                  'Choose Your Technology',
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
+                child: Text('Choose Your Technology',
+                    style: TextStyle(color: Color(0xFFf0413f), fontSize: 55)),
               ),
               SizedBox(height: 30),
               ValueListenableBuilder<bool>(
@@ -241,7 +239,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold),
+              .copyWith(fontWeight: FontWeight.bold, color: Color(0xFFf0413f)),
         ),
         SizedBox(height: 10),
         DropdownButtonFormField<T>(
@@ -277,7 +275,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFFf0413f),
               ),
             ),
           ),
@@ -288,7 +286,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           child: FloatingActionButton(
             shape: CircleBorder(),
             onPressed: () => _showConfirmationDialog(context),
-            backgroundColor: Color(0xFF134B70),
+            backgroundColor: Color(0xFFf0413f),
             child: Icon(
               Icons.arrow_forward,
               size: 50,

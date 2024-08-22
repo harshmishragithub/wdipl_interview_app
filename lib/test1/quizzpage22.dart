@@ -51,7 +51,7 @@ class QuizzPage extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Color(0xff508C9B),
+                    color: Color(0xff3e474d),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
@@ -71,7 +71,7 @@ class QuizzPage extends StatelessWidget {
                     LinearProgressIndicator(
                       value: quizController.timer.value / 60.0,
                       backgroundColor: Color.fromARGB(255, 170, 237, 255),
-                      color: Color(0xFF134B70),
+                      color: Color(0xFFf0413f),
                       minHeight: 5,
                     ),
                     Positioned(
@@ -79,7 +79,7 @@ class QuizzPage extends StatelessWidget {
                       child: Text(
                         "${quizController.timer.value}s",
                         style: TextStyle(
-                            color: Color(0xff508C9B),
+                            color: Color(0xFFf0413f),
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -105,14 +105,11 @@ class QuizzPage extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 119, 186, 232)
+                                    ? Color.fromARGB(255, 227, 133, 132)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(
-                                        color:
-                                            Color.fromARGB(255, 119, 186, 232),
-                                      )
+                                    ? Border.all(color: Colors.black)
                                     : null,
                               ),
                               child: Center(
@@ -141,14 +138,11 @@ class QuizzPage extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 119, 186, 232)
+                                    ? Color.fromARGB(255, 227, 133, 132)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(
-                                        color:
-                                            Color.fromARGB(255, 119, 186, 232),
-                                      )
+                                    ? Border.all(color: Colors.black)
                                     : null,
                               ),
                               child: Row(
@@ -169,7 +163,7 @@ class QuizzPage extends StatelessWidget {
                                   if (isSelected)
                                     Icon(
                                       Icons.check_circle,
-                                      color: Color.fromARGB(255, 119, 186, 232),
+                                      color: Color.fromARGB(255, 3, 1, 1),
                                     ),
                                 ],
                               ),
@@ -187,7 +181,7 @@ class QuizzPage extends StatelessWidget {
                       quizController.submitAnswerAndNext();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF134B70),
+                      backgroundColor: Color(0xFFf0413f),
                       padding:
                           EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                       shape: RoundedRectangleBorder(

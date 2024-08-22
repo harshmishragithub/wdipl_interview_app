@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffEEEEEE),
+      backgroundColor: Color(0xff3e474d),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 170,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF134B70), // orange-yellow color
+                color: Color(0xFFf0413f), // orange-yellow color
               ),
             ),
             Spacer(),
@@ -62,7 +62,7 @@ class WelcomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 62,
                 fontWeight: FontWeight.bold,
-                color: Color(0xff508C9B),
+                color: Color(0xfff0413f),
               ),
             ),
             SizedBox(height: 10),
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 26,
-                color: Color(0xff508C9B),
+                color: Color(0xfff0413f),
               ),
             ),
             SizedBox(height: 20),
@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF134B70), // orange-yellow color
+                backgroundColor: Color(0xFFf0413f), // orange-yellow color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),

@@ -31,9 +31,7 @@ class QuizzPage4 extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(Icons.help_outline, color: Colors.black),
-              onPressed: () {
-                // Implement help or hint functionality
-              },
+              onPressed: () {},
             ),
           ],
         ),
@@ -53,7 +51,7 @@ class QuizzPage4 extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Color(0xff508C9B),
+                    color: Color(0xff3e474d),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Center(
@@ -73,7 +71,7 @@ class QuizzPage4 extends StatelessWidget {
                     LinearProgressIndicator(
                       value: quizController.timer.value / 60.0,
                       backgroundColor: Color.fromARGB(255, 170, 237, 255),
-                      color: Color(0xFF134B70),
+                      color: Color(0xFFf0413f),
                       minHeight: 5,
                     ),
                     Positioned(
@@ -81,7 +79,7 @@ class QuizzPage4 extends StatelessWidget {
                       child: Text(
                         "${quizController.timer.value}s",
                         style: TextStyle(
-                            color: Color(0xff508C9B),
+                            color: Color(0xFFf0413f),
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -90,8 +88,7 @@ class QuizzPage4 extends StatelessWidget {
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: question.answer!.length +
-                        1, // +1 for "I don't remember"
+                    itemCount: question.answer!.length + 1,
                     itemBuilder: (context, index) {
                       if (index == question.answer!.length) {
                         return GestureDetector(
@@ -108,14 +105,11 @@ class QuizzPage4 extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 119, 186, 232)
+                                    ? Color.fromARGB(255, 227, 133, 132)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(
-                                        color:
-                                            Color.fromARGB(255, 119, 186, 232),
-                                      )
+                                    ? Border.all(color: Colors.black)
                                     : null,
                               ),
                               child: Center(
@@ -144,21 +138,17 @@ class QuizzPage4 extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 119, 186, 232)
+                                    ? Color.fromARGB(255, 227, 133, 132)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(
-                                        color:
-                                            Color.fromARGB(255, 119, 186, 232),
-                                      )
+                                    ? Border.all(color: Colors.black)
                                     : null,
                               ),
                               child: Row(
                                 children: [
                                   Text(
-                                    String.fromCharCode(65 +
-                                        index), // Converts 0 -> A, 1 -> B, etc.
+                                    String.fromCharCode(65 + index),
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
@@ -173,7 +163,7 @@ class QuizzPage4 extends StatelessWidget {
                                   if (isSelected)
                                     Icon(
                                       Icons.check_circle,
-                                      color: Color.fromARGB(255, 119, 186, 232),
+                                      color: Color.fromARGB(255, 3, 1, 1),
                                     ),
                                 ],
                               ),
@@ -191,7 +181,7 @@ class QuizzPage4 extends StatelessWidget {
                       quizController.submitAnswerAndNext();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF134B70),
+                      backgroundColor: Color(0xFFf0413f),
                       padding:
                           EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                       shape: RoundedRectangleBorder(

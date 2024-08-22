@@ -12,12 +12,12 @@ class UpcomingTestPage extends StatelessWidget {
           title: Text(
             'Test part 1',
             style: TextStyle(
-              color: Colors.white,
+              color: Color(0xFFf0413f),
               fontFamily:
                   'Raleway', // Custom font (make sure it's added in pubspec.yaml)
             ),
           ),
-          backgroundColor: Color(0xFF134B70),
+          backgroundColor: Color(0xff3e474d),
           elevation: 0,
         ),
         body: Stack(
@@ -28,7 +28,7 @@ class UpcomingTestPage extends StatelessWidget {
             ),
             // Content with transparency
             Container(
-              color: Color(0xffEEEEEE),
+              color: Color(0xFFe7f1ee),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -40,7 +40,7 @@ class UpcomingTestPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xff508C9B),
+                        color: Color(0xFFf0413f),
                         fontFamily:
                             'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                       ),
@@ -52,7 +52,7 @@ class UpcomingTestPage extends StatelessWidget {
                       'Easy level test as per experience',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Color(0xff508C9B),
+                        color: Color(0xFFf0413f),
                         fontFamily:
                             'Raleway', // Custom font (make sure it's added in pubspec.yaml)
                       ),
@@ -65,7 +65,7 @@ class UpcomingTestPage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color(0xffEEEEEE),
-                        backgroundColor: Color(0xFF134B70),
+                        backgroundColor: Color(0xFFf0413f),
                         padding: EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

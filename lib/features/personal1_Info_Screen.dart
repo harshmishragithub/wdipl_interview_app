@@ -221,9 +221,9 @@ class _Form1PageState extends State<Form1Page> {
       home: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF134B70),
-          title:
-              Text('Personal Questions', style: TextStyle(color: Colors.white)),
+          backgroundColor: Color(0xFF3e474d),
+          title: Text('Personal Questions',
+              style: TextStyle(color: Color(0xFFf0413f))),
         ),
         body: Obx(
           () => isLoading.value
@@ -233,7 +233,7 @@ class _Form1PageState extends State<Form1Page> {
               : Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: const [Color(0xFFE3F2FD), Colors.white],
+                      colors: const [Color(0xFFe7f1ee), Color(0xFe7f1ee)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -376,7 +376,7 @@ class _Form1PageState extends State<Form1Page> {
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Color(0xFF134B70),
+          color: Color(0xFFf0413f),
         ),
       ),
     );
@@ -405,7 +405,7 @@ class _Form1PageState extends State<Form1Page> {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(icon, color: Color(0xFF134B70)),
+          prefixIcon: Icon(icon, color: Color(0xFFf0413f)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -431,7 +431,7 @@ class _Form1PageState extends State<Form1Page> {
         value: value,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(Icons.arrow_drop_down, color: Color(0xFF134B70)),
+          prefixIcon: Icon(Icons.arrow_drop_down, color: Color(0xFFf0413f)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -461,7 +461,7 @@ class _Form1PageState extends State<Form1Page> {
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-          backgroundColor: Color(0xFF134B70),
+          backgroundColor: Color(0xFFf0413f),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),

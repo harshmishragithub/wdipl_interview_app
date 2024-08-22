@@ -252,13 +252,13 @@ class _DropdownPageState extends State<DropdownPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xffEEEEEE),
+        backgroundColor: Color(0xFFe7f1ee),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF508C9B),
+          backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Educational Details',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xFFf0413f)),
           ),
         ),
         body: Padding(
@@ -795,7 +795,7 @@ class _DropdownPageState extends State<DropdownPage> {
                             child: Icon(Icons.arrow_forward,
                                 size: 50, color: Colors.white),
                             shape: CircleBorder(),
-                            backgroundColor: Color(0xFF134B70),
+                            backgroundColor: Color(0xfff0413f),
                           )),
                     ),
                   ),

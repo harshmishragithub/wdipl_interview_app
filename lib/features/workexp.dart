@@ -165,13 +165,13 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xffEEEEEE),
+        backgroundColor: Color(0xFFe7f1ee),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xff508C9B),
+          backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Work Experience',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Color(0xFFf0413f)),
           ),
         ),
         body: Padding(
@@ -182,7 +182,10 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
               children: [
                 Text(
                   'Are you experienced or a fresher?',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFf0413f)),
                 ),
                 SizedBox(height: 16),
                 Row(
@@ -191,9 +194,8 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                       child: RadioListTile<String>(
                         title: Text(
                           'Experienced',
-                          style: TextStyle(
-                            fontSize: 28,
-                          ),
+                          style:
+                              TextStyle(fontSize: 28, color: Color(0xFFf0413f)),
                         ),
                         value: 'Experienced',
                         groupValue: _experienceLevel,
@@ -210,9 +212,8 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                       child: RadioListTile<String>(
                         title: Text(
                           'Fresher',
-                          style: TextStyle(
-                            fontSize: 28,
-                          ),
+                          style:
+                              TextStyle(fontSize: 28, color: Color(0xFFf0413f)),
                         ),
                         value: 'Fresher',
                         groupValue: _experienceLevel,
@@ -311,7 +312,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
               child: FloatingActionButton(
                 onPressed: _submitForm,
                 shape: CircleBorder(),
-                backgroundColor: Color(0xFF134B70),
+                backgroundColor: Color(0xFFf0413f),
                 child: Icon(
                   Icons.arrow_forward,
                   size: 50,
