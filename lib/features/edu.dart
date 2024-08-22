@@ -52,7 +52,7 @@ class _DropdownPageState extends State<DropdownPage> {
     'Electrical'
   ];
 
-  final List<String> diplomaStreamOptions = ['red', 'blue', 'green'];
+  final List<String> diplomaStreamOptions = ['IT', 'Cs', 'Civil'];
 
   final Map<String, String?> selectedValues = {};
   String? selectedQualification;
