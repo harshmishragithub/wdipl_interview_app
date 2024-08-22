@@ -18,6 +18,7 @@ class ApiEndpoints {
   static const getlogicapi = "${baseurl}get_logical_que_ans";
   static const getpersonalityquestionapi = "${baseurl}get_personality_que_ans";
   static const sendpersonalqapi = "${baseurl}store_user_personality_que_ans";
-  static const sendlogoqapi =
-      "${baseurl}store_user_logical_que_ans"; //"${baseurl}get_source";
+  static const sendlogoqapi = "${baseurl}store_user_logical_que_ans";
+  static const sendtechemhapi =
+      "${baseurl}store_user_que_ans"; //"${baseurl}get_source";
 }

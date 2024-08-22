@@ -27,6 +27,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     with SingleTickerProviderStateMixin {
   List<Technology> _technologies = [];
   List<ExperienceYear> _experienceYears = [
+    ExperienceYear(id: 1, label: 'Fresher'),
     ExperienceYear(id: 2, label: '0-1 years'),
     ExperienceYear(id: 3, label: '1-3 years'),
     ExperienceYear(id: 4, label: '3-5 years'),

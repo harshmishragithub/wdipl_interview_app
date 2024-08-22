@@ -1,10 +1,12 @@
-import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test3/score4.dart';
-
 import 'dart:async';
+import 'dart:math';
 
-import 'quest4.dart';
-import 'thanku4.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wdipl_interview_app/model/getemhmodel.dart';
+import 'package:wdipl_interview_app/shared/api/base_manager.dart';
+import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
+import 'package:wdipl_interview_app/test3/thanku4.dart';
 
 class QuizController3 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -13,15 +15,153 @@ class QuizController3 extends GetxController {
   var timer = 60.obs;
   Timer? countdownTimer;
   var currentTestIndex = 0.obs;
+  var isLoading = false.obs;
   List<int> testScores = [];
   final int totalTests = 5;
+  final int dontRememberIndex = -2;
 
-  void startTest(int testIndex) {
+  List<Data> questions = <Data>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchQuestions();
+  }
+
+  void startTest(int testIndex) async {
     currentTestIndex.value = testIndex;
     currentQuestionIndex.value = 0;
     score.value = 0;
     selectedAnswerIndex.value = -1;
-    startTimer();
+
+    await fetchQuestions();
+
+    if (questions.isNotEmpty) {
+      startTimer();
+    } else {
+      log('No questions available' as num);
+      Get.snackbar(
+        'Error',
+        'No questions available',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> fetchQuestions() async {
+    isLoading.value = true;
+
+    try {
+      // Fetch data from the API
+      ResponseData response =
+          await PersonalInfoAPIServices().getTechnologyQuestion();
+
+      // Check if the response is successful and contains data
+      if (response.status == ResponseStatus.SUCCESS && response.data != null) {
+        // Parse the response data into the GetEMHTest model
+        var questionModel = GetEMHTest.fromJson(response.data);
+
+        // Check if the model's data field is not null
+        if (questionModel.data != null && questionModel.data!.isNotEmpty) {
+          // Filter questions with difficulty level "3"
+          var filteredQuestions =
+              questionModel.data!.where((q) => q.difficulty == '3').toList();
+
+          // Clear and add the filtered questions to the list
+          questions.clear();
+          questions.addAll(filteredQuestions);
+
+          log('Questions fetched: ${questions.length}' as num);
+          Get.snackbar(
+            'Success',
+            'Questions fetched successfully!',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else {
+          log('No questions found in the response' as num);
+          Get.snackbar(
+            'Error',
+            'No questions found in the response',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      } else {
+        log((response.message ?? 'Failed to fetch questions') as num);
+        Get.snackbar(
+          'Error',
+          response.message ?? 'Failed to fetch questions',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      log('An error occurred: ${e.toString()}' as num);
+      Get.snackbar(
+        'Error',
+        'An error occurred: ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void submitAnswerAndNext() async {
+    if (selectedAnswerIndex.value != dontRememberIndex &&
+        questions[currentQuestionIndex.value]
+                .answer![selectedAnswerIndex.value]
+                .isRight ==
+            '1') {
+      score.value++;
+    }
+
+    await sendAnswerData();
+
+    selectedAnswerIndex.value = -1;
+
+    if (currentQuestionIndex.value < questions.length - 1) {
+      currentQuestionIndex.value++;
+      startTimer();
+    } else {
+      countdownTimer?.cancel();
+      testScores.add(score.value);
+      Get.to(() => ThankYouPage3());
+    }
+  }
+
+  Future<void> sendAnswerData() async {
+    final questionId = questions[currentQuestionIndex.value].id;
+    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
+        ? questions[currentQuestionIndex.value]
+            .answer![selectedAnswerIndex.value]
+        : null;
+
+    Map<String, dynamic> answerData = {
+      "question_id": questionId.toString(),
+      "answer_id": selectedAnswer?.id?.toString(),
+    };
+
+    ResponseData response =
+        await PersonalInfoAPIServices().sendTechnoQuestion(answerData);
+
+    if (response.status == ResponseStatus.SUCCESS) {
+      print('Data Saved Successfully.');
+    } else {
+      print('Failed to save data');
+    }
+  }
+
+  void selectAnswer(int index) {
+    selectedAnswerIndex.value = index;
   }
 
   void startTimer() {
@@ -34,48 +174,5 @@ class QuizController3 extends GetxController {
         submitAnswerAndNext();
       }
     });
-  }
-
-  void submitAnswerAndNext() {
-    if (selectedAnswerIndex.value ==
-        question3s[currentQuestionIndex.value].correctAnswerIndex) {
-      score.value++;
-    }
-    selectedAnswerIndex.value = -1;
-
-    if (currentQuestionIndex.value < question3s.length - 1) {
-      currentQuestionIndex.value++;
-      startTimer();
-    } else {
-      countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage3());
-    }
-  }
-
-  void skipQuestion() {
-    selectedAnswerIndex.value = -1;
-    if (currentQuestionIndex.value < question3s.length - 1) {
-      currentQuestionIndex.value++;
-      startTimer();
-    } else {
-      countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage3());
-    }
-  }
-
-  Future<void> submitResults() async {
-    // Implement your API call here to submit the results
-
-    currentTestIndex.value = 0;
-    currentQuestionIndex.value = 0;
-    testScores.clear();
-
-    Get.to(() => ScorePage3());
-  }
-
-  void selectAnswer(int index) {
-    selectedAnswerIndex.value = index;
   }
 }

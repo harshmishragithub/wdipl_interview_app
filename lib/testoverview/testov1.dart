@@ -113,7 +113,7 @@ class UpcomingTestPage extends StatelessWidget {
                 Navigator.of(context).pop(); // Close the dialog
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => QuizPage()),
+                  MaterialPageRoute(builder: (context) => QuizzPage()),
                 );
               },
               child: Text('Yes'),

@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'contt4.dart';
-import 'quest4.dart';
 
-class QuizPage3 extends StatelessWidget {
+class QuizzPage3 extends StatelessWidget {
   final QuizController3 quizController = Get.put(QuizController3());
 
   @override
   Widget build(BuildContext context) {
-    quizController.startTimer();
+    quizController.startTest(quizController.currentTestIndex.value);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,7 +24,7 @@ class QuizPage3 extends StatelessWidget {
         centerTitle: true,
         title: Obx(() {
           return Text(
-            "Question ${quizController.currentQuestionIndex.value + 1}/5",
+            "Question ${quizController.currentQuestionIndex.value + 1}/${quizController.questions.length}",
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -33,14 +32,17 @@ class QuizPage3 extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.help_outline, color: Colors.black),
-            onPressed: () {
-              // Implement help or hint functionality
-            },
+            onPressed: () {},
           ),
         ],
       ),
       body: Obx(() {
-        final question = question3s[quizController.currentQuestionIndex.value];
+        if (quizController.questions.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final question =
+            quizController.questions[quizController.currentQuestionIndex.value];
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -55,7 +57,7 @@ class QuizPage3 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question3Text,
+                    question.question!,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -87,55 +89,91 @@ class QuizPage3 extends StatelessWidget {
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount: question.answers.length,
+                  itemCount: question.answer!.length + 1,
                   itemBuilder: (context, index) {
-                    final answer = question.answers[index];
-                    return GestureDetector(
-                      onTap: () {
-                        quizController.selectAnswer(index);
-                      },
-                      child: Obx(() {
-                        bool isSelected =
-                            quizController.selectedAnswerIndex.value == index;
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Color.fromARGB(255, 119, 186, 232)
-                                : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            border: isSelected
-                                ? Border.all(
-                                    color: Color.fromARGB(255, 119, 186, 232),
-                                  )
-                                : null,
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                String.fromCharCode(65 +
-                                    index), // Converts 0 -> A, 1 -> B, etc.
+                    if (index == question.answer!.length) {
+                      return GestureDetector(
+                        onTap: () {
+                          quizController
+                              .selectAnswer(quizController.dontRememberIndex);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value ==
+                                  quizController.dontRememberIndex;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "I don't remember",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Text(
-                                  answer,
-                                  style: TextStyle(fontSize: 18),
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      final answer = question.answer![index];
+                      return GestureDetector(
+                        onTap: () {
+                          quizController.selectAnswer(index);
+                        },
+                        child: Obx(() {
+                          bool isSelected =
+                              quizController.selectedAnswerIndex.value == index;
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Color.fromARGB(255, 119, 186, 232)
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: isSelected
+                                  ? Border.all(
+                                      color: Color.fromARGB(255, 119, 186, 232),
+                                    )
+                                  : null,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  String.fromCharCode(65 + index),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                              if (isSelected)
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Color.fromARGB(255, 119, 186, 232),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Text(
+                                    answer.answere!,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                                 ),
-                            ],
-                          ),
-                        );
-                      }),
-                    );
+                                if (isSelected)
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Color.fromARGB(255, 119, 186, 232),
+                                  ),
+                              ],
+                            ),
+                          );
+                        }),
+                      );
+                    }
                   },
                 ),
               ),

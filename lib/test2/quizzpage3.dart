@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:wdipl_interview_app/test2/contt3.dart';
-import 'package:wdipl_interview_app/test2/quest3.dart';
 
-class QuizPage2 extends StatelessWidget {
+import 'contt3.dart';
+
+class QuizzPage2 extends StatelessWidget {
   final QuizController2 quizController = Get.put(QuizController2());
 
   @override
   Widget build(BuildContext context) {
-    quizController.startTimer();
+    quizController.startTest(quizController.currentTestIndex.value);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,7 +24,7 @@ class QuizPage2 extends StatelessWidget {
         centerTitle: true,
         title: Obx(() {
           return Text(
-            "Question ${quizController.currentQuestionIndex.value + 1}/5",
+            "Question ${quizController.currentQuestionIndex.value + 1}/${quizController.questions.length}",
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           );
@@ -33,14 +32,17 @@ class QuizPage2 extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.help_outline, color: Colors.black),
-            onPressed: () {
-              // Implement help or hint functionality
-            },
+            onPressed: () {},
           ),
         ],
       ),
       body: Obx(() {
-        final question = question2[quizController.currentQuestionIndex.value];
+        if (quizController.questions.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final question =
+            quizController.questions[quizController.currentQuestionIndex.value];
 
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -55,7 +57,7 @@ class QuizPage2 extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    question.question2Text,
+                    question.question!,
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -87,11 +89,9 @@ class QuizPage2 extends StatelessWidget {
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
-                  itemCount:
-                      question.answers.length + 1, // +1 for "I don't remember"
+                  itemCount: question.answer!.length + 1,
                   itemBuilder: (context, index) {
-                    if (index == question.answers.length) {
-                      // The "I don't remember" option
+                    if (index == question.answer!.length) {
                       return GestureDetector(
                         onTap: () {
                           quizController
@@ -126,7 +126,7 @@ class QuizPage2 extends StatelessWidget {
                         }),
                       );
                     } else {
-                      final answer = question.answers[index];
+                      final answer = question.answer![index];
                       return GestureDetector(
                         onTap: () {
                           quizController.selectAnswer(index);
@@ -151,8 +151,7 @@ class QuizPage2 extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  String.fromCharCode(65 +
-                                      index), // Converts 0 -> A, 1 -> B, etc.
+                                  String.fromCharCode(65 + index),
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -160,7 +159,7 @@ class QuizPage2 extends StatelessWidget {
                                 SizedBox(width: 16),
                                 Expanded(
                                   child: Text(
-                                    answer,
+                                    answer.answere!,
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),
