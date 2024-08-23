@@ -232,7 +232,7 @@ class _Form1PageState extends State<Form1Page> {
             : Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: const [Color(0xFFe7f1ee), Color(0xFe7f1ee)],
+                    colors: const [Color(0xFFfefffe), Color(0xFFfefffe)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

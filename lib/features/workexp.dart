@@ -165,7 +165,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xFFe7f1ee),
+        backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xFF3e474d),

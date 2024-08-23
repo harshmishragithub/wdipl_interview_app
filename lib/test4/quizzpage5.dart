@@ -13,7 +13,7 @@ class QuizzPage4 extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

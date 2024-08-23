@@ -29,7 +29,7 @@ class UpcomingTestPage5 extends StatelessWidget {
             ),
             // Content with transparency
             Container(
-              color: Color(0xffEEEEEE),
+              color: Color(0xFFfefffe),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

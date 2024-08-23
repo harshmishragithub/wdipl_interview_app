@@ -52,8 +52,6 @@ class _DropdownPageState extends State<DropdownPage> {
     'Electrical'
   ];
 
-  final List<String> diplomaStreamOptions = ['IT', 'Cs', 'Civil'];
-
   final Map<String, String?> selectedValues = {};
   String? selectedQualification;
   String? selectedGraduation;
@@ -252,7 +250,7 @@ class _DropdownPageState extends State<DropdownPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xFFe7f1ee),
+        backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xFF3e474d),
@@ -533,16 +531,6 @@ class _DropdownPageState extends State<DropdownPage> {
                         },
                       ),
                       SizedBox(height: 16.0),
-                      _buildDropdown(
-                        hint: 'Select stream (1, 2, 3)',
-                        value: selectedDiplomaStreamOption,
-                        items: diplomaStreamOptions,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedDiplomaStreamOption = value;
-                          });
-                        },
-                      ),
                       SizedBox(height: 16.0),
                       TextField(
                         controller: diplomaPercentageController,

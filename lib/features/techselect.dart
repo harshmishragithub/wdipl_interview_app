@@ -174,7 +174,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xFFe7f1ee),
+        backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
