@@ -6,40 +6,14 @@ import 'package:wdipl_interview_app/features/personal1_Info_Screen.dart';
 import 'features/splash.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: SplashScreen(),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: WelcomeScreen(),
-    );
-  }
-}
-
 /* Made by
  Harsh Mishra  */
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: Colors.white,
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Image.asset('assets/logo.png', height: 100), // Your logo here
-          SizedBox(height: 20),
-          CircularProgressIndicator(),
-        ],
-      ),
-    ),
-  );
-}
 
 class WelcomeScreen extends StatelessWidget {
   @override

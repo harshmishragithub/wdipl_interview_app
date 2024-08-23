@@ -116,15 +116,18 @@ class QuizController extends GetxController {
   }
 
   void submitAnswerAndNext() async {
-    if (selectedAnswerIndex.value != dontRememberIndex &&
-        questions[currentQuestionIndex.value]
-                .answer![selectedAnswerIndex.value]
-                .isRight ==
-            '1') {
+    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
+            selectedAnswerIndex.value != -1
+        ? questions[currentQuestionIndex.value]
+            .answer![selectedAnswerIndex.value]
+        : null;
+
+    // Check if the answer is correct and update the score
+    if (selectedAnswer != null && selectedAnswer.isRight == '1') {
       score.value++;
     }
 
-    await sendAnswerData();
+    await sendAnswerData(selectedAnswer);
 
     selectedAnswerIndex.value = -1;
 
@@ -138,12 +141,8 @@ class QuizController extends GetxController {
     }
   }
 
-  Future<void> sendAnswerData() async {
+  Future<void> sendAnswerData(Answer? selectedAnswer) async {
     final questionId = questions[currentQuestionIndex.value].id;
-    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
-        ? questions[currentQuestionIndex.value]
-            .answer![selectedAnswerIndex.value]
-        : null;
 
     Map<String, dynamic> answerData = {
       "question_id": questionId.toString(),
@@ -171,7 +170,7 @@ class QuizController extends GetxController {
       if (this.timer.value > 0) {
         this.timer.value--;
       } else {
-        submitAnswerAndNext();
+        submitAnswerAndNext(); // Time out, submit with null answer
       }
     });
   }

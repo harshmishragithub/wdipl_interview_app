@@ -3,10 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/model/getemhmodel.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 import 'package:wdipl_interview_app/test3/thanku4.dart';
+
+import '../model/getemhmodel.dart';
 
 class QuizController3 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -65,7 +66,7 @@ class QuizController3 extends GetxController {
 
         // Check if the model's data field is not null
         if (questionModel.data != null && questionModel.data!.isNotEmpty) {
-          // Filter questions with difficulty level "3"
+          // Filter questions with difficulty level "1"
           var filteredQuestions =
               questionModel.data!.where((q) => q.difficulty == '3').toList();
 
@@ -116,15 +117,18 @@ class QuizController3 extends GetxController {
   }
 
   void submitAnswerAndNext() async {
-    if (selectedAnswerIndex.value != dontRememberIndex &&
-        questions[currentQuestionIndex.value]
-                .answer![selectedAnswerIndex.value]
-                .isRight ==
-            '1') {
+    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
+            selectedAnswerIndex.value != -1
+        ? questions[currentQuestionIndex.value]
+            .answer![selectedAnswerIndex.value]
+        : null;
+
+    // Check if the answer is correct and update the score
+    if (selectedAnswer != null && selectedAnswer.isRight == '1') {
       score.value++;
     }
 
-    await sendAnswerData();
+    await sendAnswerData(selectedAnswer);
 
     selectedAnswerIndex.value = -1;
 
@@ -138,12 +142,8 @@ class QuizController3 extends GetxController {
     }
   }
 
-  Future<void> sendAnswerData() async {
+  Future<void> sendAnswerData(Answer? selectedAnswer) async {
     final questionId = questions[currentQuestionIndex.value].id;
-    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
-        ? questions[currentQuestionIndex.value]
-            .answer![selectedAnswerIndex.value]
-        : null;
 
     Map<String, dynamic> answerData = {
       "question_id": questionId.toString(),
@@ -171,7 +171,7 @@ class QuizController3 extends GetxController {
       if (this.timer.value > 0) {
         this.timer.value--;
       } else {
-        submitAnswerAndNext();
+        submitAnswerAndNext(); // Time out, submit with null answer
       }
     });
   }
