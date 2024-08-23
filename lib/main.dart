@@ -3,15 +3,19 @@ import 'package:get/get.dart';
 
 import 'package:wdipl_interview_app/features/personal1_Info_Screen.dart';
 
+import 'features/splash.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: SplashScreen(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
       home: WelcomeScreen(),
     );
   }

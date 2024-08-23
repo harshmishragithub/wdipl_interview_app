@@ -179,7 +179,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           automaticallyImplyLeading: false,
           title: Text(
             'Technology Selection',
-            style: TextStyle(color: Color(0xFFf0413f)),
+            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
           ),
           backgroundColor: Color(0xFF3e474d),
         ),

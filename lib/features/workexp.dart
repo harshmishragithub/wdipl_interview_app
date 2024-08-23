@@ -171,7 +171,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Work Experience',
-            style: TextStyle(color: Color(0xFFf0413f)),
+            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
           ),
         ),
         body: Padding(

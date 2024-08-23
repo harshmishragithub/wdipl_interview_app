@@ -258,7 +258,7 @@ class _DropdownPageState extends State<DropdownPage> {
           backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Educational Details',
-            style: TextStyle(color: Color(0xFFf0413f)),
+            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
           ),
         ),
         body: Padding(
