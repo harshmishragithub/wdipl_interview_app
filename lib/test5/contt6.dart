@@ -91,10 +91,10 @@ class QuizController5 extends GetxController {
           );
         }
       } else {
-        log((response.message ?? 'Failed to fetch questions') as num);
+        log((response.message) as num);
         Get.snackbar(
           'Error',
-          response.message ?? 'Failed to fetch questions',
+          response.message,
           backgroundColor: Colors.red,
           colorText: Colors.white,
           snackPosition: SnackPosition.BOTTOM,

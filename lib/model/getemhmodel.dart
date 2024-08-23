@@ -36,7 +36,7 @@ class Data {
   int? noOfExp;
   String? difficulty;
   String? question;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
   List<Answer>? answer;
@@ -91,7 +91,7 @@ class Answer {
   int? questionXid;
   String? answere;
   String? isRight;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
 
