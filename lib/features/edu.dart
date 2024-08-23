@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/features/workexp.dart';
-
 import 'package:wdipl_interview_app/shared/api/api_endpoints.dart';
-
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
-import 'package:wdipl_interview_app/shared/api/network_api_services.dart'; // Add this for JSON encoding
+import 'package:wdipl_interview_app/shared/api/network_api_services.dart';
 
 class DropdownPage extends StatefulWidget {
   @override
@@ -26,18 +24,18 @@ class _DropdownPageState extends State<DropdownPage> {
     '2020',
     '2021',
     '2022',
-    '2023'
+    '2023',
   ];
 
   final List<String> graduationOptions = [
-    'B.Sc ',
+    'B.Sc',
     'BCA',
     'B.Tech',
   ];
 
   final List<String> mastersOptions = [
     'MCA',
-    'M.Sc ',
+    'M.Sc',
     'M.Tech',
     'ME',
   ];
@@ -49,7 +47,7 @@ class _DropdownPageState extends State<DropdownPage> {
     'Architecture',
     'Civil',
     'Electronics',
-    'Electrical'
+    'Electrical',
   ];
 
   final Map<String, String?> selectedValues = {};
@@ -65,7 +63,6 @@ class _DropdownPageState extends State<DropdownPage> {
   bool isPursuingDiploma = false;
   bool isPursuingMasters = false;
 
-  // Define controllers
   final TextEditingController tenthPercentageController =
       TextEditingController();
   final TextEditingController twelfthPercentageController =
@@ -74,8 +71,6 @@ class _DropdownPageState extends State<DropdownPage> {
       TextEditingController();
   final TextEditingController graduationPercentageController =
       TextEditingController();
-
-  // New TextEditingController for other text fields, if any
 
   @override
   void dispose() {
@@ -104,10 +99,8 @@ class _DropdownPageState extends State<DropdownPage> {
 
   Future<void> _submitData() async {
     try {
-      // Build the education list
       final List<Map<String, dynamic>> education = [];
 
-      // Add 10th (SSC) education details
       education.add({
         "level": "ssc",
         "course_name": "10th",
@@ -115,7 +108,6 @@ class _DropdownPageState extends State<DropdownPage> {
         "percentage": double.tryParse(tenthPercentageController.text) ?? 0.0,
       });
 
-      // Add 12th or Diploma (HSC) education details based on the selection
       if (selected12thOrDiploma == '12th') {
         education.add({
           "level": "hsc",
@@ -135,35 +127,37 @@ class _DropdownPageState extends State<DropdownPage> {
         });
       }
 
-      // Add Graduation education details if selected
       if (selectedQualification == 'Graduation') {
-        education.add({
+        final Map<String, dynamic> graduationDetails = {
           "level": "graduate",
           "course_name": selectedGraduation,
-          "stream": selectedGraduationStream,
           "year_of_passing": selectedValues['graduationYear'],
           "percentage":
               double.tryParse(graduationPercentageController.text) ?? 0.0,
-        });
+        };
+
+        if (selectedGraduation == 'B.Tech') {
+          graduationDetails['stream'] = selectedGraduationStream;
+        }
+
+        education.add(graduationDetails);
       }
 
-      // Add Masters education details if selected
       if (selectedMasters != null) {
-        education.add({
+        final Map<String, dynamic> mastersDetails = {
           "level": "postgraduate",
           "course_name": selectedMasters,
-          "stream": selectedMastersStream,
           "year_of_passing": selectedValues['mastersYear'],
-          "percentage": 0.0, // Add master's percentage if applicable
-        });
+          "percentage": 0.0, // Update if percentage is applicable
+        };
+
+        education.add(mastersDetails);
       }
 
-      // Final data structure
       final Map<String, dynamic> data = {
         "education": education,
       };
 
-      // Send the data using the sendEducation function
       ResponseData response = await sendEducation(data);
 
       if (response.status == ResponseStatus.SUCCESS) {
@@ -177,14 +171,12 @@ class _DropdownPageState extends State<DropdownPage> {
     }
   }
 
-// This method sends the education data to the server
   Future<ResponseData> sendEducation(Map<String, dynamic> data) async {
     String url = ApiEndpoints.sendeduapi;
     final response = await NetworkApiService().post(url, data);
     return response;
   }
 
-// Helper method to show SnackBar messages
   void _showSnackBar(String message, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -461,7 +453,7 @@ class _DropdownPageState extends State<DropdownPage> {
                           });
                         },
                       ),
-                      if (selectedGraduation != null) ...[
+                      if (selectedGraduation == 'B.Tech') ...[
                         SizedBox(height: 16.0),
                         _buildDropdown(
                           hint: 'Select stream',
@@ -473,51 +465,51 @@ class _DropdownPageState extends State<DropdownPage> {
                             });
                           },
                         ),
-                        SizedBox(height: 16.0),
-                        _buildDropdown(
-                          hint: 'Select passing year',
-                          value: selectedValues['graduationYear'],
-                          items: years,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedValues['graduationYear'] = value;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 16.0),
-                        TextField(
-                          controller: graduationPercentageController,
-                          decoration: InputDecoration(
-                            labelText: 'Percentage',
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (_) {
-                            _validatePercentage(graduationPercentageController);
-                          },
-                        ),
-                        SizedBox(height: 16.0),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: isPursuingGraduation,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  if (value == true) {
-                                    isPursuingGraduation = true;
-                                    isPursuingMasters = false;
-                                  } else {
-                                    isPursuingGraduation = false;
-                                  }
-                                });
-                              },
-                            ),
-                            Text('Pursuing the course'),
-                          ],
-                        ),
                       ],
+                      SizedBox(height: 16.0),
+                      _buildDropdown(
+                        hint: 'Select passing year',
+                        value: selectedValues['graduationYear'],
+                        items: years,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedValues['graduationYear'] = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+                      TextField(
+                        controller: graduationPercentageController,
+                        decoration: InputDecoration(
+                          labelText: 'Percentage',
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (_) {
+                          _validatePercentage(graduationPercentageController);
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: isPursuingGraduation,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == true) {
+                                  isPursuingGraduation = true;
+                                  isPursuingMasters = false;
+                                } else {
+                                  isPursuingGraduation = false;
+                                }
+                              });
+                            },
+                          ),
+                          Text('Pursuing the course'),
+                        ],
+                      ),
                     ] else if (selectedQualification == 'Diploma') ...[
                       SizedBox(height: 16.0),
                       _buildDropdown(
@@ -530,7 +522,6 @@ class _DropdownPageState extends State<DropdownPage> {
                           });
                         },
                       ),
-                      SizedBox(height: 16.0),
                       SizedBox(height: 16.0),
                       TextField(
                         controller: diplomaPercentageController,
@@ -586,49 +577,36 @@ class _DropdownPageState extends State<DropdownPage> {
                           });
                         },
                       ),
-                      if (selectedMasters != null) ...[
-                        SizedBox(height: 16.0),
-                        _buildDropdown(
-                          hint: 'Select stream',
-                          value: selectedMastersStream,
-                          items: streamOptions,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedMastersStream = value;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 16.0),
-                        _buildDropdown(
-                          hint: 'Select passing year',
-                          value: selectedValues['mastersYear'],
-                          items: years,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedValues['mastersYear'] = value;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 16.0),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: isPursuingMasters,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  if (value == true) {
-                                    isPursuingMasters = true;
-                                    isPursuingGraduation = false;
-                                  } else {
-                                    isPursuingMasters = false;
-                                  }
-                                });
-                              },
-                            ),
-                            Text('Pursuing the course'),
-                          ],
-                        ),
-                      ],
+                      SizedBox(height: 16.0),
+                      _buildDropdown(
+                        hint: 'Select passing year',
+                        value: selectedValues['mastersYear'],
+                        items: years,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedValues['mastersYear'] = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: isPursuingMasters,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                if (value == true) {
+                                  isPursuingMasters = true;
+                                  isPursuingGraduation = false;
+                                } else {
+                                  isPursuingMasters = false;
+                                }
+                              });
+                            },
+                          ),
+                          Text('Pursuing the course'),
+                        ],
+                      ),
                     ],
                   ],
                 ),
@@ -662,7 +640,7 @@ class _DropdownPageState extends State<DropdownPage> {
                                     selectedValues['diplomaYear'] != null &&
                                         diplomaPercentageController
                                             .text.isNotEmpty &&
-                                        selectedDiplomaStreamOption != null;
+                                        selectedDiplomaStream != null;
                               } else {
                                 canProceed = selectedValues['tenthYear'] !=
                                         null &&
@@ -689,9 +667,6 @@ class _DropdownPageState extends State<DropdownPage> {
                                 );
                                 return;
                               }
-
-                              // Submit data to API
-                              _submitData();
 
                               // Show the confirmation dialog if all required fields are filled
                               showDialog(
@@ -749,8 +724,6 @@ class _DropdownPageState extends State<DropdownPage> {
                                             Text(
                                                 "Masters Course: $selectedMasters"),
                                             Text(
-                                                "Masters Stream: $selectedMastersStream"),
-                                            Text(
                                                 "Masters Year: ${selectedValues['mastersYear']}"),
                                           ],
                                         ],
@@ -767,6 +740,8 @@ class _DropdownPageState extends State<DropdownPage> {
                                         child: Text('Confirm'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
+                                          _submitData();
+                                          // Navigate to the next screen
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
