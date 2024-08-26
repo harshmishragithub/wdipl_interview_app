@@ -38,6 +38,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   
   haptic_feedback: ^0.5.1+1
+  animate_do: ^3.3.4
 flutter_icons:
   android: true
   ios: true
@@ -79,7 +80,7 @@ flutter:
      - assets/images/logo.jpg
      - assets/images/nobg.png
      - assets/images/nobg11.png
-     
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test5/contt6.dart';
+
+import 'contt6.dart';
 
 class QuizzPage5 extends StatelessWidget {
   final QuizController5 quizController = Get.put(QuizController5());
@@ -22,9 +23,10 @@ class QuizzPage5 extends StatelessWidget {
             return Text(
               "Question ${quizController.currentQuestionIndex.value + 1}/${quizController.questions.length}",
               style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             );
           }),
           actions: [
@@ -47,43 +49,99 @@ class QuizzPage5 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xff3e474d),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Center(
-                    child: Text(
-                      question.question!,
-                      style: TextStyle(
+                // Animated question container
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: Container(
+                    key: ValueKey<int>(
+                        quizController.currentQuestionIndex.value),
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xff3e474d),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Center(
+                      child: Text(
+                        question.question!,
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                Stack(
-                  children: [
-                    LinearProgressIndicator(
-                      value: quizController.timer.value / 60.0,
-                      backgroundColor: Color.fromARGB(255, 170, 237, 255),
-                      color: Color(0xFFf0413f),
-                      minHeight: 5,
-                    ),
-                    Positioned(
-                      right: 0,
-                      child: Text(
-                        "${quizController.timer.value}s",
-                        style: TextStyle(
-                            color: Color(0xFFf0413f),
-                            fontWeight: FontWeight.bold),
+                // Enhanced Firecracker fuse animation
+                Obx(() {
+                  double progress = quizController.timer.value / 60.0;
+                  return Stack(
+                    children: [
+                      // Fuse base (Black)
+                      Container(
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      // Burning fuse effect with a spark
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        height: 8,
+                        width: MediaQuery.of(context).size.width * progress,
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.orange.withOpacity(0.8),
+                              blurRadius: 8,
+                              spreadRadius: 1,
+                              offset: Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.orangeAccent,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.orange.withOpacity(0.8),
+                                  blurRadius: 12,
+                                  spreadRadius: 2,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: AnimatedOpacity(
+                                opacity: progress > 0 ? 1.0 : 0.0,
+                                duration: Duration(milliseconds: 300),
+                                child: Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.yellowAccent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
                 SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
@@ -99,7 +157,8 @@ class QuizzPage5 extends StatelessWidget {
                             bool isSelected =
                                 quizController.selectedAnswerIndex.value ==
                                     quizController.dontRememberIndex;
-                            return Container(
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
                               margin: EdgeInsets.symmetric(vertical: 8.0),
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
@@ -115,8 +174,9 @@ class QuizzPage5 extends StatelessWidget {
                                 child: Text(
                                   "I don't remember",
                                   style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             );
@@ -132,7 +192,8 @@ class QuizzPage5 extends StatelessWidget {
                             bool isSelected =
                                 quizController.selectedAnswerIndex.value ==
                                     index;
-                            return Container(
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
                               margin: EdgeInsets.symmetric(vertical: 8.0),
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
@@ -149,8 +210,9 @@ class QuizzPage5 extends StatelessWidget {
                                   Text(
                                     String.fromCharCode(65 + index),
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   SizedBox(width: 16),
                                   Expanded(
@@ -175,20 +237,25 @@ class QuizzPage5 extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 if (quizController.selectedAnswerIndex.value != -1)
-                  ElevatedButton(
-                    onPressed: () {
-                      quizController.submitAnswerAndNext();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFf0413f),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Text(
-                      "Next",
-                      style: TextStyle(color: Colors.white),
+                  AnimatedScale(
+                    scale: 1.0,
+                    duration: Duration(milliseconds: 300),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        quizController.submitAnswerAndNext();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFf0413f),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        "Next",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 SizedBox(height: 20),
