@@ -218,11 +218,14 @@ class _Form1PageState extends State<Form1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF3e474d),
-        title: Text('Personal Questions',
-            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30)),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xFF3e474d),
+          title: Text('Personal Questions',
+              style: TextStyle(color: Color(0xFFf0413f), fontSize: 30)),
+        ),
       ),
       body: Obx(
         () => isLoading.value

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:wdipl_interview_app/features/personal1_Info_Screen.dart';
-
 import 'features/splash.dart';
 
 void main() {
@@ -19,8 +18,14 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3e474d),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/nobg.png'), // Path to your background image
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -31,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 170,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFf0413f), // orange-yellow color
+                color: Color(0xFFf0413f), // orange-red color
               ),
             ),
             Spacer(),
@@ -45,17 +50,12 @@ class WelcomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Smart Assessment ',
+              'Smart Assessment',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 26,
                 color: Color(0xfff0413f),
               ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[],
             ),
             SizedBox(height: 30),
             ElevatedButton(
@@ -66,7 +66,7 @@ class WelcomeScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFf0413f), // orange-yellow color
+                backgroundColor: Color(0xFFf0413f), // orange-red color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
