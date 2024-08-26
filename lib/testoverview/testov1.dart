@@ -65,7 +65,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
           title: Text(
             'Test part 1',
             style: TextStyle(
-              color: Color(0xFFf0413f),
+              color: Color(0xFF2c94c1),
               fontFamily: 'Raleway',
             ),
           ),
@@ -108,7 +108,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFf0413f),
+                          color: Color(0xFF2c94c1),
                           fontFamily: 'Raleway',
                         ),
                         textAlign: TextAlign.center,
@@ -118,7 +118,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
                         'Easy level test as per experience',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Color(0xFFf0413f),
+                          color: Color(0xFF2c94c1),
                           fontFamily: 'Raleway',
                         ),
                         textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Color(0xffEEEEEE),
-                              backgroundColor: Color(0xFFf0413f),
+                              backgroundColor: Color(0xFF2c94c1),
                               padding: EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -178,7 +178,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
                 Icon(
                   Icons.help_outline,
                   size: 40,
-                  color: Color(0xFFf0413f),
+                  color: Color(0xFF2c94c1),
                 ),
                 SizedBox(height: 20),
                 Text(
@@ -233,7 +233,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFFf0413f),
+                        backgroundColor: Color(0xFF2c94c1),
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(

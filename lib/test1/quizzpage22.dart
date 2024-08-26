@@ -83,7 +83,7 @@ class QuizzPage extends StatelessWidget {
                       Container(
                         height: 8,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Color(0xff3e474d),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -93,11 +93,12 @@ class QuizzPage extends StatelessWidget {
                         height: 8,
                         width: MediaQuery.of(context).size.width * progress,
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: Color(0xff246c9c),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.orange.withOpacity(0.8),
+                              color: const Color.fromARGB(255, 21, 151, 198)
+                                  .withOpacity(0.8),
                               blurRadius: 8,
                               spreadRadius: 1,
                               offset: Offset(0, 0),
@@ -112,10 +113,11 @@ class QuizzPage extends StatelessWidget {
                             height: 16,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.orangeAccent,
+                              color: Color(0xff246c9c),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.orange.withOpacity(0.8),
+                                  color: const Color.fromARGB(255, 32, 176, 208)
+                                      .withOpacity(0.8),
                                   blurRadius: 12,
                                   spreadRadius: 2,
                                   offset: Offset(0, 0),
@@ -131,7 +133,8 @@ class QuizzPage extends StatelessWidget {
                                   height: 8,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.yellowAccent,
+                                    color:
+                                        const Color.fromARGB(255, 94, 210, 252),
                                   ),
                                 ),
                               ),
@@ -163,11 +166,11 @@ class QuizzPage extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 227, 133, 132)
+                                    ? Color.fromARGB(255, 95, 180, 230)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Center(
@@ -198,11 +201,11 @@ class QuizzPage extends StatelessWidget {
                               padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color.fromARGB(255, 227, 133, 132)
+                                    ? Color.fromARGB(255, 95, 180, 230)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Row(
@@ -245,7 +248,7 @@ class QuizzPage extends StatelessWidget {
                         quizController.submitAnswerAndNext();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFf0413f),
+                        backgroundColor: Color(0xFF2c94c1),
                         padding:
                             EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                         shape: RoundedRectangleBorder(

@@ -179,7 +179,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           automaticallyImplyLeading: false,
           title: Text(
             'Technology Selection',
-            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
+            style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
           ),
           backgroundColor: Color(0xFF3e474d),
         ),
@@ -190,7 +190,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
             children: [
               Center(
                 child: Text('Choose Your Technology',
-                    style: TextStyle(color: Color(0xFFf0413f), fontSize: 55)),
+                    style: TextStyle(color: Color(0xFF2c94c1), fontSize: 55)),
               ),
               SizedBox(height: 30),
               ValueListenableBuilder<bool>(
@@ -239,7 +239,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, color: Color(0xFFf0413f)),
+              .copyWith(fontWeight: FontWeight.bold, color: Color(0xFF2c94c1)),
         ),
         SizedBox(height: 10),
         DropdownButtonFormField<T>(
@@ -275,7 +275,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFf0413f),
+                color: Color(0xFF2c94c1),
               ),
             ),
           ),
@@ -286,7 +286,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           child: FloatingActionButton(
             shape: CircleBorder(),
             onPressed: () => _showConfirmationDialog(context),
-            backgroundColor: Color(0xFFf0413f),
+            backgroundColor: Color(0xFF2c94c1),
             child: Icon(
               Icons.arrow_forward,
               size: 50,

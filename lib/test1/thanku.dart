@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wdipl_interview_app/test1/contt2.dart';
-import 'package:wdipl_interview_app/testoverview/testov2.dart';
+
+import '../testoverview/testov2.dart';
+import 'contt2.dart';
 
 class ThankYouPage extends StatefulWidget {
   @override
@@ -69,7 +70,7 @@ class _ThankYouPageState extends State<ThankYouPage>
           gradient: LinearGradient(
             colors: [
               Color(0xff3e474d),
-              Color(0xFFf0413f),
+              Color(0xFF52eefd),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -125,7 +126,7 @@ class _ThankYouPageState extends State<ThankYouPage>
                           "Start Test Part 2",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Color(0xFFf0413f),
+                            color: Color(0xFF2d84b6),
                           ),
                         ),
                       ),

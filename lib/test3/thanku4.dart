@@ -69,7 +69,7 @@ class _ThankYouPage3State extends State<ThankYouPage3>
           gradient: LinearGradient(
             colors: [
               Color(0xff3e474d),
-              Color(0xFFf0413f),
+              Color(0xFF52eefd),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -125,7 +125,7 @@ class _ThankYouPage3State extends State<ThankYouPage3>
                           "Start Test Part 4",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Color(0xFFf0413f),
+                            color: Color(0xFF2d84b6),
                           ),
                         ),
                       ),

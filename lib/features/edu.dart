@@ -248,7 +248,7 @@ class _DropdownPageState extends State<DropdownPage> {
           backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Educational Details',
-            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
+            style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
           ),
         ),
         body: Padding(
@@ -758,7 +758,7 @@ class _DropdownPageState extends State<DropdownPage> {
                             child: Icon(Icons.arrow_forward,
                                 size: 50, color: Colors.white),
                             shape: CircleBorder(),
-                            backgroundColor: Color(0xfff0413f),
+                            backgroundColor: Color(0xFF2c94c1),
                           )),
                     ),
                   ),

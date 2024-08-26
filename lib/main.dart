@@ -142,7 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               style: TextStyle(
                                 fontSize: 170,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFFf0413f), // orange-red color
+                                color: Color(0xFF2c94c1), // orange-red color
                               ),
                             ),
                           ),
@@ -159,7 +159,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           style: TextStyle(
                             fontSize: 62,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xfff0413f),
+                            color: Color(0xFF2c94c1),
                           ),
                         ),
                       ),
@@ -174,7 +174,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 26,
-                            color: Color(0xfff0413f),
+                            color: Color(0xFF2c94c1),
                           ),
                         ),
                       ),
@@ -188,7 +188,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           onPressed: _isAnimating ? null : _onProceed,
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                Color(0xFFf0413f), // orange-red color
+                                Color(0xFF2c94c1), // orange-red color
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),

@@ -224,7 +224,7 @@ class _Form1PageState extends State<Form1Page> {
           automaticallyImplyLeading: false,
           backgroundColor: Color(0xFF3e474d),
           title: Text('Personal Questions',
-              style: TextStyle(color: Color(0xFFf0413f), fontSize: 30)),
+              style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30)),
         ),
       ),
       body: Obx(
@@ -377,7 +377,7 @@ class _Form1PageState extends State<Form1Page> {
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Color(0xFFf0413f),
+          color: Color(0xFF2c94c1),
         ),
       ),
     );
@@ -406,7 +406,7 @@ class _Form1PageState extends State<Form1Page> {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(icon, color: Color(0xFFf0413f)),
+          prefixIcon: Icon(icon, color: Color(0xFF2c94c1)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -432,7 +432,7 @@ class _Form1PageState extends State<Form1Page> {
         value: value,
         decoration: InputDecoration(
           labelText: label,
-          prefixIcon: Icon(Icons.arrow_drop_down, color: Color(0xFFf0413f)),
+          prefixIcon: Icon(Icons.arrow_drop_down, color: Color(0xFF2c94c1)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -462,7 +462,7 @@ class _Form1PageState extends State<Form1Page> {
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-          backgroundColor: Color(0xFFf0413f),
+          backgroundColor: Color(0xFF2c94c1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),

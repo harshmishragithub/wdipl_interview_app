@@ -171,7 +171,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
           backgroundColor: Color(0xFF3e474d),
           title: Text(
             'Work Experience',
-            style: TextStyle(color: Color(0xFFf0413f), fontSize: 30),
+            style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
           ),
         ),
         body: Padding(
@@ -185,7 +185,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFf0413f)),
+                      color: Color(0xFF2c94c1)),
                 ),
                 SizedBox(height: 16),
                 Row(
@@ -195,7 +195,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                         title: Text(
                           'Experienced',
                           style:
-                              TextStyle(fontSize: 28, color: Color(0xFFf0413f)),
+                              TextStyle(fontSize: 28, color: Color(0xFF2c94c1)),
                         ),
                         value: 'Experienced',
                         groupValue: _experienceLevel,
@@ -213,7 +213,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                         title: Text(
                           'Fresher',
                           style:
-                              TextStyle(fontSize: 28, color: Color(0xFFf0413f)),
+                              TextStyle(fontSize: 28, color: Color(0xFF2c94c1)),
                         ),
                         value: 'Fresher',
                         groupValue: _experienceLevel,
@@ -312,7 +312,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
               child: FloatingActionButton(
                 onPressed: _submitForm,
                 shape: CircleBorder(),
-                backgroundColor: Color(0xFFf0413f),
+                backgroundColor: Color(0xFF2c94c1),
                 child: Icon(
                   Icons.arrow_forward,
                   size: 50,

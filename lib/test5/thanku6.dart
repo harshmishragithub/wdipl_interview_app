@@ -21,7 +21,7 @@ class ThankYouPage5 extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff3e474d), Color(0xFFf0413f)],
+            colors: [Color(0xff3e474d), Color(0xFF52eefd)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -74,7 +74,7 @@ class ThankYouPage5 extends StatelessWidget {
                       // Add navigation or another action here
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color(0xFFf0413f),
+                      foregroundColor: const Color(0xFF2d84b6),
                       backgroundColor: Colors.white, // Text color
                       padding: EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 15.0),
