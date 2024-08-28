@@ -168,7 +168,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
         backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF3e474d),
+          backgroundColor: Color(0xFF544b47),
           title: Text(
             'Work Experience',
             style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
@@ -285,7 +285,7 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                     );
                   }).toList(),
                 if (_experienceLevel == 'Experienced' &&
-                    _controllersList.length < 8)
+                    _controllersList.length < 15)
                   SizedBox(height: 80), // Add space for the FAB
               ],
             ),

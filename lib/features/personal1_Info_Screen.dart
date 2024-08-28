@@ -222,7 +222,7 @@ class _Form1PageState extends State<Form1Page> {
         preferredSize: Size.fromHeight(70.0),
         child: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF3e474d),
+          backgroundColor: Color(0xFF544b47),
           title: Text('Personal Questions',
               style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30)),
         ),

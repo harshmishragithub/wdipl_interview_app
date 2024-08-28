@@ -62,13 +62,13 @@ class _ThankYouPage3State extends State<ThankYouPage3>
           "Thank You",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xff3e474d), // Custom AppBar color
+        backgroundColor: Color(0xFF544b47), // Custom AppBar color
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xff3e474d),
+              Color(0xFF544b47),
               Color(0xFF52eefd),
             ],
             begin: Alignment.topCenter,

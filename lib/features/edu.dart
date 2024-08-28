@@ -245,7 +245,7 @@ class _DropdownPageState extends State<DropdownPage> {
         backgroundColor: Color(0xFFfefffe),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF3e474d),
+          backgroundColor: Color(0xFF544b47),
           title: Text(
             'Educational Details',
             style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),

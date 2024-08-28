@@ -82,7 +82,7 @@ class _UpcomingTestPageState4 extends State<UpcomingTestPage4>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xff3e474d),
+                        Color(0xFF544b47),
                         Color(0xff22272b),
                       ],
                       begin: Alignment.topLeft,

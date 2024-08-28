@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen>
           FadeTransition(
             opacity: _animation!,
             child: Image.asset(
-              'assets/images/wdi.png',
+              'assets/images/newlogo.png',
               fit: BoxFit.cover,
             ),
           ),

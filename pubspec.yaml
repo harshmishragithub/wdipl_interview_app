@@ -43,7 +43,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/wdi.png"  
+  image_path: "assets/images/newlogo.png"  
 
 
   # The following adds the Cupertino Icons font to your application.
