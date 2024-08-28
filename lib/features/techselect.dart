@@ -181,7 +181,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
             'Technology Selection',
             style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
           ),
-          backgroundColor: Color(0xFF282c31),
+          backgroundColor: Color(0xFF252324),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

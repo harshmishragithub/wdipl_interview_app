@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 import 'package:wdipl_interview_app/test4/thanku5.dart';
-
 import '../model/getlogicmodel.dart';
 
 class QuizController4 extends GetxController {
@@ -16,6 +14,7 @@ class QuizController4 extends GetxController {
   Timer? countdownTimer;
   var currentTestIndex = 0.obs;
   var isLoading = false.obs; // Define isLoading
+  var isNextButtonEnabled = true.obs; // Flag to control button state
   List<int> testScores = [];
   final int totalTests = 5;
   final int dontRememberIndex = -2;
@@ -34,6 +33,7 @@ class QuizController4 extends GetxController {
     currentQuestionIndex.value = 0;
     score.value = 0;
     selectedAnswerIndex.value = -1;
+    isNextButtonEnabled.value = true; // Enable button at the start of the test
 
     // Fetch questions from API
     await fetchQuestions();
@@ -46,7 +46,7 @@ class QuizController4 extends GetxController {
         'No questions available',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     }
   }
@@ -67,15 +67,14 @@ class QuizController4 extends GetxController {
         // Check if the model's data field is not null and contains questions
         if (questionModel.data != null && questionModel.data!.isNotEmpty) {
           questions.clear();
-          questions.addAll(
-              questionModel.data!); // Add the fetched questions to your list
+          questions.addAll(questionModel.data!); // Add the fetched questions
 
           Get.snackbar(
             'Success',
             'Questions fetched successfully!',
             backgroundColor: Colors.green,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         } else {
           Get.snackbar(
@@ -83,7 +82,7 @@ class QuizController4 extends GetxController {
             'No questions found in the response',
             backgroundColor: Colors.red,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         }
       } else {
@@ -92,7 +91,7 @@ class QuizController4 extends GetxController {
           response.message,
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (e) {
@@ -101,27 +100,11 @@ class QuizController4 extends GetxController {
         'An error occurred: ${e.toString()}',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false; // Stop loading
     }
-  }
-
-  void _handleError(String message) {
-    Get.snackbar(
-      'Error',
-      message,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
-    );
-  }
-
-  void _showSnackBar(String message, Color color) {
-    // Show snackbar or toast here, depending on your framework
-    // For example, using Flutter's GetX package:
-    Get.snackbar('Info', message, backgroundColor: color);
   }
 
   void startTimer() {
@@ -131,12 +114,14 @@ class QuizController4 extends GetxController {
       if (this.timer.value > 0) {
         this.timer.value--;
       } else {
-        submitAnswerAndNext();
+        submitAnswerAndNext(); // Time out, submit with null answer
       }
     });
   }
 
   void submitAnswerAndNext() async {
+    isNextButtonEnabled.value = false; // Disable the button on first click
+
     // Fetch the selected answer based on the current index
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
             selectedAnswerIndex.value != -1
@@ -158,6 +143,7 @@ class QuizController4 extends GetxController {
     // Move to the next question or finish the quiz
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
+      isNextButtonEnabled.value = true; // Re-enable button for next question
       startTimer();
     } else {
       countdownTimer?.cancel();

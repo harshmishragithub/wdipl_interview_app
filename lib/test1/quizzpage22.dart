@@ -67,7 +67,7 @@ class QuizzPage extends StatelessWidget {
                         quizController.currentQuestionIndex.value),
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Color(0xff3e474d),
+                      color: Color(0xFF252324),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(
@@ -93,7 +93,7 @@ class QuizzPage extends StatelessWidget {
                       Container(
                         height: 8,
                         decoration: BoxDecoration(
-                          color: Color(0xff3e474d),
+                          color: Color(0xFF252324),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -253,23 +253,27 @@ class QuizzPage extends StatelessWidget {
                   AnimatedScale(
                     scale: 1.0,
                     duration: Duration(milliseconds: 300),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        quizController.submitAnswerAndNext();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFe21f88),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    child: Obx(() {
+                      return ElevatedButton(
+                        onPressed: quizController.isNextButtonEnabled.value
+                            ? () {
+                                quizController.submitAnswerAndNext();
+                              }
+                            : null, // Disable the button when clicked
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFe21f88),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        "Next",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                        child: Text(
+                          "Next",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }),
                   ),
                 SizedBox(height: 20),
               ],

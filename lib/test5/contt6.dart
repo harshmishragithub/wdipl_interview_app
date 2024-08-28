@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
@@ -17,6 +15,7 @@ class QuizController5 extends GetxController {
   Timer? countdownTimer;
   var currentTestIndex = 0.obs;
   var isLoading = false.obs; // Define isLoading
+  var isNextButtonEnabled = true.obs; // Flag to control button state
   List<int> testScores = [];
   final int totalTests = 5;
   final int dontRememberIndex = -2;
@@ -35,6 +34,7 @@ class QuizController5 extends GetxController {
     currentQuestionIndex.value = 0;
     score.value = 0;
     selectedAnswerIndex.value = -1;
+    isNextButtonEnabled.value = true; // Enable button at the start of the test
 
     // Fetch questions from API
     await fetchQuestions();
@@ -47,7 +47,7 @@ class QuizController5 extends GetxController {
         'No questions available',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     }
   }
@@ -68,15 +68,14 @@ class QuizController5 extends GetxController {
         // Check if the model's data field is not null and contains questions
         if (questionModel.data != null && questionModel.data!.isNotEmpty) {
           questions.clear();
-          questions.addAll(
-              questionModel.data!); // Add the fetched questions to your list
+          questions.addAll(questionModel.data!); // Add the fetched questions
 
           Get.snackbar(
             'Success',
             'Questions fetched successfully!',
             backgroundColor: Colors.green,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         } else {
           Get.snackbar(
@@ -84,7 +83,7 @@ class QuizController5 extends GetxController {
             'No questions found in the response',
             backgroundColor: Colors.red,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         }
       } else {
@@ -93,7 +92,7 @@ class QuizController5 extends GetxController {
           response.message,
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (e) {
@@ -102,7 +101,7 @@ class QuizController5 extends GetxController {
         'An error occurred: ${e.toString()}',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false; // Stop loading
@@ -115,7 +114,7 @@ class QuizController5 extends GetxController {
       message,
       backgroundColor: Colors.red,
       colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
     );
   }
 
@@ -138,6 +137,8 @@ class QuizController5 extends GetxController {
   }
 
   void submitAnswerAndNext() async {
+    isNextButtonEnabled.value = false; // Disable the button on first click
+
     // Fetch the selected answer based on the current index
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
             selectedAnswerIndex.value != -1
@@ -159,6 +160,7 @@ class QuizController5 extends GetxController {
     // Move to the next question or finish the quiz
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
+      isNextButtonEnabled.value = true; // Re-enable button for next question
       startTimer();
     } else {
       countdownTimer?.cancel();
@@ -169,25 +171,25 @@ class QuizController5 extends GetxController {
 
   Future<void> sendAnswerData(Answer? selectedAnswer) async {
     final questionId = questions[currentQuestionIndex.value].id;
-    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
-        ? questions[currentQuestionIndex.value]
-            .answer![selectedAnswerIndex.value]
-        : null;
 
+    // Prepare the answer data payload
     Map<String, dynamic> answerData = {
       "question_id": questionId.toString(),
       "answer_id": selectedAnswer?.id?.toString(),
     };
 
-    ResponseData response =
-        await PersonalInfoAPIServices().sendPersonalityQuestion(answerData);
+    try {
+      // Send the answer data to the server
+      ResponseData response =
+          await PersonalInfoAPIServices().sendPersonalityQuestion(answerData);
 
-    if (response.status == ResponseStatus.SUCCESS) {
-      print('Data Saved Successfully.');
-      // Optionally, handle the response data
-      // Example: String token = response.data['data']['token'];
-    } else {
-      print('Failed to save data');
+      if (response.status == ResponseStatus.SUCCESS) {
+        print('Data Saved Successfully.');
+      } else {
+        print('Failed to save data');
+      }
+    } catch (e) {
+      print('An error occurred while sending answer data: ${e.toString()}');
     }
   }
 

@@ -17,6 +17,7 @@ class QuizController2 extends GetxController {
   Timer? countdownTimer;
   var currentTestIndex = 0.obs;
   var isLoading = false.obs;
+  var isNextButtonEnabled = true.obs; // Flag to control button state
   List<int> testScores = [];
   final int totalTests = 5;
   final int dontRememberIndex = -2;
@@ -34,6 +35,7 @@ class QuizController2 extends GetxController {
     currentQuestionIndex.value = 0;
     score.value = 0;
     selectedAnswerIndex.value = -1;
+    isNextButtonEnabled.value = true; // Enable button at the start of the test
 
     await fetchQuestions();
 
@@ -45,7 +47,7 @@ class QuizController2 extends GetxController {
         'No questions available',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     }
   }
@@ -78,7 +80,7 @@ class QuizController2 extends GetxController {
             'Questions fetched successfully!',
             backgroundColor: Colors.green,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         } else {
           Get.snackbar(
@@ -86,7 +88,7 @@ class QuizController2 extends GetxController {
             'No questions found in the response',
             backgroundColor: Colors.red,
             colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
           );
         }
       } else {
@@ -95,7 +97,7 @@ class QuizController2 extends GetxController {
           response.message,
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (e) {
@@ -104,7 +106,7 @@ class QuizController2 extends GetxController {
         'An error occurred: ${e.toString()}',
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isLoading.value = false;
@@ -112,6 +114,8 @@ class QuizController2 extends GetxController {
   }
 
   void submitAnswerAndNext() async {
+    isNextButtonEnabled.value = false; // Disable the button on first click
+
     // Fetch the selected answer based on the current index
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
             selectedAnswerIndex.value != -1
@@ -133,6 +137,7 @@ class QuizController2 extends GetxController {
     // Check if there are more questions to proceed to the next one
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
+      isNextButtonEnabled.value = true; // Re-enable for the next question
       startTimer(); // Start the timer for the next question
     } else {
       // If all questions are answered, stop the timer and navigate to the Thank You page
