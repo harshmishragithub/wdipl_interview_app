@@ -67,30 +67,6 @@ class ThankYouPage5 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 40),
-                FadeInUp(
-                  duration: Duration(milliseconds: 1400),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Add navigation or another action here
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color(0xFF2d84b6),
-                      backgroundColor: Colors.white, // Text color
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 40.0, vertical: 15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    child: Text(
-                      "Continue",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
