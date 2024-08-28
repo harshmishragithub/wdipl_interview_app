@@ -16,12 +16,12 @@ class ThankYouPage5 extends StatelessWidget {
           "Thank You",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF544b47), // Custom AppBar color
+        backgroundColor: Color(0xFFe21f88), // Custom AppBar color
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF544b47), Color(0xFF52eefd)],
+            colors: [Color(0xFFe21f88), Color(0xFF52eefd)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

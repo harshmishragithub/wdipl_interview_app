@@ -40,7 +40,6 @@ class QuizController3 extends GetxController {
     if (questions.isNotEmpty) {
       startTimer();
     } else {
-      log('No questions available' as num);
       Get.snackbar(
         'Error',
         'No questions available',
@@ -68,7 +67,7 @@ class QuizController3 extends GetxController {
         if (questionModel.data != null && questionModel.data!.isNotEmpty) {
           // Filter questions with difficulty level "1"
           var filteredQuestions =
-              questionModel.data!.where((q) => q.difficulty == '2').toList();
+              questionModel.data!.where((q) => q.difficulty == '3').toList();
 
           // Clear and add the filtered questions to the list
           questions.clear();
@@ -82,7 +81,6 @@ class QuizController3 extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
           );
         } else {
-          log('No questions found in the response' as num);
           Get.snackbar(
             'Error',
             'No questions found in the response',
@@ -92,7 +90,6 @@ class QuizController3 extends GetxController {
           );
         }
       } else {
-        log(response.message as num);
         Get.snackbar(
           'Error',
           response.message,
@@ -102,7 +99,6 @@ class QuizController3 extends GetxController {
         );
       }
     } catch (e) {
-      log('An error occurred: ${e.toString()}' as num);
       Get.snackbar(
         'Error',
         'An error occurred: ${e.toString()}',

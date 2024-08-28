@@ -222,7 +222,7 @@ class _Form1PageState extends State<Form1Page> {
         preferredSize: Size.fromHeight(70.0),
         child: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFF544b47),
+          backgroundColor: Color(0xFF282c31),
           title: Text('Personal Questions',
               style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30)),
         ),
@@ -462,7 +462,7 @@ class _Form1PageState extends State<Form1Page> {
         },
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-          backgroundColor: Color(0xFF2c94c1),
+          backgroundColor: Color(0xFFe21f88),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),

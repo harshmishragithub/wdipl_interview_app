@@ -104,7 +104,7 @@ class QuizzPage3 extends StatelessWidget {
                         height: 8,
                         width: MediaQuery.of(context).size.width * progress,
                         decoration: BoxDecoration(
-                          color: Color(0xff246c9c),
+                          color: Color(0xFFe21f88),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: [
                             BoxShadow(
@@ -238,7 +238,7 @@ class QuizzPage3 extends StatelessWidget {
                                   if (isSelected)
                                     Icon(
                                       Icons.check_circle,
-                                      color: Color.fromARGB(255, 3, 1, 1),
+                                      color: Color(0xFFe21f88),
                                     ),
                                 ],
                               ),
@@ -259,7 +259,7 @@ class QuizzPage3 extends StatelessWidget {
                         quizController.submitAnswerAndNext();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF2c94c1),
+                        backgroundColor: Color(0xFFe21f88),
                         padding:
                             EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                         shape: RoundedRectangleBorder(

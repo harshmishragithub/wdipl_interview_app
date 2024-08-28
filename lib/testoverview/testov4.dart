@@ -69,7 +69,7 @@ class _UpcomingTestPageState4 extends State<UpcomingTestPage4>
               fontFamily: 'Raleway',
             ),
           ),
-          backgroundColor: Color(0xff3e474d),
+          backgroundColor: Color(0xFF282c31),
           elevation: 0,
         ),
         body: Stack(
@@ -135,7 +135,7 @@ class _UpcomingTestPageState4 extends State<UpcomingTestPage4>
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Color(0xffEEEEEE),
-                              backgroundColor: Color(0xFF2c94c1),
+                              backgroundColor: Color(0xFFe21f88),
                               padding: EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -233,7 +233,7 @@ class _UpcomingTestPageState4 extends State<UpcomingTestPage4>
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF2c94c1),
+                        backgroundColor: Color(0xFFe21f88),
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(

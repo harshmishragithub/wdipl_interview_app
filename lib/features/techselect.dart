@@ -181,7 +181,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
             'Technology Selection',
             style: TextStyle(color: Color(0xFF2c94c1), fontSize: 30),
           ),
-          backgroundColor: Color(0xFF544b47),
+          backgroundColor: Color(0xFF282c31),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -286,7 +286,7 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
           child: FloatingActionButton(
             shape: CircleBorder(),
             onPressed: () => _showConfirmationDialog(context),
-            backgroundColor: Color(0xFF2c94c1),
+            backgroundColor: Color(0xFFe21f88),
             child: Icon(
               Icons.arrow_forward,
               size: 50,

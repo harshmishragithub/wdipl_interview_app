@@ -32,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xFF544b47), // Background color
+          color: Color(0xFF282c31), // Background color
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: screenSize.width * 0.2, // Scalable font size
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2c94c1), // Blue color
+                color: Color(0xFFe21f88), // Blue color
               ),
             ),
             Spacer(),
@@ -70,7 +70,7 @@ class WelcomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _onProceed(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF2c94c1), // Blue color
+                backgroundColor: Color(0xFFe21f88), // Blue color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),

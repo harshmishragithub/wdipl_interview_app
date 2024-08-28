@@ -62,23 +62,25 @@ class Data {
 class Answer {
   int? id;
   int? personalityQuestionsXid;
-  String? answere;
+  String? answer;
 
   var isRight;
 
-  Answer({this.id, this.personalityQuestionsXid, this.answere});
+  var answere;
+
+  Answer({this.id, this.personalityQuestionsXid, this.answer});
 
   Answer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     personalityQuestionsXid = json['personality_questions_xid'];
-    answere = json['answere'];
+    answer = json['answer'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['personality_questions_xid'] = this.personalityQuestionsXid;
-    data['answere'] = this.answere;
+    data['answer'] = this.answer;
     return data;
   }
 }

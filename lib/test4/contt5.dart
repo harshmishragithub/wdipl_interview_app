@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,7 +41,6 @@ class QuizController4 extends GetxController {
     if (questions.isNotEmpty) {
       startTimer();
     } else {
-      log('No questions available' as num);
       Get.snackbar(
         'Error',
         'No questions available',
@@ -80,7 +78,6 @@ class QuizController4 extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
           );
         } else {
-          log('No questions found in the response' as num);
           Get.snackbar(
             'Error',
             'No questions found in the response',
@@ -90,7 +87,6 @@ class QuizController4 extends GetxController {
           );
         }
       } else {
-        log(response.message as num);
         Get.snackbar(
           'Error',
           response.message,
@@ -100,7 +96,6 @@ class QuizController4 extends GetxController {
         );
       }
     } catch (e) {
-      log('An error occurred: ${e.toString()}' as num);
       Get.snackbar(
         'Error',
         'An error occurred: ${e.toString()}',
@@ -114,7 +109,6 @@ class QuizController4 extends GetxController {
   }
 
   void _handleError(String message) {
-    log(message as num);
     Get.snackbar(
       'Error',
       message,
@@ -174,25 +168,26 @@ class QuizController4 extends GetxController {
 
   Future<void> sendAnswerData(Answer? selectedAnswer) async {
     final questionId = questions[currentQuestionIndex.value].id;
-    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
-        ? questions[currentQuestionIndex.value]
-            .answer![selectedAnswerIndex.value]
-        : null;
 
+    // Prepare the answer data payload
     Map<String, dynamic> answerData = {
-      "question_id": questionId.toString(),
+      "question_id": questionId?.toString(),
       "answer_id": selectedAnswer?.id?.toString(),
     };
 
-    ResponseData response =
-        await PersonalInfoAPIServices().sendLogicalQuestion(answerData);
+    try {
+      // Send the answer data to the server
+      ResponseData response =
+          await PersonalInfoAPIServices().sendLogicalQuestion(answerData);
 
-    if (response.status == ResponseStatus.SUCCESS) {
-      print('Data Saved Successfully.');
-      // Optionally, handle the response data
-      // Example: String token = response.data['data']['token'];
-    } else {
-      print('Failed to save data');
+      if (response.status == ResponseStatus.SUCCESS) {
+        print('Data Saved Successfully.');
+        // Optionally, handle the response data
+      } else {
+        print('Failed to save data: ${response.message}');
+      }
+    } catch (e) {
+      print('An error occurred while sending answer data: ${e.toString()}');
     }
   }
 

@@ -1,5 +1,8 @@
+// Ensure this path is correct based on your directory structure
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'contt5.dart';
 
 class QuizzPage4 extends StatelessWidget {
@@ -82,7 +85,7 @@ class QuizzPage4 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                // Timer progress indicator
+                // Enhanced Firecracker fuse animation
                 Obx(() {
                   double progress = quizController.timer.value / 60.0;
                   return Stack(
@@ -91,7 +94,7 @@ class QuizzPage4 extends StatelessWidget {
                       Container(
                         height: 8,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Color(0xff3e474d),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -101,7 +104,7 @@ class QuizzPage4 extends StatelessWidget {
                         height: 8,
                         width: MediaQuery.of(context).size.width * progress,
                         decoration: BoxDecoration(
-                          color: Color(0xff246c9c),
+                          color: Color(0xFFe21f88),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: [
                             BoxShadow(
@@ -178,7 +181,7 @@ class QuizzPage4 extends StatelessWidget {
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Center(
@@ -213,7 +216,7 @@ class QuizzPage4 extends StatelessWidget {
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Row(
@@ -228,14 +231,14 @@ class QuizzPage4 extends StatelessWidget {
                                   SizedBox(width: 16),
                                   Expanded(
                                     child: Text(
-                                      answer.answere!,
+                                      answer.answer!,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                   if (isSelected)
                                     Icon(
                                       Icons.check_circle,
-                                      color: Color.fromARGB(255, 3, 1, 1),
+                                      color: Color(0xFFe21f88),
                                     ),
                                 ],
                               ),
@@ -256,7 +259,7 @@ class QuizzPage4 extends StatelessWidget {
                         quizController.submitAnswerAndNext();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF2c94c1),
+                        backgroundColor: Color(0xFFe21f88),
                         padding:
                             EdgeInsets.symmetric(vertical: 14, horizontal: 24),
                         shape: RoundedRectangleBorder(
