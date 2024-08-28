@@ -24,61 +24,70 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen size
+    final Size screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xFF544b47), // Updated background color
+          color: Color(0xFF544b47), // Background color
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 50),
+            SizedBox(height: screenSize.height * 0.05),
             Text(
               'WDIPL',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 170,
+                fontSize: screenSize.width * 0.2, // Scalable font size
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2c94c1), // blue color
+                color: Color(0xFF2c94c1), // Blue color
               ),
             ),
             Spacer(),
             Text(
               'Welcome',
               style: TextStyle(
-                fontSize: 62,
+                fontSize: screenSize.width * 0.1, // Scalable font size
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF2c94c1),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: screenSize.height * 0.01),
             Text(
               'Smart Assessment',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 26,
+                fontSize: screenSize.width * 0.06, // Scalable font size
                 color: Color(0xFF2c94c1),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: screenSize.height * 0.05),
             ElevatedButton(
               onPressed: () => _onProceed(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF2c94c1), // blue color
+                backgroundColor: Color(0xFF2c94c1), // Blue color
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenSize.width * 0.2,
+                  vertical: screenSize.height * 0.025,
+                ),
               ),
               child: Text(
                 'Proceed',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: screenSize.width * 0.06, // Scalable font size
                   color: Colors.white,
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: screenSize.height * 0.02),
             Spacer(),
           ],
         ),
