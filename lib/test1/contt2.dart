@@ -73,7 +73,6 @@ class QuizController extends GetxController {
           questions.clear();
           questions.addAll(filteredQuestions);
 
-          log('Questions fetched: ${questions.length}' as num);
           Get.snackbar(
             'Success',
             'Questions fetched successfully!',
@@ -92,7 +91,7 @@ class QuizController extends GetxController {
           );
         }
       } else {
-        log((response.message) as num);
+        log(response.message as num);
         Get.snackbar(
           'Error',
           response.message,
@@ -116,6 +115,7 @@ class QuizController extends GetxController {
   }
 
   void submitAnswerAndNext() async {
+    // Fetch the selected answer based on the current index
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
             selectedAnswerIndex.value != -1
         ? questions[currentQuestionIndex.value]
@@ -127,17 +127,21 @@ class QuizController extends GetxController {
       score.value++;
     }
 
+    // Send the selected answer data to the server or process it further
     await sendAnswerData(selectedAnswer);
 
+    // Reset the selected answer index
     selectedAnswerIndex.value = -1;
 
+    // Check if there are more questions to proceed to the next one
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
-      startTimer();
+      startTimer(); // Start the timer for the next question
     } else {
+      // If all questions are answered, stop the timer and navigate to the Thank You page
       countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage());
+      testScores.add(score.value); // Store the score
+      Get.to(() => ThankYouPage()); // Navigate to the Thank You page
     }
   }
 

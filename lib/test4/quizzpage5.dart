@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'contt5.dart';
 
 class QuizzPage4 extends StatelessWidget {
@@ -37,8 +36,17 @@ class QuizzPage4 extends StatelessWidget {
           ],
         ),
         body: Obx(() {
-          if (quizController.questions.isEmpty) {
+          if (quizController.isLoading.value) {
             return Center(child: CircularProgressIndicator());
+          }
+
+          if (quizController.questions.isEmpty) {
+            return Center(
+              child: Text(
+                'No questions available.',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
           }
 
           final question = quizController
@@ -74,7 +82,7 @@ class QuizzPage4 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                // Enhanced Firecracker fuse animation
+                // Timer progress indicator
                 Obx(() {
                   double progress = quizController.timer.value / 60.0;
                   return Stack(

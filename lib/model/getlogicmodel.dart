@@ -33,25 +33,13 @@ class GetLogicModel {
 class Data {
   int? id;
   String? question;
-  Null deletedAt;
-  String? createdAt;
-  String? updatedAt;
   List<Answer>? answer;
 
-  Data(
-      {this.id,
-      this.question,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.answer});
+  Data({this.id, this.question, this.answer});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     question = json['question'];
-    deletedAt = json['deleted_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     if (json['answer'] != null) {
       answer = <Answer>[];
       json['answer'].forEach((v) {
@@ -64,9 +52,6 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['question'] = this.question;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     if (this.answer != null) {
       data['answer'] = this.answer!.map((v) => v.toJson()).toList();
     }
@@ -76,41 +61,24 @@ class Data {
 
 class Answer {
   int? id;
-  int? questionXid;
+  int? logicalQuestionsXid;
   String? answere;
-  int? isRight;
-  Null deletedAt;
-  String? createdAt;
-  String? updatedAt;
 
-  Answer(
-      {this.id,
-      this.questionXid,
-      this.answere,
-      this.isRight,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt});
+  var isRight;
+
+  Answer({this.id, this.logicalQuestionsXid, this.answere});
 
   Answer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    questionXid = json['question_xid'];
+    logicalQuestionsXid = json['logical_questions_xid'];
     answere = json['answere'];
-    isRight = json['is_right'];
-    deletedAt = json['deleted_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['question_xid'] = this.questionXid;
+    data['logical_questions_xid'] = this.logicalQuestionsXid;
     data['answere'] = this.answere;
-    data['is_right'] = this.isRight;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

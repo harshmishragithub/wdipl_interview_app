@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
-import 'package:wdipl_interview_app/test3/thanku4.dart';
 
 import '../model/getemhmodel.dart';
+import 'thanku4.dart';
 
 class QuizController3 extends GetxController {
   var currentQuestionIndex = 0.obs;
@@ -68,13 +68,12 @@ class QuizController3 extends GetxController {
         if (questionModel.data != null && questionModel.data!.isNotEmpty) {
           // Filter questions with difficulty level "1"
           var filteredQuestions =
-              questionModel.data!.where((q) => q.difficulty == '3').toList();
+              questionModel.data!.where((q) => q.difficulty == '2').toList();
 
           // Clear and add the filtered questions to the list
           questions.clear();
           questions.addAll(filteredQuestions);
 
-          log('Questions fetched: ${questions.length}' as num);
           Get.snackbar(
             'Success',
             'Questions fetched successfully!',
@@ -93,7 +92,7 @@ class QuizController3 extends GetxController {
           );
         }
       } else {
-        log((response.message) as num);
+        log(response.message as num);
         Get.snackbar(
           'Error',
           response.message,
@@ -117,6 +116,7 @@ class QuizController3 extends GetxController {
   }
 
   void submitAnswerAndNext() async {
+    // Fetch the selected answer based on the current index
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
             selectedAnswerIndex.value != -1
         ? questions[currentQuestionIndex.value]
@@ -128,17 +128,21 @@ class QuizController3 extends GetxController {
       score.value++;
     }
 
+    // Send the selected answer data to the server or process it further
     await sendAnswerData(selectedAnswer);
 
+    // Reset the selected answer index
     selectedAnswerIndex.value = -1;
 
+    // Check if there are more questions to proceed to the next one
     if (currentQuestionIndex.value < questions.length - 1) {
       currentQuestionIndex.value++;
-      startTimer();
+      startTimer(); // Start the timer for the next question
     } else {
+      // If all questions are answered, stop the timer and navigate to the Thank You page
       countdownTimer?.cancel();
-      testScores.add(score.value);
-      Get.to(() => ThankYouPage3());
+      testScores.add(score.value); // Store the score
+      Get.to(() => ThankYouPage3()); // Navigate to the Thank You page
     }
   }
 

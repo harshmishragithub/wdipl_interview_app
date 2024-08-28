@@ -32,35 +32,26 @@ class GetEMHTest {
 
 class Data {
   int? id;
-  int? techNameXid;
+  int? techMastersXid;
   int? noOfExp;
   String? difficulty;
   String? question;
-  Null deletedAt;
-  String? createdAt;
-  String? updatedAt;
   List<Answer>? answer;
 
   Data(
       {this.id,
-      this.techNameXid,
+      this.techMastersXid,
       this.noOfExp,
       this.difficulty,
       this.question,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt,
       this.answer});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    techNameXid = json['tech_name_xid'];
+    techMastersXid = json['tech_masters_xid'];
     noOfExp = json['no_of_exp'];
     difficulty = json['difficulty'];
     question = json['question'];
-    deletedAt = json['deleted_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
     if (json['answer'] != null) {
       answer = <Answer>[];
       json['answer'].forEach((v) {
@@ -72,13 +63,10 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['tech_name_xid'] = this.techNameXid;
+    data['tech_masters_xid'] = this.techMastersXid;
     data['no_of_exp'] = this.noOfExp;
     data['difficulty'] = this.difficulty;
     data['question'] = this.question;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     if (this.answer != null) {
       data['answer'] = this.answer!.map((v) => v.toJson()).toList();
     }
@@ -89,40 +77,23 @@ class Data {
 class Answer {
   int? id;
   int? questionXid;
-  String? answere;
-  String? isRight;
-  Null deletedAt;
-  String? createdAt;
-  String? updatedAt;
+  String? answer;
 
-  Answer(
-      {this.id,
-      this.questionXid,
-      this.answere,
-      this.isRight,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt});
+  Answer({this.id, this.questionXid, this.answer});
 
   Answer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     questionXid = json['question_xid'];
-    answere = json['answere'];
-    isRight = json['is_right'];
-    deletedAt = json['deleted_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    answer = json['answer'];
   }
+
+  get isRight => null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['question_xid'] = this.questionXid;
-    data['answere'] = this.answere;
-    data['is_right'] = this.isRight;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['answer'] = this.answer;
     return data;
   }
 }

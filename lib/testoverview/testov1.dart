@@ -69,7 +69,7 @@ class _UpcomingTestPageState extends State<UpcomingTestPage>
               fontFamily: 'Raleway',
             ),
           ),
-          backgroundColor: Color(0xff3e474d),
+          backgroundColor: Color(0xFF544b47),
           elevation: 0,
         ),
         body: Stack(

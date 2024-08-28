@@ -1,7 +1,8 @@
+// Ensure this path is correct based on your directory structure
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'contt3.dart';
+import 'package:wdipl_interview_app/test2/contt3.dart';
 
 class QuizzPage2 extends StatelessWidget {
   final QuizController2 quizController = Get.put(QuizController2());
@@ -37,8 +38,17 @@ class QuizzPage2 extends StatelessWidget {
           ],
         ),
         body: Obx(() {
-          if (quizController.questions.isEmpty) {
+          if (quizController.isLoading.value) {
             return Center(child: CircularProgressIndicator());
+          }
+
+          if (quizController.questions.isEmpty) {
+            return Center(
+              child: Text(
+                'No questions available.',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
           }
 
           final question = quizController
@@ -83,7 +93,7 @@ class QuizzPage2 extends StatelessWidget {
                       Container(
                         height: 8,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Color(0xff3e474d),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -170,7 +180,7 @@ class QuizzPage2 extends StatelessWidget {
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Center(
@@ -205,7 +215,7 @@ class QuizzPage2 extends StatelessWidget {
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                                 border: isSelected
-                                    ? Border.all(color: Colors.black)
+                                    ? Border.all(color: Color(0xFF93fcff))
                                     : null,
                               ),
                               child: Row(
@@ -220,7 +230,7 @@ class QuizzPage2 extends StatelessWidget {
                                   SizedBox(width: 16),
                                   Expanded(
                                     child: Text(
-                                      answer.answere!,
+                                      answer.answer!,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                   ),

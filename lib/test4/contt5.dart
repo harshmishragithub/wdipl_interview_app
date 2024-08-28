@@ -72,7 +72,6 @@ class QuizController4 extends GetxController {
           questions.addAll(
               questionModel.data!); // Add the fetched questions to your list
 
-          log('Questions fetched: ${questions.length}' as num);
           Get.snackbar(
             'Success',
             'Questions fetched successfully!',
@@ -91,7 +90,7 @@ class QuizController4 extends GetxController {
           );
         }
       } else {
-        log((response.message) as num);
+        log(response.message as num);
         Get.snackbar(
           'Error',
           response.message,
@@ -144,17 +143,20 @@ class QuizController4 extends GetxController {
   }
 
   void submitAnswerAndNext() async {
-    // Check if the selected answer is correct (except for "I don't remember")
-    if (selectedAnswerIndex.value != dontRememberIndex &&
-        questions[currentQuestionIndex.value]
-                .answer![selectedAnswerIndex.value]
-                .isRight ==
-            1) {
+    // Fetch the selected answer based on the current index
+    final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex &&
+            selectedAnswerIndex.value != -1
+        ? questions[currentQuestionIndex.value]
+            .answer![selectedAnswerIndex.value]
+        : null;
+
+    // Check if the selected answer is correct (using the isRight field)
+    if (selectedAnswer != null && selectedAnswer.isRight == 1) {
       score.value++;
     }
 
     // Send answer data to the server
-    await sendAnswerData();
+    await sendAnswerData(selectedAnswer);
 
     // Reset the selected answer
     selectedAnswerIndex.value = -1;
@@ -170,7 +172,7 @@ class QuizController4 extends GetxController {
     }
   }
 
-  Future<void> sendAnswerData() async {
+  Future<void> sendAnswerData(Answer? selectedAnswer) async {
     final questionId = questions[currentQuestionIndex.value].id;
     final selectedAnswer = selectedAnswerIndex.value != dontRememberIndex
         ? questions[currentQuestionIndex.value]

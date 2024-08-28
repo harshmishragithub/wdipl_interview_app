@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'contt2.dart';
+// Ensure this path is correct based on your directory structure
 
 class QuizzPage extends StatelessWidget {
   final QuizController quizController = Get.put(QuizController());
@@ -37,8 +38,17 @@ class QuizzPage extends StatelessWidget {
           ],
         ),
         body: Obx(() {
-          if (quizController.questions.isEmpty) {
+          if (quizController.isLoading.value) {
             return Center(child: CircularProgressIndicator());
+          }
+
+          if (quizController.questions.isEmpty) {
+            return Center(
+              child: Text(
+                'No questions available.',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
           }
 
           final question = quizController
@@ -220,7 +230,7 @@ class QuizzPage extends StatelessWidget {
                                   SizedBox(width: 16),
                                   Expanded(
                                     child: Text(
-                                      answer.answere!,
+                                      answer.answer!,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                   ),
