@@ -12,10 +12,6 @@ import '../model/source_drop.dart';
 import '../shared/api/base_manager.dart';
 import '../shared/api/repos/userdet_api.dart';
 
-void main() {
-  runApp(Form1Page());
-}
-
 // Main form page with state management
 class Form1Page extends StatefulWidget {
   const Form1Page({super.key});
@@ -114,6 +110,34 @@ class _Form1PageState extends State<Form1Page> {
   void _submitForm() async {
     try {
       if (_formKey.currentState!.validate()) {
+        // Phone number validation
+        final phoneValidationMessage =
+            _validatePhoneNumber(_contactController.text);
+        if (phoneValidationMessage != null) {
+          _showSpecificWarningDialog(
+              context, 'Invalid Phone Number', phoneValidationMessage);
+          return;
+        }
+
+        // Email validation
+        final emailValidationMessage = _validateEmail(_emailController.text);
+        if (emailValidationMessage != null) {
+          _showSpecificWarningDialog(
+              context, 'Invalid Email Address', emailValidationMessage);
+          return;
+        }
+
+        // Age validation
+        final DateTime dob =
+            DateFormat('yyyy/MM/dd').parse(_dateController.text);
+        final int age = _calculateAge(dob);
+        if (age < 18) {
+          _showSpecificWarningDialog(context, 'Age Restriction',
+              'You must be at least 18 years old to submit this form.');
+          return;
+        }
+
+        // If all validations pass, proceed with submission
         Map<String, dynamic> formData = {
           "name": _nameController.text,
           "source": "2", // Static value, update if dynamic selection needed
@@ -147,11 +171,93 @@ class _Form1PageState extends State<Form1Page> {
         } else {
           _showSnackBar('Failed to submit form. Please try again.', Colors.red);
         }
+      } else {
+        // If the form is not valid, show a generic warning dialog
+        _showWarningDialog(context);
       }
     } catch (e) {
       _showSnackBar('An error occurred: ${e.toString()}', Colors.red);
     }
   }
+
+// Generic warning dialog
+  void _showWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Form Validation'),
+          content:
+              Text('Please fill all required fields and correct the errors.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Specific warning dialog for phone number and email
+  void _showSpecificWarningDialog(
+      BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Helper function to calculate age
+  int _calculateAge(DateTime birthDate) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age;
+  }
+
+// Show a warning dialog if age is less than 18
+  void _showAgeWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Age Restriction'),
+          content:
+              Text('You must be at least 18 years old to submit this form.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Specific warning dialog for phone number
 
   // Display a SnackBar for success or error messages
   void _showSnackBar(String message, Color color) {
@@ -191,29 +297,31 @@ class _Form1PageState extends State<Form1Page> {
     return null;
   }
 
-  // Validate email format
-  String? _validateEmail(String? value) {
+// Specific warning dialog for validation issues
+
+// Helper function to validate phone number
+  String? _validatePhoneNumber(String? value) {
+    final phoneRegex = RegExp(r'^[0-9]+$');
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return 'Phone number is required';
+    } else if (!phoneRegex.hasMatch(value) || value.length != 10) {
+      return 'Enter a valid 10-digit phone number';
     }
+    return null;
+  }
+
+// Helper function to validate email address
+  String? _validateEmail(String? value) {
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
+    if (value == null || value.isEmpty) {
+      return 'Email address is required';
+    } else if (!emailRegex.hasMatch(value)) {
       return 'Enter a valid email address';
     }
     return null;
   }
 
-  // Validate phone number format
-  String? _validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'This field is required';
-    }
-    final phoneRegex = RegExp(r'^[0-9]+$');
-    if (!phoneRegex.hasMatch(value) || value.length != 10) {
-      return 'Enter a valid phone number';
-    }
-    return null;
-  }
+// Helper function to calculate age
 
   @override
   Widget build(BuildContext context) {
