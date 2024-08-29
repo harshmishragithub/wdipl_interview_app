@@ -10,32 +10,20 @@ class DropdownPage extends StatefulWidget {
 }
 
 class _DropdownPageState extends State<DropdownPage> {
-  final List<String> years = [
-    '2010',
-    '2011',
-    '2012',
-    '2013',
-    '2014',
-    '2015',
-    '2016',
-    '2017',
-    '2018',
-    '2019',
-    '2020',
-    '2021',
-    '2022',
-    '2023',
-  ];
+  final List<String> years =
+      List.generate(80, (index) => (1950 + index).toString());
 
   final List<String> graduationOptions = [
-    'B.Sc',
+    'B.Sc IT',
+    'B.Sc CS',
     'BCA',
     'B.Tech',
   ];
 
   final List<String> mastersOptions = [
     'MCA',
-    'M.Sc',
+    'M.Sc IT',
+    'M.Sc CS',
     'M.Tech',
     'ME',
   ];
