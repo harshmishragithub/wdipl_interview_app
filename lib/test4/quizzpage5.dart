@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
 import 'contt5.dart';
-
-// Ensure this path is correct based on your directory structure
 
 class QuizzPage4 extends StatelessWidget {
   final QuizController4 quizController = Get.put(QuizController4());
@@ -60,7 +59,7 @@ class QuizzPage4 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Animated question container
+                // Animated question container with HTML rendering
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: Container(
@@ -72,25 +71,26 @@ class QuizzPage4 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Center(
-                      child: Text(
-                        question.question!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
+                      child: Html(
+                        data: question.question!,
+                        style: {
+                          "body": Style(
+                            fontSize: FontSize(20),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            textAlign: TextAlign.center,
+                          ),
+                        },
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                // Enhanced Firecracker fuse animation
+                // Enhanced Firecracker fuse animation (unchanged)
                 Obx(() {
                   double progress = quizController.timer.value / 60.0;
                   return Stack(
                     children: [
-                      // Fuse base (Black)
                       Container(
                         height: 8,
                         decoration: BoxDecoration(
@@ -98,7 +98,6 @@ class QuizzPage4 extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      // Burning fuse effect with a spark
                       AnimatedContainer(
                         duration: Duration(milliseconds: 500),
                         height: 8,
@@ -230,9 +229,13 @@ class QuizzPage4 extends StatelessWidget {
                                   ),
                                   SizedBox(width: 16),
                                   Expanded(
-                                    child: Text(
-                                      answer.answer!,
-                                      style: TextStyle(fontSize: 18),
+                                    child: Html(
+                                      data: answer.answer!,
+                                      style: {
+                                        "body": Style(
+                                          fontSize: FontSize(18),
+                                        ),
+                                      },
                                     ),
                                   ),
                                   if (isSelected)

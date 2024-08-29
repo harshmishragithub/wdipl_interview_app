@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:wdipl_interview_app/model/gettech.dart';
 import 'package:wdipl_interview_app/model/techdrop.dart';
@@ -7,7 +6,6 @@ import 'package:wdipl_interview_app/shared/api/base_manager.dart';
 import 'package:wdipl_interview_app/shared/api/repos/userdet_api.dart';
 import 'package:wdipl_interview_app/testoverview/testov1.dart';
 
-// Define the ExperienceYear class to store the experience years and their IDs
 class ExperienceYear {
   final int id;
   final String label;
@@ -16,7 +14,9 @@ class ExperienceYear {
 }
 
 class TechnologySelectionPage extends StatefulWidget {
-  const TechnologySelectionPage({super.key});
+  final String experienceLevel;
+
+  const TechnologySelectionPage({super.key, required this.experienceLevel});
 
   @override
   _TechnologySelectionPageState createState() =>
@@ -26,13 +26,7 @@ class TechnologySelectionPage extends StatefulWidget {
 class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     with SingleTickerProviderStateMixin {
   List<Technology> _technologies = [];
-  List<ExperienceYear> _experienceYears = [
-    ExperienceYear(id: 1, label: 'Fresher'),
-    ExperienceYear(id: 2, label: '0-1 years'),
-    ExperienceYear(id: 3, label: '1-3 years'),
-    ExperienceYear(id: 4, label: '3-5 years'),
-    ExperienceYear(id: 5, label: '5+ years'),
-  ];
+  List<ExperienceYear> _experienceYears = [];
 
   Technology? _selectedTechnology;
   ExperienceYear? _selectedExperience;
@@ -48,6 +42,23 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     )..repeat(reverse: true);
 
     _getTechnology(); // Fetch technology data when initializing the form
+    _filterExperienceYears(); // Filter experience years based on experience level
+  }
+
+  void _filterExperienceYears() {
+    if (widget.experienceLevel == 'Fresher') {
+      _experienceYears = [
+        ExperienceYear(id: 1, label: 'Fresher'),
+      ];
+    } else {
+      _experienceYears = [
+        ExperienceYear(id: 1, label: 'Fresher'),
+        ExperienceYear(id: 2, label: '0-1 years'),
+        ExperienceYear(id: 3, label: '1-3 years'),
+        ExperienceYear(id: 4, label: '3-5 years'),
+        ExperienceYear(id: 5, label: '5+ years'),
+      ];
+    }
   }
 
   @override
@@ -96,7 +107,6 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
     _showSnackBar(errorMessage, Colors.red);
   }
 
-  // Method to handle the form submission
   Future<void> _submitData() async {
     try {
       if (_selectedTechnology == null || _selectedExperience == null) {
@@ -106,10 +116,8 @@ class _TechnologySelectionPageState extends State<TechnologySelectionPage>
       }
 
       Map<String, dynamic> data = {
-        "tech_masters_xid":
-            _selectedTechnology!.id, // Pass the id of the technology
-        "year_of_experience":
-            _selectedExperience!.id, // Pass the id of the experience year
+        "tech_masters_xid": _selectedTechnology!.id,
+        "year_of_experience": _selectedExperience!.id,
       };
 
       ResponseData response =

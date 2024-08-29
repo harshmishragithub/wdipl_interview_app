@@ -150,7 +150,11 @@ class _WorkExpState extends State<WorkExp> with SingleTickerProviderStateMixin {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TechnologySelectionPage()),
+                    builder: (context) => TechnologySelectionPage(
+                      experienceLevel:
+                          _experienceLevel, // Pass experience level
+                    ),
+                  ),
                 );
               },
             ),

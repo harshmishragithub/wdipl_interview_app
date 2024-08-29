@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
 import 'contt6.dart'; // Import the animation package
+// Import the WelcomeScreen widget
 
 class ThankYouPage5 extends StatelessWidget {
   final QuizController5 quizController = Get.find<QuizController5>();
+
+  ThankYouPage5() {
+    _clearPreferencesAndRedirect();
+  }
+
+  Future<void> _clearPreferencesAndRedirect() async {
+    // Clear shared preferences
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Show confirmation message using Snackbar
+    Get.snackbar(
+      "Preferences Cleared",
+      "All saved data has been removed.",
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+
+    // Automatically redirect to WelcomeScreen after 3 seconds
+    await Future.delayed(Duration(seconds: 3));
+    Get.offAll(() => WelcomeScreen()); // Navigate to WelcomeScreen
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +93,6 @@ class ThankYouPage5 extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 40),
               ],
             ),
           ),
